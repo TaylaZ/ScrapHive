@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "832603393496",
+    "project_id": "scraphive-test",
+    "storage_bucket": "scraphive-test.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:832603393496:android:f9c00c7e94524bbc9736ad",
+        "android_client_info": {
+          "package_name": "com.example.scraphive"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "832603393496-ivfcigj890geksog9ie8qjto4uob24p6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIg0AYaRradSoLl4_kvL5Qal4DHyh7Blg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "832603393496-4a0nvs56e24vlv9qlpqjg2r76830b5n4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
