@@ -1,5 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:scraphive/screens/login_screen.dart';
+import 'package:scraphive/screens/signup_screen.dart';
 import 'package:scraphive/utils/colors.dart';
 import 'package:scraphive/utils/mobile_screen_layout.dart';
 import 'package:scraphive/utils/responsive_layout.dart';
@@ -38,10 +40,11 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: mobileBackgroundColor,
       ),
       // home: const HomeScreen(),
-      home: ResponsiveLayout(
-        mobileScreenLayout: MobileScreenLayout(),
-        webScreenLayout: WebScreenLayout(),
-      ),
+      // home: ResponsiveLayout(
+      //   mobileScreenLayout: MobileScreenLayout(),
+      //   webScreenLayout: WebScreenLayout(),
+      // ),
+      home: SignupScren(),
     );
   }
 }
