@@ -43,9 +43,9 @@ dependencies:
   firebase_core: ^1.10.5
   firebase_storage: ^10.2.3
   firebase_core_platform_interface: 4.5.1
+  cloud_firestore: ^3.1.4
+  uuid: ^3.0.6
   
-
-
 dev_dependencies:
 
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -70,6 +70,10 @@ flutter:
   assets:
     - assets/hive-svgrepo-com.svg
     - assets/ic_instagram.svg
+    - assets/ScrapHive_Loader.gif
+    - assets/ScrapHive_Logo.svg
+    - assets/ScrapHive_Profile.jpg
+
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

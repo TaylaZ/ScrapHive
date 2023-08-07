@@ -5,6 +5,7 @@ import 'package:scraphive/screens/signup_screen.dart';
 import 'package:scraphive/utils/colors.dart';
 import 'package:scraphive/utils/mobile_screen_layout.dart';
 import 'package:scraphive/utils/responsive_layout.dart';
+import 'package:scraphive/widgets/scraphive_loader.dart';
 import 'package:scraphive/utils/web_screen_layout.dart';
 import './screens/home_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -35,16 +36,17 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'ScrapHive',
-      // theme: ThemeData.light(),
-      theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: mobileBackgroundColor,
-      ),
+      theme: ThemeData.light(),
+      // theme: ThemeData.dark().copyWith(
+      //   scaffoldBackgroundColor: mobileBackgroundColor,
+      // ),
       // home: const HomeScreen(),
       // home: ResponsiveLayout(
       //   mobileScreenLayout: MobileScreenLayout(),
       //   webScreenLayout: WebScreenLayout(),
       // ),
-      home: SignupScren(),
+
+      home: SignupScreen(),
     );
   }
 }

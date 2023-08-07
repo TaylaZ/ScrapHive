@@ -35,9 +35,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 flex: 2,
               ),
               SvgPicture.asset(
-                'assets/ic_instagram.svg',
+                'assets/ScrapHive_Logo.svg',
                 height: 48,
-                color: primaryColor,
               ),
               const SizedBox(
                 height: 48,
