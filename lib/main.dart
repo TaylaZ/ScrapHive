@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:scraphive/screens/login_screen.dart';
@@ -46,7 +47,28 @@ class MyApp extends StatelessWidget {
       //   webScreenLayout: WebScreenLayout(),
       // ),
 
-      home: SignupScreen(),
+      home: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.active) {
+            if (snapshot.hasData) {
+              // if snapshot has data which means user is logged in then we check the width of screen and accordingly display the screen layout
+              return HomeScreen();
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text('${snapshot.error}'),
+              );
+            }
+          }
+
+          // means connection to future hasnt been made yet
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return ScrapHiveLoader();
+          }
+
+          return const LoginScreen();
+        },
+      ),
     );
   }
 }

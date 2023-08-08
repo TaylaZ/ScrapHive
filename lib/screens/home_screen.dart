@@ -10,26 +10,36 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: IconButton(
-          icon: const Icon(
-            Icons.upload_file,
-          ),
-          onPressed: () async {
-            XFile? file = await ImagePicker().pickImage(
-              source: ImageSource.gallery,
-            );
-            if (file != null) {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => EditImageScreen(
-                    selectedImage: file.path,
-                  ),
-                ),
-              );
-            }
-          },
-        ),
+        child: Text('Home Screen'),
       ),
     );
   }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //     body: Center(
+  //       child: IconButton(
+  //         icon: const Icon(
+  //           Icons.upload_file,
+  //         ),
+  //         onPressed: () async {
+  //           XFile? file = await ImagePicker().pickImage(
+  //             source: ImageSource.gallery,
+  //           );
+  //           if (file != null) {
+  //             Navigator.of(context).push(
+  //               MaterialPageRoute(
+  //                 builder: (context) => EditImageScreen(
+  //                   selectedImage: file.path,
+  //                 ),
+  //               ),
+  //             );
+  //           }
+  //         },
+  //       ),
+  //     ),
+  //   );
+  // }
+
 }

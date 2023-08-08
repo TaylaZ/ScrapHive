@@ -3,6 +3,8 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:scraphive/screens/home_screen.dart';
+import 'package:scraphive/screens/login_screen.dart';
 import 'package:scraphive/utils/colors.dart';
 import 'package:scraphive/utils/utils.dart';
 import 'package:scraphive/widgets/scraphive_loader.dart';
@@ -52,6 +54,8 @@ class _SignupScreenState extends State<SignupScreen> {
     if (res == "success") {
       setState(() {
         _isLoading = false;
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const HomeScreen()));
       });
     } else {
       setState(() {
@@ -61,12 +65,17 @@ class _SignupScreenState extends State<SignupScreen> {
     showSnackBar(context, res);
   }
 
+  void navigateToLogin() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const LoginScreen()));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: _isLoading
-            ? LoadingImageWidget()
+            ? ScrapHiveLoader()
             : Container(
                 padding: EdgeInsets.symmetric(horizontal: 32),
                 width: double.infinity,
@@ -143,6 +152,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       child: Container(
                         child: const Text(
                           'Sign up',
+                          style: TextStyle(color: Colors.white),
                         ),
                         width: double.infinity,
                         alignment: Alignment.center,
@@ -151,7 +161,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(4)),
                           ),
-                          color: blueColor,
+                          color: Colors.amber,
                         ),
                       ),
                       onTap: signUpUser,
@@ -173,7 +183,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () {},
+                          onTap: navigateToLogin,
                           child: Container(
                             child: Text(
                               "Login",

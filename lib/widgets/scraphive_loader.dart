@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class LoadingImageWidget extends StatelessWidget {
+class ScrapHiveLoader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
