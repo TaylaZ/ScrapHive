@@ -45,6 +45,7 @@ dependencies:
   firebase_core_platform_interface: 4.5.1
   cloud_firestore: ^3.1.4
   uuid: ^3.0.6
+
   
 dev_dependencies:
 
@@ -68,8 +69,6 @@ flutter:
   uses-material-design: true
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/hive-svgrepo-com.svg
-    - assets/ic_instagram.svg
     - assets/ScrapHive_Loader.gif
     - assets/ScrapHive_Logo.svg
     - assets/ScrapHive_Profile.jpg

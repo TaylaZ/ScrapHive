@@ -54,8 +54,7 @@ class _SignupScreenState extends State<SignupScreen> {
     if (res == "success") {
       setState(() {
         _isLoading = false;
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const HomeScreen()));
+        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const HomeScreen()));
       });
     } else {
       setState(() {
@@ -66,8 +65,7 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   void navigateToLogin() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const LoginScreen()));
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 
   @override
@@ -101,8 +99,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               )
                             : CircleAvatar(
                                 radius: 64,
-                                backgroundImage:
-                                    AssetImage('assets/ScrapHive_Profile.jpg'),
+                                backgroundImage: AssetImage('assets/ScrapHive_Profile.jpg'),
                               ),
                         Positioned(
                           bottom: 0,
