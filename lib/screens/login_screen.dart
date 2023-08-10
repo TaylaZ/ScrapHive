@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:scraphive/resources/auth_methods.dart';
+import 'package:scraphive/screens/default_screen.dart';
 import 'package:scraphive/screens/home_screen.dart';
 import 'package:scraphive/utils/colors.dart';
 import 'package:scraphive/utils/utils.dart';
@@ -31,12 +32,11 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isLoading = true;
     });
-    String res = await AuthMethods().loginUser(
-        email: _emailController.text, password: _passwordController.text);
+    String res = await AuthMethods()
+        .loginUser(email: _emailController.text, password: _passwordController.text);
 
     if (res == "success") {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => const HomeScreen()));
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const DefaultScreen()));
     } else {
       showSnackBar(context, res);
     }
@@ -46,8 +46,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void navigateToSignUp() {
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (context) => const SignupScreen()));
+    Navigator.of(context)
+        .pushReplacement(MaterialPageRoute(builder: (context) => const SignupScreen()));
   }
 
   @override
@@ -102,7 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(4)),
                           ),
-                          color: Colors.amber,
+                          color: amberColor,
                         ),
                       ),
                       onTap: loginUser,

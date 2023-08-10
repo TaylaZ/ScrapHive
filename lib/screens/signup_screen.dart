@@ -54,7 +54,8 @@ class _SignupScreenState extends State<SignupScreen> {
     if (res == "success") {
       setState(() {
         _isLoading = false;
-        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const HomeScreen()));
+        Navigator.of(context)
+            .pushReplacement(MaterialPageRoute(builder: (context) => const HomeScreen()));
       });
     } else {
       setState(() {
@@ -109,7 +110,7 @@ class _SignupScreenState extends State<SignupScreen> {
                               onPressed: selectImage,
                               icon: const Icon(
                                 Icons.edit,
-                                color: Colors.green,
+                                color: greenColor,
                               ),
                             ),
                             backgroundColor: Colors.white,
@@ -158,7 +159,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.all(Radius.circular(4)),
                           ),
-                          color: Colors.amber,
+                          color: amberColor,
                         ),
                       ),
                       onTap: signUpUser,

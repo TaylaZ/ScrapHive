@@ -51,9 +51,6 @@ class _DefaultScreenState extends State<DefaultScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-    
-    usermodel.User user = Provider.of<UserProvider>(context).getUser;
     return Scaffold(
       body: PageView(
         children: homeScreenItems,
@@ -98,9 +95,9 @@ class _DefaultScreenState extends State<DefaultScreen> {
           ),
         ],
         iconSize: 20,
-        activeColor: Colors.amber,
-        inactiveColor: Colors.brown,
-        backgroundColor: Colors.yellow[50],
+        activeColor: amberColor,
+        inactiveColor: brownColor,
+        backgroundColor: yellowColor,
         onTap: navigationTapped,
         currentIndex: _page,
         height: 50,

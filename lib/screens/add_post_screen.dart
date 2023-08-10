@@ -80,7 +80,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
               elevation: 0.0,
               leading: IconButton(
                 icon: Icon(EvaIcons.arrowBack),
-                color: Colors.amber[700],
+                color: amberColor,
                 onPressed: () {},
               ),
               title: Row(
@@ -88,7 +88,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 children: [
                   SvgPicture.asset(
                     'assets/ScrapHive_Logo.svg',
-                    height: 32,
+                    height: 28,
                   ),
                 ],
               ),
@@ -99,7 +99,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   child: const Text(
                     'Post',
                     style: TextStyle(
-                      color: Colors.amber,
+                      color: amberColor,
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
                     ),
