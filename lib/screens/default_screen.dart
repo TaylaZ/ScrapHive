@@ -59,6 +59,7 @@ class _DefaultScreenState extends State<DefaultScreen> {
         onPageChanged: onPageChanged,
       ),
       bottomNavigationBar: CupertinoTabBar(
+        
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(
@@ -101,6 +102,7 @@ class _DefaultScreenState extends State<DefaultScreen> {
         onTap: navigationTapped,
         currentIndex: _page,
         height: 50,
+        
       ),
     );
   }

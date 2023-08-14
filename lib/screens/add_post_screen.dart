@@ -1,12 +1,16 @@
+import 'dart:ffi';
+
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scraphive/providers/user_provider.dart';
+import 'package:scraphive/resources/firestore_methods.dart';
 import 'package:scraphive/utils/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:typed_data';
 import 'package:image_picker/image_picker.dart';
 import 'package:scraphive/utils/utils.dart';
+import 'package:scraphive/widgets/scraphive_loader.dart';
 
 class AddPostScreen extends StatefulWidget {
   const AddPostScreen({Key? key}) : super(key: key);
@@ -17,8 +21,40 @@ class AddPostScreen extends StatefulWidget {
 
 class _AddPostScreenState extends State<AddPostScreen> {
   Uint8List? _file;
-  bool isLoading = false;
+  bool _isLoading = false;
   final TextEditingController _descriptionController = TextEditingController();
+
+  void postImage(
+    String uid,
+    String username,
+    String profImage,
+  ) async {
+    setState(() {
+      _isLoading = true;
+    });
+    try {
+      String res = await FireStoreMethods().uploadPost(
+          _descriptionController.text, _file!, uid, username, profImage);
+
+      if (res == "success") {
+        setState(() {
+          _isLoading = false;
+        });
+        showSnackBar(context, 'Posted');
+        clearImage();
+      } else {
+        setState(() {
+          _isLoading = false;
+        });
+        showSnackBar(context, res);
+      }
+    } catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
+      showSnackBar(context, e.toString());
+    }
+  }
 
   _selectImage(BuildContext parentContext) async {
     return showDialog(
@@ -60,6 +96,18 @@ class _AddPostScreenState extends State<AddPostScreen> {
     );
   }
 
+  void clearImage() {
+    setState(() {
+      _file = null;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _descriptionController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
@@ -81,7 +129,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
               leading: IconButton(
                 icon: Icon(EvaIcons.arrowBack),
                 color: amberColor,
-                onPressed: () {},
+                onPressed: clearImage,
               ),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -95,7 +143,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
               centerTitle: true,
               actions: [
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () => postImage(
+                    userProvider.getUser.uid,
+                    userProvider.getUser.username,
+                    userProvider.getUser.photoUrl,
+                  ),
                   child: const Text(
                     'Post',
                     style: TextStyle(
@@ -108,7 +160,14 @@ class _AddPostScreenState extends State<AddPostScreen> {
               ],
             ),
             body: Column(
-              children: <Widget>[
+              children: [
+                _isLoading
+                    ? ScrapHiveLoader()
+                    : Padding(
+                        padding: EdgeInsets.only(
+                          top: 0,
+                        ),
+                      ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -123,7 +182,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
                       child: TextField(
                         controller: _descriptionController,
                         decoration: const InputDecoration(
-                            hintText: "Write a caption...", border: InputBorder.none),
+                            hintText: "Write a caption...",
+                            border: InputBorder.none),
                         maxLines: 5,
                       ),
                     ),

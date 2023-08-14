@@ -1,6 +1,7 @@
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
+import 'package:scraphive/utils/colors.dart';
 
 Future<bool> requestPermission(Permission permission) async {
   if (await permission.isGranted) {
@@ -26,7 +27,16 @@ pickImage(ImageSource source) async {
 showSnackBar(BuildContext context, String text) {
   return ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      content: Text(text),
+      content: Text(
+        text,
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          color: brownColor,
+        ),
+      ),
+      backgroundColor: yellowColor,
+      // behavior: SnackBarBehavior.floating,
+      // width: 200,
     ),
   );
 }
