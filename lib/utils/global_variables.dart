@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:scraphive/screens/add_post_screen.dart';
+import 'package:scraphive/screens/feed_screen.dart';
 
 const List<Widget> homeScreenItems = [
-  Text('1'),
+  FeedScreen(),
   Text('2'),
   AddPostScreen(),
   Text('4'),
