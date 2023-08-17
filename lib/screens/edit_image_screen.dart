@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:scraphive/screens/add_post_screen.dart';
 import 'package:scraphive/widgets/edit_image_viewmodel.dart';
 import 'package:screenshot/screenshot.dart';
 import '../widgets/image_text.dart';
@@ -91,13 +93,14 @@ class _EditImageScreenState extends EditImageViewModel {
         backgroundColor: Colors.white,
         tooltip: 'Tap to add text',
         child: const Icon(
-          Icons.edit,
+          EvaIcons.text,
           color: Colors.amber,
         ),
       );
 
   AppBar get _appBar => AppBar(
         backgroundColor: Colors.white,
+        elevation: 0,
         automaticallyImplyLeading: false,
         title: SizedBox(
           height: 50,
@@ -105,10 +108,18 @@ class _EditImageScreenState extends EditImageViewModel {
             scrollDirection: Axis.horizontal,
             children: [
               IconButton(
+                onPressed: () => Navigator.of(context).pop(),
+                tooltip: 'Back',
+                icon: const Icon(
+                  EvaIcons.arrowIosBack,
+                  color: Colors.amber,
+                ),
+              ),
+              IconButton(
                 onPressed: () => saveToGallery(context),
                 tooltip: 'Save Image',
                 icon: const Icon(
-                  Icons.save,
+                  EvaIcons.download,
                   color: Colors.amber,
                 ),
               ),

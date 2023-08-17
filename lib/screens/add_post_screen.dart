@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scraphive/providers/user_provider.dart';
 import 'package:scraphive/resources/firestore_methods.dart';
+import 'package:scraphive/screens/edit_image_screen.dart';
 import 'package:scraphive/utils/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:typed_data';
@@ -111,13 +112,54 @@ class _AddPostScreenState extends State<AddPostScreen> {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
 
     return _file == null
-        ? Center(
-            child: IconButton(
-              icon: const Icon(
-                Icons.upload,
+        ? Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                icon: const Icon(
+                  EvaIcons.plusCircle,
+                  color: amberColor,
+                ),
+                onPressed: () => _selectImage(context),
+                iconSize: 40,
               ),
-              onPressed: () => _selectImage(context),
-            ),
+              Text(
+                'Add Post',
+                style: TextStyle(
+                  color: amberColor,
+                ),
+              ),
+              SizedBox(
+                height: 16,
+              ),
+              IconButton(
+                icon: const Icon(
+                  EvaIcons.image,
+                  color: greenColor,
+                ),
+                iconSize: 40,
+                onPressed: () async {
+                  XFile? file = await ImagePicker().pickImage(
+                    source: ImageSource.gallery,
+                  );
+                  if (file != null) {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => EditImageScreen(
+                          selectedImage: file.path,
+                        ),
+                      ),
+                    );
+                  }
+                },
+              ),
+              Text(
+                'Edit Image',
+                style: TextStyle(
+                  color: greenColor,
+                ),
+              ),
+            ],
           )
         : Scaffold(
             appBar: AppBar(

@@ -59,7 +59,6 @@ class _DefaultScreenState extends State<DefaultScreen> {
         onPageChanged: onPageChanged,
       ),
       bottomNavigationBar: CupertinoTabBar(
-        
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(
@@ -70,9 +69,9 @@ class _DefaultScreenState extends State<DefaultScreen> {
           ),
           BottomNavigationBarItem(
               icon: Icon(
-                EvaIcons.search,
+                (_page == 1) ? EvaIcons.heart : EvaIcons.heartOutline,
               ),
-              label: 'Search',
+              label: 'Favourites',
               backgroundColor: primaryColor),
           BottomNavigationBarItem(
               icon: Icon(
@@ -82,9 +81,9 @@ class _DefaultScreenState extends State<DefaultScreen> {
               backgroundColor: primaryColor),
           BottomNavigationBarItem(
             icon: Icon(
-              (_page == 3) ? EvaIcons.heart : EvaIcons.heartOutline,
+              (_page == 3) ? EvaIcons.archive : EvaIcons.archiveOutline,
             ),
-            label: 'Favourites',
+            label: 'Materials',
             backgroundColor: primaryColor,
           ),
           BottomNavigationBarItem(
@@ -102,7 +101,6 @@ class _DefaultScreenState extends State<DefaultScreen> {
         onTap: navigationTapped,
         currentIndex: _page,
         height: 50,
-        
       ),
     );
   }

@@ -19,7 +19,7 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
   List<TextInfo> texts = [];
   int currentIndex = 0;
 
-  Color color = Colors.red;
+  Color color = Colors.black;
   Widget buildColorPicker() => ColorPicker(
       pickerColor: color,
       onColorChanged: (color) => setState(() {
@@ -178,7 +178,7 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
           text: textEditingController.text,
           left: 0,
           top: 0,
-          color: Colors.white,
+          color: Colors.black,
           fontWeight: FontWeight.normal,
           fontStyle: FontStyle.normal,
           fontSize: 30,
