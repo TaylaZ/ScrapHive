@@ -2,9 +2,11 @@ import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:scraphive/utils/colors.dart';
+import 'package:intl/intl.dart';
 
 class PostCard extends StatelessWidget {
-  const PostCard({Key? key}) : super(key: key);
+  final snap;
+  const PostCard({Key? key, required this.snap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +29,8 @@ class PostCard extends StatelessWidget {
                 CircleAvatar(
                   radius: 16,
                   backgroundImage: NetworkImage(
-                      'https://images.unsplash.com/photo-1635352073050-23999f4022e0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1480&q=80'),
+                    snap['profImage'].toString(),
+                  ),
                 ),
                 Expanded(
                   child: Padding(
@@ -39,7 +42,7 @@ class PostCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'username',
+                          snap['username'],
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: brownColor,
@@ -88,22 +91,25 @@ class PostCard extends StatelessWidget {
             height: MediaQuery.of(context).size.height * 0.35,
             width: double.infinity,
             child: Image.network(
-              'https://images.unsplash.com/photo-1635352073050-23999f4022e0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1480&q=80',
+              snap['postUrl'],
               fit: BoxFit.cover,
             ),
           ),
           Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Padding(
-                padding: EdgeInsets.symmetric(
-                  horizontal: 6,
-                ),
-              ),
               IconButton(
                 onPressed: () {},
                 icon: Icon(
-                  EvaIcons.heart,
-                  color: amberColor,
+                  EvaIcons.heartOutline,
+                  color: greyColor,
+                ),
+              ),
+              Text(
+                '${snap['likes'].length} Likes',
+                style: TextStyle(
+                  color: greyColor,
+                  fontSize: 14,
                 ),
               ),
               IconButton(
@@ -113,27 +119,22 @@ class PostCard extends StatelessWidget {
                   color: greyColor,
                 ),
               ),
-              IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  EvaIcons.bookmarkOutline,
+              Text(
+                '123 Comments',
+                style: TextStyle(
                   color: greyColor,
+                  fontSize: 14,
                 ),
               ),
               Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                  ),
-                  child: Align(
-                    alignment: Alignment.bottomRight,
-                    child: IconButton(
-                      icon: const Icon(
-                        EvaIcons.shareOutline,
-                        color: greyColor,
-                      ),
-                      onPressed: () {},
+                child: Align(
+                  alignment: Alignment.bottomRight,
+                  child: IconButton(
+                    icon: const Icon(
+                      EvaIcons.shareOutline,
+                      color: greyColor,
                     ),
+                    onPressed: () {},
                   ),
                 ),
               ),
@@ -141,39 +142,20 @@ class PostCard extends StatelessWidget {
           ),
           Container(
             padding: const EdgeInsets.symmetric(
-              horizontal: 16,
+              horizontal: 8,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      '1234 Likes',
-                      style: TextStyle(
-                        color: amberColor,
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () {},
-                      child: Text(
-                        'View Comments',
-                        style: TextStyle(
-                          color: greyColor,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.only(
-                    top: 8,
+                    top: 0,
+                    left: 4,
                   ),
                   child: Text(
-                    'Some random post description',
+                    '${snap['description']}',
                     style: TextStyle(
                       color: brownColor,
                       fontSize: 14,
@@ -183,9 +165,10 @@ class PostCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(
                     vertical: 4,
+                    horizontal: 4,
                   ),
                   child: Text(
-                    '12/8/2023',
+                    DateFormat.yMMMd().format(snap['datePublished'].toDate()),
                     style: TextStyle(
                       fontSize: 12,
                       color: greyColor,
