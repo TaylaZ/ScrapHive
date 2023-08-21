@@ -65,33 +65,32 @@ class _DefaultScreenState extends State<DefaultScreen> {
               (_page == 0) ? EvaIcons.home : EvaIcons.homeOutline,
             ),
             label: 'Home',
-            backgroundColor: primaryColor,
           ),
           BottomNavigationBarItem(
-              icon: Icon(
-                (_page == 1) ? EvaIcons.heart : EvaIcons.heartOutline,
-              ),
-              label: 'Favourites',
-              backgroundColor: primaryColor),
+            icon: Icon(
+              (_page == 1) ? EvaIcons.heart : EvaIcons.heartOutline,
+            ),
+            label: 'Favourites',
+          ),
           BottomNavigationBarItem(
-              icon: Icon(
-                (_page == 2) ? EvaIcons.plusCircle : EvaIcons.plusCircleOutline,
-              ),
-              label: 'Add Post',
-              backgroundColor: primaryColor),
+            icon: Icon(
+              EvaIcons.plusSquare,
+              size: 32,
+              color: (_page == 2) ? amberColor : greenColor,
+            ),
+            label: null,
+          ),
           BottomNavigationBarItem(
             icon: Icon(
               (_page == 3) ? EvaIcons.archive : EvaIcons.archiveOutline,
             ),
             label: 'Materials',
-            backgroundColor: primaryColor,
           ),
           BottomNavigationBarItem(
             icon: Icon(
               (_page == 4) ? EvaIcons.person : EvaIcons.personOutline,
             ),
             label: 'Profile',
-            backgroundColor: primaryColor,
           ),
         ],
         iconSize: 20,
@@ -100,7 +99,7 @@ class _DefaultScreenState extends State<DefaultScreen> {
         backgroundColor: yellowColor,
         onTap: navigationTapped,
         currentIndex: _page,
-        height: 50,
+        height: 48,
       ),
     );
   }

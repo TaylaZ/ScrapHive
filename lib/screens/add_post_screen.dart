@@ -117,7 +117,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
             children: [
               IconButton(
                 icon: const Icon(
-                  EvaIcons.plusCircle,
+                  EvaIcons.plusCircleOutline,
                   color: amberColor,
                 ),
                 onPressed: () => _selectImage(context),

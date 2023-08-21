@@ -1,15 +1,30 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:full_screen_image/full_screen_image.dart';
+import 'package:scraphive/providers/user_provider.dart';
+import 'package:scraphive/resources/firestore_methods.dart';
 import 'package:scraphive/utils/colors.dart';
 import 'package:intl/intl.dart';
+import 'package:scraphive/widgets/like_animation.dart';
+import 'package:provider/provider.dart';
+import '../models/user.dart' as model;
 
-class PostCard extends StatelessWidget {
+class PostCard extends StatefulWidget {
   final snap;
   const PostCard({Key? key, required this.snap}) : super(key: key);
 
   @override
+  State<PostCard> createState() => _PostCardState();
+}
+
+class _PostCardState extends State<PostCard> {
+  bool isLikeAnimating = false;
+
+  @override
   Widget build(BuildContext context) {
+    final model.User user = Provider.of<UserProvider>(context).getUser;
+
     return Container(
       color: primaryColor,
       padding: const EdgeInsets.symmetric(
@@ -29,7 +44,7 @@ class PostCard extends StatelessWidget {
                 CircleAvatar(
                   radius: 16,
                   backgroundImage: NetworkImage(
-                    snap['profImage'].toString(),
+                    widget.snap['profImage'].toString(),
                   ),
                 ),
                 Expanded(
@@ -42,7 +57,7 @@ class PostCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          snap['username'],
+                          widget.snap['username'],
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: brownColor,
@@ -87,26 +102,81 @@ class PostCard extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.35,
-            width: double.infinity,
-            child: Image.network(
-              snap['postUrl'],
-              fit: BoxFit.cover,
+          GestureDetector(
+            onDoubleTap: () async {
+              await FireStoreMethods().likePost(
+                widget.snap['postId'],
+                user.uid,
+                widget.snap['likes'],
+              );
+              setState(() {
+                isLikeAnimating = true;
+              });
+            },
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.35,
+                  width: double.infinity,
+                  child: Image.network(
+                    widget.snap['postUrl'],
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                AnimatedOpacity(
+                  duration: const Duration(
+                    milliseconds: 200,
+                  ),
+                  opacity: isLikeAnimating ? 1 : 0,
+                  child: LikeAnimation(
+                    child: const Icon(
+                      EvaIcons.heart,
+                      color: primaryColor,
+                      size: 120,
+                    ),
+                    isAnimating: isLikeAnimating,
+                    duration: const Duration(
+                      milliseconds: 300,
+                    ),
+                    onEnd: () {
+                      setState(() {
+                        isLikeAnimating = false;
+                      });
+                    },
+                  ),
+                )
+              ],
             ),
           ),
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  EvaIcons.heartOutline,
-                  color: greyColor,
-                ),
+              LikeAnimation(
+                isAnimating: widget.snap['likes'].contains(user.uid),
+                smallLike: true,
+                child: IconButton(
+                    onPressed: () async {
+                      await FireStoreMethods().likePost(
+                        widget.snap['postId'],
+                        user.uid,
+                        widget.snap['likes'],
+                      );
+                    },
+                    icon: widget.snap['likes'].contains(user.uid)
+                        ? const Icon(
+                            EvaIcons.heart,
+                            color: amberColor,
+                          )
+                        : Icon(
+                            EvaIcons.heartOutline,
+                            color: greyColor,
+                          )),
               ),
               Text(
-                '${snap['likes'].length} Likes',
+                widget.snap['likes'].length == 1
+                    ? '${widget.snap['likes'].length} Like'
+                    : '${widget.snap['likes'].length} Likes',
                 style: TextStyle(
                   color: greyColor,
                   fontSize: 14,
@@ -155,7 +225,7 @@ class PostCard extends StatelessWidget {
                     left: 4,
                   ),
                   child: Text(
-                    '${snap['description']}',
+                    '${widget.snap['description']}',
                     style: TextStyle(
                       color: brownColor,
                       fontSize: 14,
@@ -168,7 +238,8 @@ class PostCard extends StatelessWidget {
                     horizontal: 4,
                   ),
                   child: Text(
-                    DateFormat.yMMMd().format(snap['datePublished'].toDate()),
+                    DateFormat.yMMMd()
+                        .format(widget.snap['datePublished'].toDate()),
                     style: TextStyle(
                       fontSize: 12,
                       color: greyColor,
