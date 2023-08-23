@@ -46,7 +46,6 @@ dependencies:
   cloud_firestore: ^3.1.4
   uuid: ^3.0.6
   eva_icons_flutter: ^3.0.1
-  full_screen_image: ^2.0.0
   carousel_slider: ^4.2.1
 
   

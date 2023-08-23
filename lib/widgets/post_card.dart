@@ -1,11 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:full_screen_image/full_screen_image.dart';
 import 'package:scraphive/providers/user_provider.dart';
 import 'package:scraphive/resources/firestore_methods.dart';
+import 'package:scraphive/screens/comments_screen.dart';
 import 'package:scraphive/utils/colors.dart';
 import 'package:intl/intl.dart';
+import 'package:scraphive/utils/utils.dart';
 import 'package:scraphive/widgets/like_animation.dart';
 import 'package:provider/provider.dart';
 import '../models/user.dart' as model;
@@ -20,6 +22,41 @@ class PostCard extends StatefulWidget {
 
 class _PostCardState extends State<PostCard> {
   bool isLikeAnimating = false;
+  int commentLen = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchCommentLen();
+  }
+
+  fetchCommentLen() async {
+    try {
+      QuerySnapshot snap = await FirebaseFirestore.instance
+          .collection('posts')
+          .doc(widget.snap['postId'])
+          .collection('comments')
+          .get();
+      commentLen = snap.docs.length;
+    } catch (err) {
+      showSnackBar(
+        context,
+        err.toString(),
+      );
+    }
+    setState(() {});
+  }
+
+  deletePost(String postId) async {
+    try {
+      await FireStoreMethods().deletePost(postId);
+    } catch (err) {
+      showSnackBar(
+        context,
+        err.toString(),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -183,14 +220,20 @@ class _PostCardState extends State<PostCard> {
                 ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => CommentsScreen(
+                    postId: widget.snap['postId'].toString(),
+                  ),
+                )),
                 icon: Icon(
                   EvaIcons.messageCircleOutline,
                   color: greyColor,
                 ),
               ),
               Text(
-                '123 Comments',
+                commentLen == 1
+                    ? '$commentLen Comment'
+                    : '$commentLen Comments',
                 style: TextStyle(
                   color: greyColor,
                   fontSize: 14,
