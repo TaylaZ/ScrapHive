@@ -16,6 +16,32 @@ class FeedScreen extends StatefulWidget {
 }
 
 class _FeedScreenState extends State<FeedScreen> {
+  late Stream<QuerySnapshot<Map<String, dynamic>>> _stream;
+
+  @override
+  void initState() {
+    super.initState();
+    _stream = FirebaseFirestore.instance
+        .collection('posts')
+        .orderBy(
+          'datePublished',
+          descending: true,
+        )
+        .snapshots();
+  }
+
+  Future<void> _refreshData() async {
+    setState(() {
+      _stream = FirebaseFirestore.instance
+          .collection('posts')
+          .orderBy(
+            'datePublished',
+            descending: true,
+          )
+          .snapshots();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -44,26 +70,26 @@ class _FeedScreenState extends State<FeedScreen> {
           ),
         ],
       ),
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('posts')
-            .orderBy(
-              'datePublished',
-              descending: true,
-            )
-            .snapshots(),
-        builder: (context,
-            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return ScrapHiveLoader();
-          }
-          return ListView.builder(
-            itemCount: snapshot.data!.docs.length,
-            itemBuilder: (ctx, index) => PostCard(
-              snap: snapshot.data!.docs[index].data(),
-            ),
-          );
-        },
+      body: RefreshIndicator(
+        onRefresh: _refreshData,
+        backgroundColor: amberColor,
+        color: yellowColor,
+        displacement: 0,
+        child: StreamBuilder(
+          stream: _stream,
+          builder: (context,
+              AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return ScrapHiveLoader();
+            }
+            return ListView.builder(
+              itemCount: snapshot.data!.docs.length,
+              itemBuilder: (ctx, index) => PostCard(
+                snap: snapshot.data!.docs[index].data(),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

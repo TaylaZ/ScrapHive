@@ -97,32 +97,29 @@ class _SearchScreenState extends State<SearchScreen> {
           : FutureBuilder(
               future: FirebaseFirestore.instance
                   .collection('posts')
-                  .orderBy('datePublished')
+                  .orderBy(
+                    'datePublished',
+                    descending: true,
+                  )
                   .get(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return ScrapHiveLoader();
                 }
 
-                return StaggeredGridView.countBuilder(
-                  crossAxisCount: 3,
+                return MasonryGridView.count(
+                  crossAxisCount: 2,
                   itemCount: (snapshot.data! as dynamic).docs.length,
-                  itemBuilder: (context, index) => Image.network(
-                    (snapshot.data! as dynamic).docs[index]['postUrl'],
-                    fit: BoxFit.cover,
+                  itemBuilder: (context, index) => ClipRRect(
+                    borderRadius: BorderRadius.circular(6),
+                    child: Image.network(
+                      (snapshot.data! as dynamic).docs[index]['postUrl'],
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                  staggeredTileBuilder: (index) => MediaQuery.of(context)
-                              .size
-                              .width >
-                          800
-                      ? StaggeredTile.count(
-                          (index % 7 == 0) ? 1 : 1, (index % 7 == 0) ? 1 : 1)
-                      : StaggeredTile.count(
-                          (index % 7 == 0) ? 2 : 1, (index % 7 == 0) ? 2 : 1),
                   mainAxisSpacing: 8.0,
                   crossAxisSpacing: 8.0,
+                  padding: EdgeInsets.all(8),
                 );
               },
             ),
