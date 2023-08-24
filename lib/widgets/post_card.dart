@@ -37,6 +37,7 @@ class _PostCardState extends State<PostCard> {
           .doc(widget.snap['postId'])
           .collection('comments')
           .get();
+
       commentLen = snap.docs.length;
     } catch (err) {
       showSnackBar(
@@ -119,12 +120,19 @@ class _PostCardState extends State<PostCard> {
                               ]
                                   .map(
                                     (e) => InkWell(
-                                        child: Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 12, horizontal: 16),
-                                          child: Text(e),
-                                        ),
-                                        onTap: () {}),
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 12, horizontal: 16),
+                                        child: Text(e),
+                                      ),
+                                      onTap: () {
+                                        deletePost(
+                                          widget.snap['postId'].toString(),
+                                        );
+                                        // remove the dialog box
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
                                   )
                                   .toList()),
                         );
@@ -220,11 +228,13 @@ class _PostCardState extends State<PostCard> {
                 ),
               ),
               IconButton(
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => CommentsScreen(
-                    postId: widget.snap['postId'].toString(),
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => CommentsScreen(
+                      postId: widget.snap['postId'].toString(),
+                    ),
                   ),
-                )),
+                ),
                 icon: Icon(
                   EvaIcons.messageCircleOutline,
                   color: greyColor,
