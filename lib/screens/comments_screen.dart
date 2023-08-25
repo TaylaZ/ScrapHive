@@ -53,7 +53,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: primaryColor,
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(

@@ -48,7 +48,6 @@ class _FeedScreenState extends State<FeedScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        bottomOpacity: 0.0,
         elevation: 0.0,
         backgroundColor: primaryColor,
         centerTitle: false,

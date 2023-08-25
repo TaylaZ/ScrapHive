@@ -58,7 +58,7 @@ class _DefaultScreenState extends State<DefaultScreen> {
         controller: pageController,
         onPageChanged: onPageChanged,
       ),
-      bottomNavigationBar: CupertinoTabBar(
+      bottomNavigationBar: BottomNavigationBar(
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(
@@ -73,12 +73,15 @@ class _DefaultScreenState extends State<DefaultScreen> {
             label: 'Favourites',
           ),
           BottomNavigationBarItem(
-            icon: Icon(
-              EvaIcons.plusSquare,
-              size: 32,
-              color: (_page == 2) ? amberColor : greenColor,
+            icon: Transform.translate(
+              offset: Offset(0, 5),
+              child: Icon(
+                EvaIcons.plusSquare,
+                size: 38,
+                color: (_page == 2) ? amberColor : greenColor,
+              ),
             ),
-            label: null,
+            label: '',
           ),
           BottomNavigationBarItem(
             icon: Icon(
@@ -94,12 +97,15 @@ class _DefaultScreenState extends State<DefaultScreen> {
           ),
         ],
         iconSize: 20,
-        activeColor: amberColor,
-        inactiveColor: brownColor,
+        selectedItemColor: amberColor,
+        unselectedItemColor: brownColor,
         backgroundColor: yellowColor,
         onTap: navigationTapped,
         currentIndex: _page,
-        height: 48,
+        type: BottomNavigationBarType.fixed,
+        elevation: 0,
+        selectedFontSize: 12,
+        unselectedFontSize: 10,
       ),
     );
   }

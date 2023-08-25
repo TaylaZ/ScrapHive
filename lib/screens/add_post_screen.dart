@@ -112,54 +112,81 @@ class _AddPostScreenState extends State<AddPostScreen> {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
 
     return _file == null
-        ? Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                icon: const Icon(
-                  EvaIcons.plusCircleOutline,
-                  color: amberColor,
-                ),
-                onPressed: () => _selectImage(context),
-                iconSize: 40,
-              ),
-              Text(
-                'Add Post',
-                style: TextStyle(
-                  color: amberColor,
-                ),
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              IconButton(
-                icon: const Icon(
-                  EvaIcons.image,
-                  color: greenColor,
-                ),
-                iconSize: 40,
-                onPressed: () async {
-                  XFile? file = await ImagePicker().pickImage(
-                    source: ImageSource.gallery,
-                  );
-                  if (file != null) {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => EditImageScreen(
-                          selectedImage: file.path,
+        ? Container(
+            color: yellowColor,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    color: amberColor,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: const Icon(
+                          EvaIcons.plusCircleOutline,
+                          color: primaryColor,
+                        ),
+                        onPressed: () => _selectImage(context),
+                        iconSize: 40,
+                      ),
+                      Text(
+                        'Add Post',
+                        style: TextStyle(
+                          color: primaryColor,
                         ),
                       ),
-                    );
-                  }
-                },
-              ),
-              Text(
-                'Edit Image',
-                style: TextStyle(
-                  color: greenColor,
+                    ],
+                  ),
                 ),
-              ),
-            ],
+                SizedBox(height: 28),
+                Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    color: greenColor,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        icon: const Icon(
+                          EvaIcons.image,
+                          color: primaryColor,
+                        ),
+                        iconSize: 40,
+                        onPressed: () async {
+                          XFile? file = await ImagePicker().pickImage(
+                            source: ImageSource.gallery,
+                          );
+                          if (file != null) {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => EditImageScreen(
+                                  selectedImage: file.path,
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                      ),
+                      Text(
+                        'Edit Image',
+                        style: TextStyle(
+                          color: primaryColor,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           )
         : Scaffold(
             appBar: AppBar(

@@ -6,7 +6,7 @@ class ScrapHiveLoader extends StatelessWidget {
     return Center(
       child: Image.asset(
         'assets/ScrapHive_Loader.gif',
-        height: 72,
+        height: 48,
       ),
     );
   }
