@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:scraphive/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:scraphive/utils/global_variables.dart';
+import 'package:scraphive/widgets/hexagon_button.dart';
 import '../models/user.dart' as usermodel;
 import 'package:flutter/cupertino.dart';
 import '../utils/colors.dart';
@@ -68,17 +69,18 @@ class _DefaultScreenState extends State<DefaultScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              (_page == 1) ? EvaIcons.heart : EvaIcons.heartOutline,
+              (_page == 1) ? EvaIcons.search : EvaIcons.searchOutline,
             ),
-            label: 'Favourites',
+            label: 'Search',
           ),
           BottomNavigationBarItem(
             icon: Transform.translate(
               offset: Offset(0, 5),
-              child: Icon(
-                EvaIcons.plusSquare,
-                size: 38,
-                color: (_page == 2) ? amberColor : greenColor,
+              child: HexagonIcon(
+                icon: EvaIcons.plus,
+                iconSize: 32,
+                iconColor: yellowColor,
+                fillColor: (_page == 2) ? amberColor : greenColor,
               ),
             ),
             label: '',

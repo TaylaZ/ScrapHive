@@ -8,12 +8,13 @@ import 'package:uuid/uuid.dart';
 class FireStoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<String> uploadPost(
-      String description, Uint8List file, String uid, String username, String profImage) async {
+  Future<String> uploadPost(String description, Uint8List file, String uid,
+      String username, String profImage) async {
     // asking uid here because we dont want to make extra calls to firebase auth when we can just get from our state management
     String res = "Some error occurred";
     try {
-      String photoUrl = await StorageMethods().uploadImageToStorage('posts', file, true);
+      String photoUrl =
+          await StorageMethods().uploadImageToStorage('posts', file, true);
       String postId = const Uuid().v1(); // creates unique id based on time
       Post post = Post(
         description: description,
@@ -54,15 +55,19 @@ class FireStoreMethods {
     return res;
   }
 
-  // Post comment
-  Future<String> postComment(
-      String postId, String text, String uid, String name, String profilePic) async {
+  Future<String> postComment(String postId, String text, String uid,
+      String name, String profilePic) async {
     String res = "Some error occurred";
     try {
       if (text.isNotEmpty) {
         // if the likes list contains the user uid, we need to remove it
         String commentId = const Uuid().v1();
-        _firestore.collection('posts').doc(postId).collection('comments').doc(commentId).set({
+        _firestore
+            .collection('posts')
+            .doc(postId)
+            .collection('comments')
+            .doc(commentId)
+            .set({
           'profilePic': profilePic,
           'name': name,
           'uid': uid,
@@ -80,7 +85,6 @@ class FireStoreMethods {
     return res;
   }
 
-  // Delete Post
   Future<String> deletePost(String postId) async {
     String res = "Some error occurred";
     try {
@@ -94,7 +98,8 @@ class FireStoreMethods {
 
   Future<void> followUser(String uid, String followId) async {
     try {
-      DocumentSnapshot snap = await _firestore.collection('users').doc(uid).get();
+      DocumentSnapshot snap =
+          await _firestore.collection('users').doc(uid).get();
       List following = (snap.data()! as dynamic)['following'];
 
       if (following.contains(followId)) {

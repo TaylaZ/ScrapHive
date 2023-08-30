@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:scraphive/widgets/scraphive_loader.dart';
 import '../resources/auth_methods.dart';
@@ -43,7 +44,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           .doc(widget.uid)
           .get();
 
-      // get post lENGTH
       var postSnap = await FirebaseFirestore.instance
           .collection('posts')
           .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
@@ -74,6 +74,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ? ScrapHiveLoader()
         : Scaffold(
             appBar: AppBar(
+              automaticallyImplyLeading: false,
               elevation: 0,
               backgroundColor: primaryColor,
               titleSpacing: 0, // To remove default title spacing
@@ -233,12 +234,40 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               DocumentSnapshot snap =
                                   (snapshot.data! as dynamic).docs[index];
 
-                              return ClipRRect(
-                                borderRadius: BorderRadius.circular(5),
-                                child: Image(
-                                  image: NetworkImage(snap['postUrl']),
-                                  fit: BoxFit.cover,
-                                ),
+                              return Stack(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(5),
+                                    child: InkWell(
+                                      onTap: () {
+                                        
+                                      },
+                                      child: Image(
+                                        image: NetworkImage(snap['postUrl']),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    bottom: 8,
+                                    right: 8,
+                                    child: Row(
+                                      children: [
+                                        Icon(EvaIcons.heart, color: amberColor),
+                                        SizedBox(width: 5),
+                                        Text(
+                                          snap['likes'].length == 1
+                                              ? '${snap['likes'].length} Like'
+                                              : '${snap['likes'].length} Likes',
+                                          style: TextStyle(
+                                            color: primaryColor,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               );
                             },
                           );

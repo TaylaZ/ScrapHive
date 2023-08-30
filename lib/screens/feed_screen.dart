@@ -49,6 +49,7 @@ class _FeedScreenState extends State<FeedScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
+        automaticallyImplyLeading: false,
         backgroundColor: primaryColor,
         centerTitle: false,
         title: SvgPicture.asset(
