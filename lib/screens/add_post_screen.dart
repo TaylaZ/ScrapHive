@@ -9,6 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:typed_data';
 import 'package:image_picker/image_picker.dart';
 import 'package:scraphive/utils/utils.dart';
+import 'package:scraphive/widgets/hexagon_button.dart';
 import 'package:scraphive/widgets/scraphive_loader.dart';
 
 class AddPostScreen extends StatefulWidget {
@@ -112,56 +113,44 @@ class _AddPostScreenState extends State<AddPostScreen> {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
 
     return _file == null
-        ? Container(
-            color: yellowColor,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    color: amberColor,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        icon: const Icon(
-                          EvaIcons.plusCircleOutline,
-                          color: primaryColor,
-                        ),
-                        onPressed: () => _selectImage(context),
-                        iconSize: 40,
-                      ),
-                      Text(
-                        'Add Post',
-                        style: TextStyle(
-                          color: primaryColor,
+        ? Transform.translate(
+            offset: Offset(0, 50),
+            child: Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 100,
+                    height: 100,
+                    child: Transform.translate(
+                      offset: Offset(-50, 0),
+                      child: GestureDetector(
+                        onTap: () => _selectImage(context),
+                        child: HexagonIcon(
+                          icon: EvaIcons.upload,
+                          iconColor: primaryColor,
+                          fillColor: amberColor,
+                          iconSize: 40,
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
-                SizedBox(height: 28),
-                Container(
-                  width: 100,
-                  height: 100,
-                  decoration: BoxDecoration(
-                    color: greenColor,
-                    borderRadius: BorderRadius.circular(10),
+                  Transform.translate(
+                    offset: Offset(-50, 0),
+                    child: Text(
+                      'Add Post',
+                      style: TextStyle(
+                        color: amberColor,
+                      ),
+                    ),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        icon: const Icon(
-                          EvaIcons.image,
-                          color: primaryColor,
-                        ),
-                        iconSize: 40,
-                        onPressed: () async {
+                  Container(
+                    width: 100,
+                    height: 100,
+                    child: Transform.translate(
+                      offset: Offset(50, -50),
+                      child: GestureDetector(
+                        onTap: () async {
                           XFile? file = await ImagePicker().pickImage(
                             source: ImageSource.gallery,
                           );
@@ -175,17 +164,51 @@ class _AddPostScreenState extends State<AddPostScreen> {
                             );
                           }
                         },
-                      ),
-                      Text(
-                        'Edit Image',
-                        style: TextStyle(
-                          color: primaryColor,
+                        child: HexagonIcon(
+                          icon: EvaIcons.image,
+                          iconColor: primaryColor,
+                          fillColor: greenColor,
+                          iconSize: 40,
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ],
+                  Transform.translate(
+                    offset: Offset(50, -50),
+                    child: Text(
+                      'Edit Image',
+                      style: TextStyle(
+                        color: greenColor,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: 100,
+                    height: 100,
+                    child: Transform.translate(
+                      offset: Offset(-50, -100),
+                      child: GestureDetector(
+                        onTap: () => _selectImage(context),
+                        child: HexagonIcon(
+                          icon: EvaIcons.options2Outline,
+                          iconColor: primaryColor,
+                          fillColor: peachColor,
+                          iconSize: 40,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Transform.translate(
+                    offset: Offset(-50, -100),
+                    child: Text(
+                      'Adjustments',
+                      style: TextStyle(
+                        color: peachColor,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           )
         : Scaffold(

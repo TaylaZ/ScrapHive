@@ -209,17 +209,6 @@ class _EditImageScreenState extends EditImageViewModel {
                   ),
                 ),
               ),
-              // IconButton(
-              //   onPressed: () => pickColor(context),
-              //   tooltip: 'Pick Color',
-              //   icon: Icon(
-              //     Icons.color_lens,
-              //     color: color,
-              //   ),
-              // ),
-              // const SizedBox(
-              //   width: 20,
-              // ),
             ],
           ),
         ),
