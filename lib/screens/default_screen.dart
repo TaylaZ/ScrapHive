@@ -69,9 +69,9 @@ class _DefaultScreenState extends State<DefaultScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              (_page == 1) ? EvaIcons.search : EvaIcons.searchOutline,
+              (_page == 1) ? EvaIcons.personAdd : EvaIcons.personAddOutline,
             ),
-            label: 'Search',
+            label: 'Follow',
           ),
           BottomNavigationBarItem(
             icon: Transform.translate(

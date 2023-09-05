@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:scraphive/models/materials.dart';
 import '../models/post.dart';
 import '../resources/storage_methods.dart';
 import 'package:uuid/uuid.dart';
@@ -10,12 +11,11 @@ class FireStoreMethods {
 
   Future<String> uploadPost(String description, Uint8List file, String uid,
       String username, String profImage) async {
-    // asking uid here because we dont want to make extra calls to firebase auth when we can just get from our state management
     String res = "Some error occurred";
     try {
       String photoUrl =
           await StorageMethods().uploadImageToStorage('posts', file, true);
-      String postId = const Uuid().v1(); // creates unique id based on time
+      String postId = const Uuid().v1();
       Post post = Post(
         description: description,
         uid: uid,
@@ -38,12 +38,10 @@ class FireStoreMethods {
     String res = "Some error occurred";
     try {
       if (likes.contains(uid)) {
-        // if the likes list contains the user uid, we need to remove it
         _firestore.collection('posts').doc(postId).update({
           'likes': FieldValue.arrayRemove([uid])
         });
       } else {
-        // else we need to add uid to the likes array
         _firestore.collection('posts').doc(postId).update({
           'likes': FieldValue.arrayUnion([uid])
         });
@@ -60,7 +58,6 @@ class FireStoreMethods {
     String res = "Some error occurred";
     try {
       if (text.isNotEmpty) {
-        // if the likes list contains the user uid, we need to remove it
         String commentId = const Uuid().v1();
         _firestore
             .collection('posts')
@@ -122,5 +119,26 @@ class FireStoreMethods {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  Future<String> uploadMaterial(String description, Uint8List file,
+      String materialImage, String uid, String materialName) async {
+    String res = "Some error occurred";
+    try {
+      String photoUrl =
+          await StorageMethods().uploadImageToStorage('posts', file, true);
+      String materialId = const Uuid().v1();
+      Materials material = Materials(
+        description: description,
+        uid: uid,
+        materialsName: materialName,
+        materialsImage: materialImage,
+      );
+      _firestore.collection('materials').doc(materialId).set(material.toJson());
+      res = "success";
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
   }
 }

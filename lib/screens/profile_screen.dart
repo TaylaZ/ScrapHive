@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:scraphive/screens/image_view_screen.dart';
 import 'package:scraphive/widgets/scraphive_loader.dart';
 import '../resources/auth_methods.dart';
 import '../resources/firestore_methods.dart';
@@ -234,40 +235,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               DocumentSnapshot snap =
                                   (snapshot.data! as dynamic).docs[index];
 
-                              return Stack(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(5),
-                                    child: InkWell(
-                                      onTap: () {
-                                        
-                                      },
-                                      child: Image(
-                                        image: NetworkImage(snap['postUrl']),
-                                        fit: BoxFit.cover,
-                                      ),
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => ImageViewScreen(
+                                          imageUrl: snap['postUrl']),
                                     ),
+                                  );
+                                },
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(5),
+                                  child: Image.network(
+                                    snap['postUrl'],
+                                    fit: BoxFit.cover,
                                   ),
-                                  Positioned(
-                                    bottom: 8,
-                                    right: 8,
-                                    child: Row(
-                                      children: [
-                                        Icon(EvaIcons.heart, color: amberColor),
-                                        SizedBox(width: 5),
-                                        Text(
-                                          snap['likes'].length == 1
-                                              ? '${snap['likes'].length} Like'
-                                              : '${snap['likes'].length} Likes',
-                                          style: TextStyle(
-                                            color: primaryColor,
-                                            fontSize: 14,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
+                                ),
                               );
                             },
                           );

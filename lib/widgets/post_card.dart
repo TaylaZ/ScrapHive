@@ -5,11 +5,13 @@ import 'package:flutter/rendering.dart';
 import 'package:scraphive/providers/user_provider.dart';
 import 'package:scraphive/resources/firestore_methods.dart';
 import 'package:scraphive/screens/comments_screen.dart';
+import 'package:scraphive/screens/image_view_screen.dart';
 import 'package:scraphive/utils/colors.dart';
 import 'package:intl/intl.dart';
 import 'package:scraphive/utils/utils.dart';
 import 'package:scraphive/widgets/like_animation.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 import '../models/user.dart' as model;
 
 class PostCard extends StatefulWidget {
@@ -148,6 +150,15 @@ class _PostCardState extends State<PostCard> {
             ),
           ),
           GestureDetector(
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ImageViewScreen(
+                    imageUrl: widget.snap['postUrl'],
+                  ),
+                ),
+              );
+            },
             onDoubleTap: () async {
               await FireStoreMethods().likePost(
                 widget.snap['postId'],
@@ -257,7 +268,9 @@ class _PostCardState extends State<PostCard> {
                       EvaIcons.shareOutline,
                       color: greyColor,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      Share.share('Check this out! ${widget.snap['postUrl']}');
+                    },
                   ),
                 ),
               ),

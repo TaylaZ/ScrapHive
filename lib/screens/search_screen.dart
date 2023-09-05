@@ -161,7 +161,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             color: greyColor,
                           ),
                           prefixIcon: Icon(
-                            Icons.search,
+                            EvaIcons.search,
                             color: greyColor,
                           ),
                           border: OutlineInputBorder(

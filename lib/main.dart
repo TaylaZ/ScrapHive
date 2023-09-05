@@ -5,6 +5,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:scraphive/providers/user_provider.dart';
 import 'package:scraphive/screens/default_screen.dart';
 import 'package:provider/provider.dart';
+import 'dart:async';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:scraphive/screens/login_screen.dart';
 import 'package:scraphive/screens/signup_screen.dart';
@@ -45,36 +47,65 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'ScrapHive',
         theme: ThemeData.light(),
-        // theme: ThemeData.dark().copyWith(
-        //   scaffoldBackgroundColor: mobileBackgroundColor,
-        // ),
-        // home: const HomeScreen(),
-        // home: ResponsiveLayout(
-        //   mobileScreenLayout: MobileScreenLayout(),
-        //   webScreenLayout: WebScreenLayout(),
-        // ),
+        home: SplashScreen(),
+      ),
+    );
+  }
+}
 
-        home: StreamBuilder(
-          stream: FirebaseAuth.instance.authStateChanges(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.active) {
-              if (snapshot.hasData) {
-                // if snapshot has data which means user is logged in then we check the width of screen and accordingly display the screen layout
-                return const DefaultScreen();
-              } else if (snapshot.hasError) {
-                return Center(
-                  child: Text('${snapshot.error}'),
-                );
-              }
-            }
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({Key? key}) : super(key: key);
 
-            // means connection to future hasnt been made yet
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return ScrapHiveLoader();
-            }
+  @override
+  _SplashScreenState createState() => _SplashScreenState();
+}
 
-            return const LoginScreen();
-          },
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    Timer(
+      Duration(seconds: 2),
+      () {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) {
+              return StreamBuilder(
+                stream: FirebaseAuth.instance.authStateChanges(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.active) {
+                    if (snapshot.hasData) {
+                      return const DefaultScreen();
+                    } else if (snapshot.hasError) {
+                      return Center(
+                        child: Text('${snapshot.error}'),
+                      );
+                    }
+                  }
+
+                  // If connection to future hasn't been made yet
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return ScrapHiveLoader();
+                  }
+
+                  return const LoginScreen();
+                },
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: SvgPicture.asset(
+          'assets/ScrapHive_Logo.svg',
+          height: 50,
         ),
       ),
     );
