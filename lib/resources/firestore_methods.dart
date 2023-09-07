@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:scraphive/models/materials.dart';
+
 import '../models/post.dart';
 import '../resources/storage_methods.dart';
 import 'package:uuid/uuid.dart';
@@ -121,20 +122,27 @@ class FireStoreMethods {
     }
   }
 
-  Future<String> uploadMaterial(String description, Uint8List file,
-      String materialImage, String uid, String materialName) async {
+  Future<String> uploadMaterials(String description, Uint8List file, String uid,
+      String username, String profImage) async {
     String res = "Some error occurred";
     try {
       String photoUrl =
-          await StorageMethods().uploadImageToStorage('posts', file, true);
-      String materialId = const Uuid().v1();
-      Materials material = Materials(
+          await StorageMethods().uploadImageToStorage('materials', file, true);
+      String materialsId = const Uuid().v1();
+      Materials materials = Materials(
         description: description,
         uid: uid,
-        materialsName: materialName,
-        materialsImage: materialImage,
+        username: username,
+        likes: [],
+        materialsId: materialsId,
+        datePublished: DateTime.now(),
+        materialsUrl: photoUrl,
+        profImage: profImage,
       );
-      _firestore.collection('materials').doc(materialId).set(material.toJson());
+      _firestore
+          .collection('materials')
+          .doc(materialsId)
+          .set(materials.toJson());
       res = "success";
     } catch (err) {
       res = err.toString();

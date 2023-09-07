@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scraphive/providers/user_provider.dart';
@@ -10,21 +12,42 @@ import 'dart:typed_data';
 import 'package:image_picker/image_picker.dart';
 import 'package:scraphive/utils/utils.dart';
 import 'package:scraphive/widgets/hexagon_button.dart';
+import 'package:scraphive/widgets/material_card.dart';
 import 'package:scraphive/widgets/scraphive_loader.dart';
 
-class AddMaterialScreen extends StatefulWidget {
-  const AddMaterialScreen({Key? key}) : super(key: key);
+class MaterialScreen extends StatefulWidget {
+  const MaterialScreen({Key? key}) : super(key: key);
 
   @override
-  State<AddMaterialScreen> createState() => _AddPostScreenState();
+  State<MaterialScreen> createState() => _MaterialScreenState();
 }
 
-class _AddPostScreenState extends State<AddMaterialScreen> {
+class _MaterialScreenState extends State<MaterialScreen> {
   Uint8List? _file;
   bool _isLoading = false;
   final TextEditingController _descriptionController = TextEditingController();
+  late Stream<QuerySnapshot<Map<String, dynamic>>> _stream;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
-  void postImage(
+  @override
+  void initState() {
+    super.initState();
+    _stream = FirebaseFirestore.instance
+        .collection('materials')
+        .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .snapshots();
+  }
+
+  Future<void> _refreshData() async {
+    setState(() {
+      _stream = FirebaseFirestore.instance
+          .collection('materials')
+          .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .snapshots();
+    });
+  }
+
+  void materialImage(
     String uid,
     String username,
     String profImage,
@@ -33,14 +56,14 @@ class _AddPostScreenState extends State<AddMaterialScreen> {
       _isLoading = true;
     });
     try {
-      String res = await FireStoreMethods().uploadMaterial(
+      String res = await FireStoreMethods().uploadMaterials(
           _descriptionController.text, _file!, uid, username, profImage);
 
       if (res == "success") {
         setState(() {
           _isLoading = false;
         });
-        showSnackBar(context, 'Posted');
+        showSnackBar(context, 'Added');
         clearImage();
       } else {
         setState(() {
@@ -61,7 +84,7 @@ class _AddPostScreenState extends State<AddMaterialScreen> {
       context: parentContext,
       builder: (BuildContext context) {
         return SimpleDialog(
-          title: const Text('Create a Post'),
+          title: const Text('Create a Material'),
           children: <Widget>[
             SimpleDialogOption(
                 padding: const EdgeInsets.all(20),
@@ -102,6 +125,60 @@ class _AddPostScreenState extends State<AddMaterialScreen> {
     });
   }
 
+  Future<void> _updateMaterialDescription(
+      String materialId, String newDescription) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('materials')
+          .doc(materialId)
+          .update({'description': newDescription});
+      showSnackBar(context, 'Description updated successfully');
+    } catch (e) {
+      showSnackBar(context, 'Failed to update description: $e');
+    }
+  }
+
+  void _editMaterialDescription(
+      String materialId, String currentDescription) async {
+    // Show a dialog or navigate to an edit screen where the user can update the description.
+    final newDescription = await showDialog<String>(
+      context: context,
+      builder: (BuildContext context) {
+        final TextEditingController controller =
+            TextEditingController(text: currentDescription);
+
+        return AlertDialog(
+          title: Text('Edit Description'),
+          content: TextField(
+            controller: controller,
+            decoration: InputDecoration(
+              hintText: 'Enter the new description',
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(), // Cancel editing
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () {
+                // Save the new description to Firestore.
+                final newDescription = controller.text;
+                _updateMaterialDescription(materialId, newDescription);
+                Navigator.of(context).pop(newDescription);
+              },
+              child: Text('Save'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (newDescription != null) {
+      // Update the UI with the new description if needed.
+    }
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -113,101 +190,49 @@ class _AddPostScreenState extends State<AddMaterialScreen> {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
 
     return _file == null
-        ? Transform.translate(
-            offset: Offset(0, 50),
-            child: Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 100,
-                    height: 100,
-                    child: Transform.translate(
-                      offset: Offset(-50, 0),
-                      child: GestureDetector(
-                        onTap: () => _selectImage(context),
-                        child: HexagonIcon(
-                          icon: EvaIcons.upload,
-                          iconColor: primaryColor,
-                          fillColor: amberColor,
-                          iconSize: 40,
-                        ),
-                      ),
-                    ),
+        ? Scaffold(
+            appBar: AppBar(
+              elevation: 0.0,
+              automaticallyImplyLeading: false,
+              backgroundColor: primaryColor,
+              centerTitle: false,
+              title: SvgPicture.asset(
+                'assets/ScrapHive_Logo.svg',
+                height: 32,
+              ),
+              actions: [
+                IconButton(
+                  icon: const Icon(
+                    EvaIcons.plus,
+                    color: amberColor,
                   ),
-                  Transform.translate(
-                    offset: Offset(-50, 0),
-                    child: Text(
-                      'Add Post',
-                      style: TextStyle(
-                        color: amberColor,
-                      ),
+                  onPressed: () => _selectImage(context),
+                ),
+              ],
+            ),
+            body: RefreshIndicator(
+              onRefresh: _refreshData,
+              backgroundColor: amberColor,
+              color: yellowColor,
+              displacement: 0,
+              child: StreamBuilder(
+                stream: _stream,
+                builder: (context,
+                    AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                        snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return ScrapHiveLoader();
+                  }
+                  return ListView.builder(
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (ctx, index) => MaterialCard(
+                      snap: snapshot.data!.docs[index].data(),
+                      onEdit: () => _editMaterialDescription(
+                          snapshot.data!.docs[index].id,
+                          snapshot.data!.docs[index]['description']),
                     ),
-                  ),
-                  Container(
-                    width: 100,
-                    height: 100,
-                    child: Transform.translate(
-                      offset: Offset(50, -50),
-                      child: GestureDetector(
-                        onTap: () async {
-                          XFile? file = await ImagePicker().pickImage(
-                            source: ImageSource.gallery,
-                          );
-                          if (file != null) {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => EditImageScreen(
-                                  selectedImage: file.path,
-                                ),
-                              ),
-                            );
-                          }
-                        },
-                        child: HexagonIcon(
-                          icon: EvaIcons.image,
-                          iconColor: primaryColor,
-                          fillColor: greenColor,
-                          iconSize: 40,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Transform.translate(
-                    offset: Offset(50, -50),
-                    child: Text(
-                      'Edit Image',
-                      style: TextStyle(
-                        color: greenColor,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: 100,
-                    height: 100,
-                    child: Transform.translate(
-                      offset: Offset(-50, -100),
-                      child: GestureDetector(
-                        onTap: () => _selectImage(context),
-                        child: HexagonIcon(
-                          icon: EvaIcons.options2Outline,
-                          iconColor: primaryColor,
-                          fillColor: peachColor,
-                          iconSize: 40,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Transform.translate(
-                    offset: Offset(-50, -100),
-                    child: Text(
-                      'Adjustments',
-                      style: TextStyle(
-                        color: peachColor,
-                      ),
-                    ),
-                  ),
-                ],
+                  );
+                },
               ),
             ),
           )
@@ -233,13 +258,13 @@ class _AddPostScreenState extends State<AddMaterialScreen> {
               centerTitle: true,
               actions: [
                 TextButton(
-                  onPressed: () => postImage(
+                  onPressed: () => materialImage(
                     userProvider.getUser.uid,
                     userProvider.getUser.username,
                     userProvider.getUser.photoUrl,
                   ),
                   child: const Text(
-                    'Post',
+                    'add Material',
                     style: TextStyle(
                       color: amberColor,
                       fontWeight: FontWeight.bold,

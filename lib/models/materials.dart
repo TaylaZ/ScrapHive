@@ -3,14 +3,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Materials {
   final String description;
   final String uid;
-  final String materialsName;
-  final String materialsImage;
+  final String username;
+  final likes;
+  final String materialsId;
+  final DateTime datePublished;
+  final String materialsUrl;
+  final String profImage;
 
   const Materials({
     required this.description,
     required this.uid,
-    required this.materialsName,
-    required this.materialsImage,
+    required this.username,
+    required this.likes,
+    required this.materialsId,
+    required this.datePublished,
+    required this.materialsUrl,
+    required this.profImage,
   });
 
   static Materials fromSnap(DocumentSnapshot snap) {
@@ -19,14 +27,22 @@ class Materials {
     return Materials(
         description: snapshot["description"],
         uid: snapshot["uid"],
-        materialsName: snapshot["materialsName"],
-        materialsImage: snapshot['materialsImage']);
+        likes: snapshot["likes"],
+        materialsId: snapshot["materialsId"],
+        datePublished: snapshot["datePublished"],
+        username: snapshot["username"],
+        materialsUrl: snapshot['materialsUrl'],
+        profImage: snapshot['profImage']);
   }
 
   Map<String, dynamic> toJson() => {
         "description": description,
         "uid": uid,
-        "materialsName": materialsName,
-        'materialsImage': materialsImage,
+        "likes": likes,
+        "username": username,
+        "materialsId": materialsId,
+        "datePublished": datePublished,
+        'materialsUrl': materialsUrl,
+        'profImage': profImage
       };
 }

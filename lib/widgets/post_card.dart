@@ -11,7 +11,7 @@ import 'package:intl/intl.dart';
 import 'package:scraphive/utils/utils.dart';
 import 'package:scraphive/widgets/like_animation.dart';
 import 'package:provider/provider.dart';
-import 'package:share/share.dart';
+import 'package:share_plus/share_plus.dart';
 import '../models/user.dart' as model;
 
 class PostCard extends StatefulWidget {
