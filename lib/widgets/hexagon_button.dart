@@ -12,7 +12,7 @@ class HexagonIcon extends StatelessWidget {
     required this.icon,
     this.iconSize = 15,
     this.fillColor = primaryColor,
-    this.iconColor = Colors.amber,
+    this.iconColor = amberColor,
   });
 
   @override

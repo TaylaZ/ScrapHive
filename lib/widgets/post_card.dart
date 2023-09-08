@@ -9,6 +9,7 @@ import 'package:scraphive/screens/image_view_screen.dart';
 import 'package:scraphive/utils/colors.dart';
 import 'package:intl/intl.dart';
 import 'package:scraphive/utils/utils.dart';
+import 'package:scraphive/widgets/hexagon_avatar.dart';
 import 'package:scraphive/widgets/like_animation.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -81,9 +82,9 @@ class _PostCardState extends State<PostCard> {
             ),
             child: Row(
               children: [
-                CircleAvatar(
-                  radius: 16,
-                  backgroundImage: NetworkImage(
+                HexagonAvatar(
+                  radius: 22,
+                  image: NetworkImage(
                     widget.snap['profImage'].toString(),
                   ),
                 ),

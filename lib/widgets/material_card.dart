@@ -1,14 +1,21 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:scraphive/utils/colors.dart';
+import 'package:scraphive/widgets/hexagon_avatar.dart';
+import 'package:scraphive/widgets/hexagon_slider.dart';
 
 class MaterialCard extends StatefulWidget {
   final Map<String, dynamic> snap;
   final double likes;
   final VoidCallback onEdit;
-   final ValueChanged<double> onLikesChanged;
+  final ValueChanged<double> onLikesChanged;
 
-  MaterialCard({required this.snap, required this.likes, required this.onEdit, required this.onLikesChanged,});
+  MaterialCard({
+    required this.snap,
+    required this.likes,
+    required this.onEdit,
+    required this.onLikesChanged,
+  });
 
   @override
   State<MaterialCard> createState() => _MaterialCardState();
@@ -20,7 +27,7 @@ class _MaterialCardState extends State<MaterialCard> {
   @override
   void initState() {
     super.initState();
-    sliderValue = widget.likes; // Use likes as the initial value
+    sliderValue = widget.likes;
   }
 
   @override
@@ -29,27 +36,36 @@ class _MaterialCardState extends State<MaterialCard> {
     final String materialsUrl = widget.snap['materialsUrl'];
 
     return Card(
-      elevation: 3.0,
       margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.only(top: 16, left: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                CircleAvatar(
+                HexagonAvatar(
                   radius: 24,
-                  backgroundImage: NetworkImage(materialsUrl.toString()),
+                  image: NetworkImage(materialsUrl.toString()),
                 ),
                 SizedBox(width: 8.0),
                 Transform.translate(
-                  offset: Offset(0, 20),
-                  child: Text(
-                    description,
-                    style:
-                        TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
+                  offset: Offset(0, 10),
+                  child: Row(
+                    children: [
+                      Text(
+                        '${description} left ',
+                        style: TextStyle(fontSize: 16, color: brownColor),
+                      ),
+                      Text(
+                        '${sliderValue.toStringAsFixed(0)}%',
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: amberColor),
+                      ),
+                    ],
                   ),
                 ),
                 Spacer(),
@@ -62,21 +78,15 @@ class _MaterialCardState extends State<MaterialCard> {
                 ),
               ],
             ),
-            Slider(
+            CustomSlider(
               value: sliderValue,
-              min: 0,
-              max: 100,
+            
               onChanged: (newValue) {
                 setState(() {
                   sliderValue = newValue;
-
                 });
                 widget.onLikesChanged(newValue);
               },
-            ),
-            Text(
-              '${description} left ${sliderValue.toStringAsFixed(0)}%', // Display the current slider value
-              style: TextStyle(fontSize: 14.0),
             ),
           ],
         ),

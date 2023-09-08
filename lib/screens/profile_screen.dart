@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:scraphive/screens/image_view_screen.dart';
+import 'package:scraphive/widgets/hexagon_avatar.dart';
 import 'package:scraphive/widgets/scraphive_loader.dart';
 import '../resources/auth_methods.dart';
 import '../resources/firestore_methods.dart';
@@ -121,9 +122,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         Column(
                           children: [
-                            CircleAvatar(
-                              backgroundColor: Colors.grey,
-                              backgroundImage: NetworkImage(
+                            HexagonAvatar(
+                              image: NetworkImage(
                                 userData['photoUrl'],
                               ),
                               radius: 40,
