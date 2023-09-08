@@ -93,19 +93,22 @@ class _PostCardState extends State<PostCard> {
                     padding: const EdgeInsets.only(
                       left: 8,
                     ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          widget.snap['username'],
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: brownColor,
-                          ),
-                        )
-                      ],
+                    child: Text(
+                      widget.snap['username'],
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: brownColor,
+                        fontSize: 16,
+                      ),
                     ),
+                  ),
+                ),
+                Text(
+                  DateFormat.yMMMd()
+                      .format(widget.snap['datePublished'].toDate()),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: greyColor,
                   ),
                 ),
                 IconButton(
@@ -144,7 +147,7 @@ class _PostCardState extends State<PostCard> {
                   },
                   icon: Icon(
                     EvaIcons.moreVerticalOutline,
-                    color: greyColor,
+                    color: peachColor,
                   ),
                 ),
               ],
@@ -227,7 +230,7 @@ class _PostCardState extends State<PostCard> {
                           )
                         : Icon(
                             EvaIcons.heartOutline,
-                            color: greyColor,
+                            color: peachColor,
                           )),
               ),
               Text(
@@ -249,7 +252,7 @@ class _PostCardState extends State<PostCard> {
                 ),
                 icon: Icon(
                   EvaIcons.messageCircleOutline,
-                  color: greyColor,
+                  color: peachColor,
                 ),
               ),
               Text(
@@ -267,7 +270,7 @@ class _PostCardState extends State<PostCard> {
                   child: IconButton(
                     icon: const Icon(
                       EvaIcons.shareOutline,
-                      color: greyColor,
+                      color: peachColor,
                     ),
                     onPressed: () {
                       Share.share('Check this out! ${widget.snap['postUrl']}');
@@ -281,40 +284,23 @@ class _PostCardState extends State<PostCard> {
             padding: const EdgeInsets.symmetric(
               horizontal: 8,
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.only(
-                    top: 0,
-                    left: 4,
-                  ),
-                  child: Text(
-                    '${widget.snap['description']}',
-                    style: TextStyle(
-                      color: brownColor,
-                      fontSize: 14,
-                    ),
-                  ),
+            child: Container(
+              width: double.infinity,
+              padding: const EdgeInsets.only(
+                top: 0,
+                left: 4,
+              ),
+              child: Text(
+                '${widget.snap['description']}',
+                style: TextStyle(
+                  color: brownColor,
+                  fontSize: 14,
                 ),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 4,
-                    horizontal: 4,
-                  ),
-                  child: Text(
-                    DateFormat.yMMMd()
-                        .format(widget.snap['datePublished'].toDate()),
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: greyColor,
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
+          ),
+          Divider(
+            color: amberColor.withOpacity(0.3),
           ),
         ],
       ),

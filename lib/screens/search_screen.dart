@@ -126,31 +126,12 @@ class _SearchScreenState extends State<SearchScreen> {
                     );
                   },
                 ),
-          // Positioned(
-          //     top: 16,
-          //     left: 16,
-          //     child: !isShowUsers
-          //         ? HexagonIconButton(
-          //             icon: EvaIcons.arrowIosBack,
-          //             onPressed: () {
-          //               Navigator.pop(context);
-          //             },
-          //           )
-          //         : HexagonIconButton(
-          //             icon: EvaIcons.arrowIosBack,
-          //             fillColor: amberColor,
-          //             iconColor: primaryColor,
-          //             onPressed: () {
-          //               Navigator.pop(context);
-          //             },
-          //           )),
           Center(
             child: !isShowUsers
                 ? Container(
                     width: MediaQuery.of(context).size.width * 0.8,
                     padding: EdgeInsets.symmetric(horizontal: 16),
                     child: Material(
-                      elevation: 4,
                       borderRadius: BorderRadius.circular(12),
                       child: TextFormField(
                         controller: searchController,

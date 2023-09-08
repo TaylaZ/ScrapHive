@@ -51,6 +51,7 @@ dependencies:
   path_provider: ^2.0.4
   photo_view: ^0.14.0
   share_plus: ^4.1.0
+  hexagon: ^0.2.0
 
 
 
@@ -79,6 +80,12 @@ flutter:
     - assets/ScrapHive_Loader.gif
     - assets/ScrapHive_Logo.svg
     - assets/ScrapHive_Profile.jpg
+    - assets/artwork.jpg
+    - assets/garden.png
+    - assets/recipe.jpg
+    - assets/study.jpg
+    - assets/travel.jpg
+    - assets/TV.png
 
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -16,7 +16,7 @@ class CustomSlider extends StatelessWidget {
   Widget build(BuildContext context) {
     return SliderTheme(
       data: SliderThemeData(
-        overlayColor: yellowColor.withOpacity(0.4),
+        overlayColor: Colors.transparent,
         activeTrackColor: amberColor.withOpacity(0.7),
         inactiveTrackColor: yellowColor,
         thumbColor: amberColor,

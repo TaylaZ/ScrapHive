@@ -102,7 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Text(
                       "${userData['username']}'s Profile",
                       style: TextStyle(
-                        color: greenColor,
+                        color: brownColor,
                         fontSize: 16,
                       ),
                     ),

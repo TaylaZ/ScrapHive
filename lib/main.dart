@@ -46,7 +46,10 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'ScrapHive',
-        theme: ThemeData.light(),
+        theme: ThemeData(
+          primaryColor: primaryColor,
+          accentColor: amberColor,
+        ),
         home: SplashScreen(),
       ),
     );

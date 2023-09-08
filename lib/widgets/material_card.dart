@@ -36,6 +36,7 @@ class _MaterialCardState extends State<MaterialCard> {
     final String materialsUrl = widget.snap['materialsUrl'];
 
     return Card(
+      elevation: 0,
       margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       child: Padding(
         padding: EdgeInsets.only(top: 16, left: 16),
@@ -43,44 +44,36 @@ class _MaterialCardState extends State<MaterialCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 HexagonAvatar(
-                  radius: 24,
+                  radius: 32,
                   image: NetworkImage(materialsUrl.toString()),
                 ),
-                SizedBox(width: 8.0),
-                Transform.translate(
-                  offset: Offset(0, 10),
-                  child: Row(
-                    children: [
-                      Text(
-                        '${description} left ',
-                        style: TextStyle(fontSize: 16, color: brownColor),
-                      ),
-                      Text(
-                        '${sliderValue.toStringAsFixed(0)}%',
-                        style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            color: amberColor),
-                      ),
-                    ],
-                  ),
+                SizedBox(width: 12.0),
+                Text(
+                  '${description} left ',
+                  style: TextStyle(fontSize: 16, color: brownColor),
+                ),
+                Text(
+                  '${sliderValue.toStringAsFixed(0)}%',
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: amberColor),
                 ),
                 Spacer(),
                 IconButton(
                   onPressed: widget.onEdit,
                   icon: Icon(
-                    EvaIcons.editOutline,
-                    color: greenColor,
+                    EvaIcons.edit2Outline,
+                    color: peachColor,
                   ),
                 ),
               ],
             ),
             CustomSlider(
               value: sliderValue,
-            
               onChanged: (newValue) {
                 setState(() {
                   sliderValue = newValue;
