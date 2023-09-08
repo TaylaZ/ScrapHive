@@ -6,10 +6,11 @@ import 'package:scraphive/screens/materials_screen.dart';
 import 'package:scraphive/screens/profile_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:scraphive/screens/search_screen.dart';
+import 'package:scraphive/screens/slider.dart';
 
 List<Widget> homeScreenItems = [
   FeedScreen(),
-  SearchScreen(),
+  SliderExample(),
   AddPostScreen(),
   MaterialScreen(),
   ProfileScreen(

@@ -1,62 +1,75 @@
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
+import 'package:scraphive/utils/colors.dart';
 
-class MaterialCard extends StatelessWidget {
+class MaterialCard extends StatefulWidget {
   final Map<String, dynamic> snap;
-   final VoidCallback onEdit;
+  final VoidCallback onEdit;
 
- MaterialCard({required this.snap, required this.onEdit});
+  MaterialCard({required this.snap, required this.onEdit});
+
+  @override
+  State<MaterialCard> createState() => _MaterialCardState();
+}
+
+class _MaterialCardState extends State<MaterialCard> {
+  double sliderValue = 100;
 
   @override
   Widget build(BuildContext context) {
-    final String description = snap['description'];
-    final String username = snap['username'];
-    final String materialsUrl = snap['materialsUrl'];
+    final String description = widget.snap['description'];
+    final String materialsUrl = widget.snap['materialsUrl'];
 
     return Card(
       elevation: 3.0,
-      margin: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Image.network(
-            materialsUrl,
-            fit: BoxFit.cover,
-            width: double.infinity,
-            height: 200.0,
-          ),
-          Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Column(
+      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      child: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  username,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
-                  ),
+                CircleAvatar(
+                  radius: 24,
+                  backgroundImage: NetworkImage(materialsUrl.toString()),
                 ),
-                SizedBox(height: 8.0),
-                Text(
-                  description,
-                  style: TextStyle(
-                    fontSize: 14.0,
-                  ),
-                ),
-                 TextButton(
-                  onPressed: onEdit, // Call the onEdit callback
+                SizedBox(width: 8.0),
+                Transform.translate(
+                  offset: Offset(0, 20),
                   child: Text(
-                    'Edit',
-                    style: TextStyle(
-                      color: Colors.blue, // Customize button text color
-                      fontWeight: FontWeight.bold,
-                    ),
+                    description,
+                    style:
+                        TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Spacer(),
+                IconButton(
+                  onPressed: widget.onEdit,
+                  icon: Icon(
+                    EvaIcons.editOutline,
+                    color: greenColor,
                   ),
                 ),
               ],
             ),
-          ),
-        ],
+            Slider(
+              value: sliderValue,
+              min: 0,
+              max: 100,
+              onChanged: (newValue) {
+                setState(() {
+                  sliderValue = newValue;
+                });
+              },
+            ),
+            Text(
+              '${description} left ${sliderValue.toStringAsFixed(0)}%', // Display the current slider value
+              style: TextStyle(fontSize: 14.0),
+            ),
+          ],
+        ),
       ),
     );
   }
