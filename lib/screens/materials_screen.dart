@@ -25,6 +25,7 @@ class MaterialScreen extends StatefulWidget {
 class _MaterialScreenState extends State<MaterialScreen> {
   Uint8List? _file;
   bool _isLoading = false;
+  double? _likesValue;
   final TextEditingController _descriptionController = TextEditingController();
   late Stream<QuerySnapshot<Map<String, dynamic>>> _stream;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -57,7 +58,12 @@ class _MaterialScreenState extends State<MaterialScreen> {
     });
     try {
       String res = await FireStoreMethods().uploadMaterials(
-          _descriptionController.text, _file!, uid, username, profImage);
+          _descriptionController.text,
+          _file!,
+          uid,
+          username,
+          profImage,
+          _likesValue);
 
       if (res == "success") {
         setState(() {
@@ -227,9 +233,12 @@ class _MaterialScreenState extends State<MaterialScreen> {
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (ctx, index) => MaterialCard(
                       snap: snapshot.data!.docs[index].data(),
+                      likes: snapshot.data!.docs[index]['likes'] ??
+                          0.0, // Provide the likes value
                       onEdit: () => _editMaterialDescription(
-                          snapshot.data!.docs[index].id,
-                          snapshot.data!.docs[index]['description']),
+                        snapshot.data!.docs[index].id,
+                        snapshot.data!.docs[index]['description'],
+                      ),
                     ),
                   );
                 },
@@ -300,6 +309,23 @@ class _MaterialScreenState extends State<MaterialScreen> {
                             hintText: "Write a caption...",
                             border: InputBorder.none),
                         maxLines: 5,
+                      ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.2,
+                      child: TextField(
+                        keyboardType:
+                            TextInputType.number, // Allow only numeric input
+                        onChanged: (value) {
+                          // Parse the input to a double and store it in _likesValue
+                          setState(() {
+                            _likesValue = double.tryParse(value);
+                          });
+                        },
+                        decoration: const InputDecoration(
+                          hintText: "Likes",
+                          border: InputBorder.none,
+                        ),
                       ),
                     ),
                     SizedBox(

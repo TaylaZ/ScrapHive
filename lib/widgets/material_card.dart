@@ -4,9 +4,10 @@ import 'package:scraphive/utils/colors.dart';
 
 class MaterialCard extends StatefulWidget {
   final Map<String, dynamic> snap;
+  final double likes;
   final VoidCallback onEdit;
 
-  MaterialCard({required this.snap, required this.onEdit});
+  MaterialCard({required this.snap, required this.likes, required this.onEdit});
 
   @override
   State<MaterialCard> createState() => _MaterialCardState();
@@ -14,6 +15,12 @@ class MaterialCard extends StatefulWidget {
 
 class _MaterialCardState extends State<MaterialCard> {
   double sliderValue = 100;
+
+  @override
+  void initState() {
+    super.initState();
+    sliderValue = widget.likes; // Use likes as the initial value
+  }
 
   @override
   Widget build(BuildContext context) {
