@@ -144,6 +144,18 @@ class _MaterialScreenState extends State<MaterialScreen> {
     }
   }
 
+  void _updateLikesInDatabase(String materialId, double newValue) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('materials')
+          .doc(materialId)
+          .update({'likes': newValue});
+      // Optionally, you can update the UI here if needed.
+    } catch (e) {
+      showSnackBar(context, 'Failed to update likes: $e');
+    }
+  }
+
   void _editMaterialDescription(
       String materialId, String currentDescription) async {
     // Show a dialog or navigate to an edit screen where the user can update the description.
@@ -233,12 +245,18 @@ class _MaterialScreenState extends State<MaterialScreen> {
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (ctx, index) => MaterialCard(
                       snap: snapshot.data!.docs[index].data(),
-                      likes: snapshot.data!.docs[index]['likes'] ??
-                          0.0, // Provide the likes value
+                      likes: snapshot.data!.docs[index]['likes'] ?? 0.0,
                       onEdit: () => _editMaterialDescription(
                         snapshot.data!.docs[index].id,
                         snapshot.data!.docs[index]['description'],
                       ),
+                      onLikesChanged: (newValue) {
+                        // Update the 'likes' value in the database here
+                        _updateLikesInDatabase(
+                          snapshot.data!.docs[index].id,
+                          newValue,
+                        );
+                      },
                     ),
                   );
                 },

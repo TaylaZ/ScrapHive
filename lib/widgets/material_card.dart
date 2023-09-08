@@ -6,8 +6,9 @@ class MaterialCard extends StatefulWidget {
   final Map<String, dynamic> snap;
   final double likes;
   final VoidCallback onEdit;
+   final ValueChanged<double> onLikesChanged;
 
-  MaterialCard({required this.snap, required this.likes, required this.onEdit});
+  MaterialCard({required this.snap, required this.likes, required this.onEdit, required this.onLikesChanged,});
 
   @override
   State<MaterialCard> createState() => _MaterialCardState();
@@ -68,7 +69,9 @@ class _MaterialCardState extends State<MaterialCard> {
               onChanged: (newValue) {
                 setState(() {
                   sliderValue = newValue;
+
                 });
+                widget.onLikesChanged(newValue);
               },
             ),
             Text(

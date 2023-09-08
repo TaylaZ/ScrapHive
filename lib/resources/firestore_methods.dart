@@ -150,4 +150,5 @@ class FireStoreMethods {
     }
     return res;
   }
+  
 }
