@@ -4,7 +4,7 @@ class Materials {
   final String description;
   final String uid;
   final String username;
-  final likes;
+  final percentage;
   final String materialsId;
   final DateTime datePublished;
   final String materialsUrl;
@@ -14,7 +14,7 @@ class Materials {
     required this.description,
     required this.uid,
     required this.username,
-    required this.likes,
+    required this.percentage,
     required this.materialsId,
     required this.datePublished,
     required this.materialsUrl,
@@ -27,7 +27,7 @@ class Materials {
     return Materials(
         description: snapshot["description"],
         uid: snapshot["uid"],
-        likes: snapshot["likes"],
+        percentage: snapshot["percentage"],
         materialsId: snapshot["materialsId"],
         datePublished: snapshot["datePublished"],
         username: snapshot["username"],
@@ -38,7 +38,7 @@ class Materials {
   Map<String, dynamic> toJson() => {
         "description": description,
         "uid": uid,
-        "likes": likes,
+        "percentage": percentage,
         "username": username,
         "materialsId": materialsId,
         "datePublished": datePublished,

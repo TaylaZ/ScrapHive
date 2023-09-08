@@ -123,7 +123,7 @@ class FireStoreMethods {
   }
 
   Future<String> uploadMaterials(String description, Uint8List file, String uid,
-      String username, String profImage, double? likesValue) async {
+      String username, String profImage, double? percentageValue) async {
     String res = "Some error occurred";
     try {
       String photoUrl =
@@ -133,8 +133,8 @@ class FireStoreMethods {
         description: description,
         uid: uid,
         username: username,
-        likes:
-            likesValue ?? 0.0, // Use the provided likesValue or default to 0.0
+        percentage:
+            percentageValue ?? 0.0, // Use the provided likesValue or default to 0.0
         materialsId: materialsId,
         datePublished: DateTime.now(),
         materialsUrl: photoUrl,
@@ -150,5 +150,5 @@ class FireStoreMethods {
     }
     return res;
   }
-  
+
 }

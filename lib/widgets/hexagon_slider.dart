@@ -3,11 +3,11 @@ import 'dart:math';
 
 import 'package:scraphive/utils/colors.dart';
 
-class CustomSlider extends StatelessWidget {
+class HexagonSlider extends StatelessWidget {
   final double value;
   final ValueChanged<double> onChanged;
 
-  CustomSlider({
+  HexagonSlider({
     required this.value,
     required this.onChanged,
   });
@@ -21,12 +21,15 @@ class CustomSlider extends StatelessWidget {
         inactiveTrackColor: yellowColor,
         thumbColor: amberColor,
         thumbShape: HexagonSliderThumbShape(),
+        activeTickMarkColor: Colors.transparent,
+        inactiveTickMarkColor: Colors.transparent,
       ),
       child: Slider(
         value: value,
         onChanged: onChanged,
         min: 0,
         max: 100,
+        divisions: 20,
       ),
     );
   }
@@ -35,7 +38,7 @@ class CustomSlider extends StatelessWidget {
 class HexagonSliderThumbShape extends SliderComponentShape {
   @override
   Size getPreferredSize(bool isEnabled, bool isDiscrete) {
-    return Size.fromRadius(8); // Adjust the size of the hexagon thumb
+    return Size.fromRadius(12); // Adjust the size of the hexagon thumb
   }
 
   @override
@@ -55,7 +58,7 @@ class HexagonSliderThumbShape extends SliderComponentShape {
   }) {
     final Canvas canvas = context.canvas;
 
-    final double radius = 8;
+    final double radius = 12;
     final double sideLength = radius * sqrt(3);
     final double centerX = center.dx;
     final double centerY = center.dy;

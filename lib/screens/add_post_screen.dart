@@ -239,7 +239,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     userProvider.getUser.photoUrl,
                   ),
                   child: const Text(
-                    'Post',
+                    'Add Post',
                     style: TextStyle(
                       color: amberColor,
                       fontWeight: FontWeight.bold,
@@ -249,54 +249,44 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 ),
               ],
             ),
-            body: Column(
-              children: [
-                _isLoading
-                    ? ScrapHiveLoader()
-                    : Padding(
-                        padding: EdgeInsets.only(
-                          top: 0,
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  _isLoading
+                      ? ScrapHiveLoader()
+                      : Padding(
+                          padding: EdgeInsets.only(
+                            top: 0,
+                          ),
+                        ),
+                  Column(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextField(
+                          controller: _descriptionController,
+                          decoration: const InputDecoration(
+                              hintText: "Write your caption here...",
+                              border: InputBorder.none),
+                          maxLength: 30,
                         ),
                       ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        userProvider.getUser.photoUrl,
-                      ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.4,
-                      child: TextField(
-                        controller: _descriptionController,
-                        decoration: const InputDecoration(
-                            hintText: "Write a caption...",
-                            border: InputBorder.none),
-                        maxLines: 5,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 80.0,
-                      width: 80.0,
-                      child: AspectRatio(
-                        aspectRatio: 487 / 451,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              fit: BoxFit.fill,
-                              alignment: FractionalOffset.topCenter,
-                              image: MemoryImage(_file!),
-                            ),
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.7,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            alignment: FractionalOffset.topCenter,
+                            image: MemoryImage(_file!),
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                const Divider(),
-              ],
+                    ],
+                  ),
+                  const Divider(),
+                ],
+              ),
             ),
           );
   }

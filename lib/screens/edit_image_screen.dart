@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:scraphive/screens/add_post_screen.dart';
+import 'package:scraphive/utils/colors.dart';
 import 'package:scraphive/widgets/edit_image_viewmodel.dart';
 import 'package:screenshot/screenshot.dart';
 import '../widgets/image_text.dart';
@@ -23,7 +24,8 @@ class _EditImageScreenState extends EditImageViewModel {
       appBar: _appBar,
       body: Screenshot(
         controller: screenshotController,
-        child: SafeArea(
+        child: Container(
+          color: primaryColor,
           child: SizedBox(
             height: MediaQuery.of(context).size.height,
             child: Stack(

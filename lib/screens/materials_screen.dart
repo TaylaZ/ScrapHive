@@ -25,7 +25,7 @@ class MaterialScreen extends StatefulWidget {
 class _MaterialScreenState extends State<MaterialScreen> {
   Uint8List? _file;
   bool _isLoading = false;
-  double? _likesValue;
+  double? _percentageValue;
   final TextEditingController _descriptionController = TextEditingController();
   late Stream<QuerySnapshot<Map<String, dynamic>>> _stream;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -63,7 +63,7 @@ class _MaterialScreenState extends State<MaterialScreen> {
           uid,
           username,
           profImage,
-          _likesValue);
+          _percentageValue);
 
       if (res == "success") {
         setState(() {
@@ -144,15 +144,15 @@ class _MaterialScreenState extends State<MaterialScreen> {
     }
   }
 
-  void _updateLikesInDatabase(String materialId, double newValue) async {
+  void _updatepercentageInDatabase(String materialId, double newValue) async {
     try {
       await FirebaseFirestore.instance
           .collection('materials')
           .doc(materialId)
-          .update({'likes': newValue});
+          .update({'percentage': newValue});
       // Optionally, you can update the UI here if needed.
     } catch (e) {
-      showSnackBar(context, 'Failed to update likes: $e');
+      showSnackBar(context, 'Failed to update percentage: $e');
     }
   }
 
@@ -245,14 +245,15 @@ class _MaterialScreenState extends State<MaterialScreen> {
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (ctx, index) => MaterialCard(
                       snap: snapshot.data!.docs[index].data(),
-                      likes: snapshot.data!.docs[index]['likes'] ?? 0.0,
+                      percentage:
+                          snapshot.data!.docs[index]['percentage'] ?? 0.0,
                       onEdit: () => _editMaterialDescription(
                         snapshot.data!.docs[index].id,
                         snapshot.data!.docs[index]['description'],
                       ),
-                      onLikesChanged: (newValue) {
-                        // Update the 'likes' value in the database here
-                        _updateLikesInDatabase(
+                      onpercentageChanged: (newValue) {
+                        // Update the 'percentage' value in the database here
+                        _updatepercentageInDatabase(
                           snapshot.data!.docs[index].id,
                           newValue,
                         );
@@ -291,7 +292,7 @@ class _MaterialScreenState extends State<MaterialScreen> {
                     userProvider.getUser.photoUrl,
                   ),
                   child: const Text(
-                    'add Material',
+                    'Add Material',
                     style: TextStyle(
                       color: amberColor,
                       fontWeight: FontWeight.bold,
@@ -301,71 +302,60 @@ class _MaterialScreenState extends State<MaterialScreen> {
                 ),
               ],
             ),
-            body: Column(
-              children: [
-                _isLoading
-                    ? ScrapHiveLoader()
-                    : Padding(
-                        padding: EdgeInsets.only(
-                          top: 0,
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  _isLoading
+                      ? ScrapHiveLoader()
+                      : Padding(
+                          padding: EdgeInsets.only(
+                            top: 0,
+                          ),
+                        ),
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextField(
+                          controller: _descriptionController,
+                          decoration: const InputDecoration(
+                              hintText: "Description of Material...",
+                              border: InputBorder.none),
+                          maxLength: 30,
                         ),
                       ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    CircleAvatar(
-                      backgroundImage: NetworkImage(
-                        userProvider.getUser.photoUrl,
-                      ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.4,
-                      child: TextField(
-                        controller: _descriptionController,
-                        decoration: const InputDecoration(
-                            hintText: "Write a caption...",
-                            border: InputBorder.none),
-                        maxLines: 5,
-                      ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.2,
-                      child: TextField(
-                        keyboardType:
-                            TextInputType.number, // Allow only numeric input
-                        onChanged: (value) {
-                          // Parse the input to a double and store it in _likesValue
-                          setState(() {
-                            _likesValue = double.tryParse(value);
-                          });
-                        },
-                        decoration: const InputDecoration(
-                          hintText: "Likes",
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 80.0,
-                      width: 80.0,
-                      child: AspectRatio(
-                        aspectRatio: 487 / 451,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              fit: BoxFit.fill,
-                              alignment: FractionalOffset.topCenter,
-                              image: MemoryImage(_file!),
-                            ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: TextField(
+                          keyboardType:
+                              TextInputType.number, // Allow only numeric input
+                          onChanged: (value) {
+                            // Parse the input to a double and store it in _percentageValue
+                            setState(() {
+                              _percentageValue = double.tryParse(value);
+                            });
+                          },
+                          decoration: const InputDecoration(
+                            hintText: "How many percent is left?",
+                            border: InputBorder.none,
                           ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-                const Divider(),
-              ],
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.6,
+                        width: MediaQuery.of(context).size.width,
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            alignment: FractionalOffset.topCenter,
+                            image: MemoryImage(_file!),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           );
   }

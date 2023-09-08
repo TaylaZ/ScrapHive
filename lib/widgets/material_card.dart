@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:scraphive/utils/colors.dart';
@@ -6,15 +7,15 @@ import 'package:scraphive/widgets/hexagon_slider.dart';
 
 class MaterialCard extends StatefulWidget {
   final Map<String, dynamic> snap;
-  final double likes;
+  final double percentage;
   final VoidCallback onEdit;
-  final ValueChanged<double> onLikesChanged;
+  final ValueChanged<double> onpercentageChanged;
 
   MaterialCard({
     required this.snap,
-    required this.likes,
+    required this.percentage,
     required this.onEdit,
-    required this.onLikesChanged,
+    required this.onpercentageChanged,
   });
 
   @override
@@ -27,7 +28,7 @@ class _MaterialCardState extends State<MaterialCard> {
   @override
   void initState() {
     super.initState();
-    sliderValue = widget.likes;
+    sliderValue = widget.percentage;
   }
 
   @override
@@ -35,53 +36,112 @@ class _MaterialCardState extends State<MaterialCard> {
     final String description = widget.snap['description'];
     final String materialsUrl = widget.snap['materialsUrl'];
 
-    return Card(
-      elevation: 0,
-      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      child: Padding(
-        padding: EdgeInsets.only(top: 16, left: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                HexagonAvatar(
-                  radius: 32,
-                  image: NetworkImage(materialsUrl.toString()),
+    return Dismissible(
+      direction: DismissDirection.endToStart,
+      key: Key(widget.snap['materialsId']), // Use a unique key for each item.
+      background: Container(
+        color: greenColor,
+        alignment: Alignment.centerRight,
+        padding: EdgeInsets.only(right: 20.0),
+        child: Icon(
+          Icons.delete,
+          color: yellowColor,
+        ),
+      ),
+      confirmDismiss: (direction) async {
+        bool confirmDelete = await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Delete Material"),
+              content: Text("Are you sure you want to delete this material?"),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                  child: Text(
+                    "Cancel",
+                    style: TextStyle(color: greyColor),
+                  ),
                 ),
-                SizedBox(width: 12.0),
-                Text(
-                  '${description} left ',
-                  style: TextStyle(fontSize: 16, color: brownColor),
-                ),
-                Text(
-                  '${sliderValue.toStringAsFixed(0)}%',
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: amberColor),
-                ),
-                Spacer(),
-                IconButton(
-                  onPressed: widget.onEdit,
-                  icon: Icon(
-                    EvaIcons.edit2Outline,
-                    color: peachColor,
+                TextButton(
+                  onPressed: () {
+                    // User confirmed the delete operation.
+                    Navigator.of(context).pop(true);
+                  },
+                  child: Text(
+                    "Delete",
+                    style: TextStyle(color: amberColor),
                   ),
                 ),
               ],
-            ),
-            CustomSlider(
-              value: sliderValue,
-              onChanged: (newValue) {
-                setState(() {
-                  sliderValue = newValue;
-                });
-                widget.onLikesChanged(newValue);
-              },
-            ),
-          ],
+            );
+          },
+        );
+
+        // Return true to confirm the delete, false to cancel.
+        return confirmDelete == true;
+      },
+      onDismissed: (direction) {
+        // Delete the material from Firestore when it's swiped left and confirmed.
+        FirebaseFirestore.instance
+            .collection('materials')
+            .doc(widget.snap['materialsId'])
+            .delete()
+            .then((_) {})
+            .catchError((error) {
+          print("Error deleting material: $error");
+        });
+      },
+      child: Card(
+        elevation: 0,
+        margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        child: Padding(
+          padding: EdgeInsets.only(top: 16, left: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  HexagonAvatar(
+                    radius: 32,
+                    image: NetworkImage(materialsUrl.toString()),
+                  ),
+                  SizedBox(width: 12.0),
+                  Text(
+                    '${description} ',
+                    style: TextStyle(fontSize: 16, color: brownColor),
+                  ),
+                  Text(
+                    '${sliderValue.toStringAsFixed(0)}%',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: amberColor),
+                  ),
+                  Spacer(),
+                  IconButton(
+                    onPressed: widget.onEdit,
+                    icon: Icon(
+                      EvaIcons.edit2Outline,
+                      color: peachColor,
+                    ),
+                  ),
+                ],
+              ),
+              HexagonSlider(
+                value: sliderValue,
+                onChanged: (newValue) {
+                  setState(() {
+                    sliderValue = newValue;
+                  });
+                  widget.onpercentageChanged(newValue);
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
