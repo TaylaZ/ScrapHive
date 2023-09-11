@@ -14,6 +14,7 @@ class ImageText {
   double left;
   double width;
   double height;
+  double? rotation; // Added property for rotation
 
   ImageText({
     required this.imageFile,
@@ -21,6 +22,7 @@ class ImageText {
     this.left = 0,
     this.width = 100,
     this.height = 100,
+    this.rotation = 0, // Initialize with null
   });
 }
 
@@ -92,6 +94,15 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
     });
   }
 
+  void rotateImage(int index, double degrees) {
+    final currentImage = images[index];
+
+    setState(() {
+      currentImage.rotation =
+          (currentImage.rotation ?? 0) + (degrees * (3.14159265359 / 180));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,6 +130,22 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
                             content: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
+                                ElevatedButton(
+                                  onPressed: () {
+                                    rotateImage(index,
+                                        15); // Rotate 15 degrees clockwise
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('Rotate 15° Clockwise'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    rotateImage(index,
+                                        -15); // Rotate 15 degrees anticlockwise
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('Rotate 15° Anticlockwise'),
+                                ),
                                 ElevatedButton(
                                   onPressed: () {
                                     adjustSize(index, image.width * 1.2,
@@ -183,13 +210,16 @@ class ImageTextWidget extends StatelessWidget {
         image.top += details.delta.dy;
         image.left += details.delta.dx;
       },
-      child: Container(
-        width: image.width,
-        height: image.height,
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: FileImage(image.imageFile),
-            fit: BoxFit.cover,
+      child: Transform.rotate(
+        angle: image.rotation ?? 0, // Use the rotation angle
+        child: Container(
+          width: image.width,
+          height: image.height,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: FileImage(image.imageFile),
+              fit: BoxFit.cover,
+            ),
           ),
         ),
       ),
