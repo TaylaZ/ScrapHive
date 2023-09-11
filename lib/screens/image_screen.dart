@@ -2,29 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:scraphive/models/image_info.dart';
+import 'package:scraphive/screens/edit_image_screen.dart';
 import 'package:scraphive/utils/colors.dart';
 import 'package:scraphive/utils/utils.dart';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:screenshot/screenshot.dart';
-
-class ImageText {
-  File imageFile;
-  double top;
-  double left;
-  double width;
-  double height;
-  double? rotation; // Added property for rotation
-
-  ImageText({
-    required this.imageFile,
-    this.top = 0,
-    this.left = 0,
-    this.width = 100,
-    this.height = 100,
-    this.rotation = 0, // Initialize with null
-  });
-}
 
 ScreenshotController screenshotController = ScreenshotController();
 
@@ -34,7 +18,7 @@ class ScrapbookScreen extends StatefulWidget {
 }
 
 class _ScrapbookScreenState extends State<ScrapbookScreen> {
-  List<ImageText> images = [];
+  List<ImageClass> images = [];
 
   Future<void> _pickImage() async {
     final pickedFile =
@@ -50,7 +34,7 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
       final scaleFactor = screenHeight / decodedImage.height;
 
       setState(() {
-        images.add(ImageText(
+        images.add(ImageClass(
           imageFile: imageFile,
           width: decodedImage.width.toDouble() * scaleFactor * 0.5,
           height: screenHeight * 0.5,
@@ -103,6 +87,12 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
     });
   }
 
+  void changetransparency(int index, double newtransparency) {
+    setState(() {
+      images[index].transparency = newtransparency;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -119,7 +109,7 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
                 top: image.top,
                 left: image.left,
                 child: Draggable(
-                  feedback: ImageTextWidget(image),
+                  feedback: ImageClassWidget(image),
                   child: GestureDetector(
                     onDoubleTap: () {
                       showDialog(
@@ -162,13 +152,51 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
                                   },
                                   child: Text('Decrease Size'),
                                 ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text('Adjust transparency'),
+                                          content: Column(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: <Widget>[
+                                              Slider(
+                                                value: image.transparency,
+                                                onChanged: (newtransparency) {
+                                                  changetransparency(
+                                                      index, newtransparency);
+                                                },
+                                                min: 0.0,
+                                                max: 1.0,
+                                                divisions:
+                                                    10, // You can adjust the number of divisions as needed
+                                                label:
+                                                    'transparency: ${image.transparency.toStringAsFixed(1)}',
+                                              ),
+                                              ElevatedButton(
+                                                onPressed: () {
+                                                  // Close the dialog
+                                                  Navigator.pop(context);
+                                                },
+                                                child: Text('Done'),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Text('Change transparency'),
+                                ),
                               ],
                             ),
                           );
                         },
                       );
                     },
-                    child: ImageTextWidget(image),
+                    child: ImageClassWidget(image),
                   ),
                   onDragEnd: (details) {
                     onDragEnd(index, details.offset.dy, details.offset.dx);
@@ -187,21 +215,39 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
             onPressed: _pickImage,
             child: Icon(Icons.add),
           ),
-          SizedBox(height: 16), // Add some spacing between the buttons
+          SizedBox(height: 16),
           FloatingActionButton(
             onPressed: () => saveToGallery(context),
             child: Icon(Icons.save),
           ),
+          FloatingActionButton(
+            onPressed: () async {
+              XFile? file = await ImagePicker().pickImage(
+                source: ImageSource.gallery,
+              );
+              if (file != null) {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => EditImageScreen(
+                      selectedImage: file.path,
+                    ),
+                  ),
+                );
+              }
+            },
+            child: Icon(Icons.add),
+          ),
+          SizedBox(height: 16),
         ],
       ),
     );
   }
 }
 
-class ImageTextWidget extends StatelessWidget {
-  final ImageText image;
+class ImageClassWidget extends StatelessWidget {
+  final ImageClass image;
 
-  ImageTextWidget(this.image);
+  ImageClassWidget(this.image);
 
   @override
   Widget build(BuildContext context) {
@@ -211,14 +257,21 @@ class ImageTextWidget extends StatelessWidget {
         image.left += details.delta.dx;
       },
       child: Transform.rotate(
-        angle: image.rotation ?? 0, // Use the rotation angle
-        child: Container(
-          width: image.width,
-          height: image.height,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: FileImage(image.imageFile),
-              fit: BoxFit.cover,
+        angle: image.rotation ?? 0,
+        child: ColorFiltered(
+          colorFilter: ColorFilter.mode(
+            Colors.transparent.withOpacity(
+                1.0 - image.transparency), // Adjust transparency here
+            BlendMode.dstIn, // Use dstIn blend mode to make image transparent
+          ),
+          child: Container(
+            width: image.width,
+            height: image.height,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: FileImage(image.imageFile),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),

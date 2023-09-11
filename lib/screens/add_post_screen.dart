@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:scraphive/providers/user_provider.dart';
 import 'package:scraphive/resources/firestore_methods.dart';
 import 'package:scraphive/screens/edit_image_screen.dart';
+import 'package:scraphive/screens/feed_screen.dart';
 import 'package:scraphive/screens/image_screen.dart';
 import 'package:scraphive/utils/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -89,6 +90,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
               child: const Text("Cancel"),
               onPressed: () {
                 Navigator.pop(context);
+                Navigator.pop(context);
               },
             )
           ],
@@ -114,107 +116,14 @@ class _AddPostScreenState extends State<AddPostScreen> {
     final UserProvider userProvider = Provider.of<UserProvider>(context);
 
     return _file == null
-        ? Transform.translate(
-            offset: Offset(0, 50),
-            child: Container(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 100,
-                    height: 100,
-                    child: Transform.translate(
-                      offset: Offset(-50, 0),
-                      child: GestureDetector(
-                        onTap: () => _selectImage(context),
-                        child: HexagonIcon(
-                          icon: EvaIcons.upload,
-                          iconColor: primaryColor,
-                          fillColor: amberColor,
-                          iconSize: 40,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Transform.translate(
-                    offset: Offset(-50, 0),
-                    child: Text(
-                      'Add Post',
-                      style: TextStyle(
-                        color: amberColor,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: 100,
-                    height: 100,
-                    child: Transform.translate(
-                      offset: Offset(50, -50),
-                      child: GestureDetector(
-                        onTap: () async {
-                          XFile? file = await ImagePicker().pickImage(
-                            source: ImageSource.gallery,
-                          );
-                          if (file != null) {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => EditImageScreen(
-                                  selectedImage: file.path,
-                                ),
-                              ),
-                            );
-                          }
-                        },
-                        child: HexagonIcon(
-                          icon: EvaIcons.image,
-                          iconColor: primaryColor,
-                          fillColor: greenColor,
-                          iconSize: 40,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Transform.translate(
-                    offset: Offset(50, -50),
-                    child: Text(
-                      'Edit Image',
-                      style: TextStyle(
-                        color: greenColor,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: 100,
-                    height: 100,
-                    child: Transform.translate(
-                      offset: Offset(-50, -100),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ScrapbookScreen()),
-                          );
-                        },
-                        child: HexagonIcon(
-                          icon: EvaIcons.options2Outline,
-                          iconColor: primaryColor,
-                          fillColor: peachColor,
-                          iconSize: 40,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Transform.translate(
-                    offset: Offset(-50, -100),
-                    child: Text(
-                      'Adjustments',
-                      style: TextStyle(
-                        color: peachColor,
-                      ),
-                    ),
-                  ),
-                ],
+        ? Container(
+            child: GestureDetector(
+              onTap: () => _selectImage(context),
+              child: HexagonIcon(
+                icon: EvaIcons.upload,
+                iconColor: primaryColor,
+                fillColor: amberColor,
+                iconSize: 50,
               ),
             ),
           )

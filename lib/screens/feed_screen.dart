@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:scraphive/screens/add_post_screen.dart';
 import 'package:scraphive/screens/creative_ideas.dart';
 import 'package:scraphive/screens/search_screen.dart';
 import 'package:scraphive/widgets/scraphive_loader.dart';
@@ -69,6 +70,18 @@ class _FeedScreenState extends State<FeedScreen> {
               _scaffoldKey.currentState!.openEndDrawer();
             },
           ),
+          IconButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => AddPostScreen(),
+                  ),
+                );
+              },
+              icon: Icon(
+                Icons.add,
+                color: amberColor,
+              ))
         ],
       ),
       endDrawer: Drawer(

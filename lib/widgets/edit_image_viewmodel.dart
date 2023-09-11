@@ -111,31 +111,13 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
 
   increaseFontSize() {
     setState(() {
-      texts[currentIndex].fontSize += 5;
+      texts[currentIndex].fontSize *= 1.2;
     });
   }
 
   decreaseFontSize() {
     setState(() {
-      texts[currentIndex].fontSize -= 5;
-    });
-  }
-
-  alignLeft() {
-    setState(() {
-      texts[currentIndex].textAlign = TextAlign.left;
-    });
-  }
-
-  alignCenter() {
-    setState(() {
-      texts[currentIndex].textAlign = TextAlign.center;
-    });
-  }
-
-  alignRight() {
-    setState(() {
-      texts[currentIndex].textAlign = TextAlign.right;
+      texts[currentIndex].fontSize *= 0.8;
     });
   }
 
@@ -155,18 +137,6 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
         texts[currentIndex].fontStyle = FontStyle.normal;
       } else {
         texts[currentIndex].fontStyle = FontStyle.italic;
-      }
-    });
-  }
-
-  addLinesToText() {
-    setState(() {
-      if (texts[currentIndex].text.contains('\n')) {
-        texts[currentIndex].text =
-            texts[currentIndex].text.replaceAll('\n', ' ');
-      } else {
-        texts[currentIndex].text =
-            texts[currentIndex].text.replaceAll(' ', '\n');
       }
     });
   }

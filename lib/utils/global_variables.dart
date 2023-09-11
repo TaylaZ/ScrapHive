@@ -12,8 +12,8 @@ import 'package:scraphive/screens/search_screen.dart';
 List<Widget> homeScreenItems = [
   FeedScreen(),
   LikedPostsScreen(),
-  AddPostScreen(),
   ScrapbookScreen(),
+  MaterialScreen(),
   ProfileScreen(
     uid: FirebaseAuth.instance.currentUser!.uid,
   )

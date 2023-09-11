@@ -9,6 +9,7 @@ class TextInfo {
   FontStyle fontStyle;
   double fontSize;
   TextAlign textAlign;
+  double rotation; // Add this property for text rotation
 
   TextInfo({
     required this.text,
@@ -19,5 +20,6 @@ class TextInfo {
     required this.fontStyle,
     required this.fontSize,
     required this.textAlign,
+    this.rotation = 0.0, // Initialize rotation with 0 degrees
   });
 }
