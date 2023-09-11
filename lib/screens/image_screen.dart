@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:scraphive/utils/colors.dart';
+import 'package:scraphive/utils/utils.dart';
 import 'dart:io';
+import 'dart:typed_data';
+import 'package:screenshot/screenshot.dart';
 
 class ImageText {
   File imageFile;
@@ -17,6 +23,8 @@ class ImageText {
     this.height = 100,
   });
 }
+
+ScreenshotController screenshotController = ScreenshotController();
 
 class ScrapbookScreen extends StatefulWidget {
   @override
@@ -42,11 +50,32 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
       setState(() {
         images.add(ImageText(
           imageFile: imageFile,
-          width: decodedImage.width.toDouble() * scaleFactor,
-          height: screenHeight,
+          width: decodedImage.width.toDouble() * scaleFactor * 0.5,
+          height: screenHeight * 0.5,
         ));
       });
     }
+  }
+
+  saveToGallery(BuildContext context) {
+    screenshotController.capture().then((Uint8List? image) {
+      saveImage(image!);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Image saved'),
+        ),
+      );
+    }).catchError((err) => print(err));
+  }
+
+  saveImage(Uint8List bytes) async {
+    final time = DateTime.now()
+        .toIso8601String()
+        .replaceAll('.', '-')
+        .replaceAll(':', '-');
+    final name = "screenshot_$time";
+    await requestPermission(Permission.mediaLibrary);
+    await ImageGallerySaver.saveImage(bytes, name: name);
   }
 
   void adjustSize(int index, double newWidth, double newHeight) {
@@ -66,64 +95,77 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Scrapbook'),
-      ),
-      body: Stack(
-        children: images.asMap().entries.map((entry) {
-          final index = entry.key;
-          final image = entry.value;
+      body: Screenshot(
+        controller: screenshotController,
+        child: Container(
+          color: primaryColor,
+          child: Stack(
+            children: images.asMap().entries.map((entry) {
+              final index = entry.key;
+              final image = entry.value;
 
-          return Positioned(
-            top: image.top,
-            left: image.left,
-            child: Draggable(
-              feedback: ImageTextWidget(image),
-              child: GestureDetector(
-                onDoubleTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: Text('Adjust Size'),
-                        content: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            ElevatedButton(
-                              onPressed: () {
-                                adjustSize(index, image.width * 1.2,
-                                    image.height * 1.2);
-                                Navigator.pop(context);
-                              },
-                              child: Text('Increase Size'),
+              return Positioned(
+                top: image.top,
+                left: image.left,
+                child: Draggable(
+                  feedback: ImageTextWidget(image),
+                  child: GestureDetector(
+                    onDoubleTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text('Adjust Size'),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                ElevatedButton(
+                                  onPressed: () {
+                                    adjustSize(index, image.width * 1.2,
+                                        image.height * 1.2);
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('Increase Size'),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    adjustSize(index, image.width * 0.8,
+                                        image.height * 0.8);
+                                    Navigator.pop(context);
+                                  },
+                                  child: Text('Decrease Size'),
+                                ),
+                              ],
                             ),
-                            ElevatedButton(
-                              onPressed: () {
-                                adjustSize(index, image.width * 0.8,
-                                    image.height * 0.8);
-                                Navigator.pop(context);
-                              },
-                              child: Text('Decrease Size'),
-                            ),
-                          ],
-                        ),
+                          );
+                        },
                       );
                     },
-                  );
-                },
-                child: ImageTextWidget(image),
-              ),
-              onDragEnd: (details) {
-                onDragEnd(index, details.offset.dy - 80, details.offset.dx);
-              },
-              childWhenDragging: Container(),
-            ),
-          );
-        }).toList(),
+                    child: ImageTextWidget(image),
+                  ),
+                  onDragEnd: (details) {
+                    onDragEnd(index, details.offset.dy, details.offset.dx);
+                  },
+                  childWhenDragging: Container(),
+                ),
+              );
+            }).toList(),
+          ),
+        ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _pickImage,
-        child: Icon(Icons.add),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: _pickImage,
+            child: Icon(Icons.add),
+          ),
+          SizedBox(height: 16), // Add some spacing between the buttons
+          FloatingActionButton(
+            onPressed: () => saveToGallery(context),
+            child: Icon(Icons.save),
+          ),
+        ],
       ),
     );
   }
