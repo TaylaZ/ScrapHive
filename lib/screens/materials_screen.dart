@@ -241,25 +241,34 @@ class _MaterialScreenState extends State<MaterialScreen> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return ScrapHiveLoader();
                   }
-                  return ListView.builder(
-                    itemCount: snapshot.data!.docs.length,
-                    itemBuilder: (ctx, index) => MaterialCard(
-                      snap: snapshot.data!.docs[index].data(),
-                      percentage:
-                          snapshot.data!.docs[index]['percentage'] ?? 0.0,
-                      onEdit: () => _editMaterialDescription(
-                        snapshot.data!.docs[index].id,
-                        snapshot.data!.docs[index]['description'],
-                      ),
-                      onpercentageChanged: (newValue) {
-                        // Update the 'percentage' value in the database here
-                        _updatepercentageInDatabase(
+
+                  if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+                    return ListView.builder(
+                      itemCount: snapshot.data!.docs.length,
+                      itemBuilder: (ctx, index) => MaterialCard(
+                        snap: snapshot.data!.docs[index].data(),
+                        percentage:
+                            snapshot.data!.docs[index]['percentage'] ?? 0.0,
+                        onEdit: () => _editMaterialDescription(
                           snapshot.data!.docs[index].id,
-                          newValue,
-                        );
-                      },
-                    ),
-                  );
+                          snapshot.data!.docs[index]['description'],
+                        ),
+                        onpercentageChanged: (newValue) {
+                          _updatepercentageInDatabase(
+                            snapshot.data!.docs[index].id,
+                            newValue,
+                          );
+                        },
+                      ),
+                    );
+                  } else {
+                    return Center(
+                      child: Text(
+                        'Tap the top right "plus" button to add a new material',
+                        style: TextStyle(color: greyColor),
+                      ),
+                    );
+                  }
                 },
               ),
             ),
@@ -327,10 +336,8 @@ class _MaterialScreenState extends State<MaterialScreen> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: TextField(
-                          keyboardType:
-                              TextInputType.number, // Allow only numeric input
+                          keyboardType: TextInputType.number,
                           onChanged: (value) {
-                            // Parse the input to a double and store it in _percentageValue
                             setState(() {
                               _percentageValue = double.tryParse(value);
                             });

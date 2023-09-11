@@ -11,7 +11,6 @@ import 'package:scraphive/widgets/custom_buttons.dart';
 import 'package:screenshot/screenshot.dart';
 import '../utils/utils.dart';
 
-
 abstract class EditImageViewModel extends State<EditImageScreen> {
   TextEditingController textEditingController = TextEditingController();
   TextEditingController creatorText = TextEditingController();

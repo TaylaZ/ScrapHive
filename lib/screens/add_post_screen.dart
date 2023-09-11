@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:scraphive/providers/user_provider.dart';
 import 'package:scraphive/resources/firestore_methods.dart';
 import 'package:scraphive/screens/edit_image_screen.dart';
+import 'package:scraphive/screens/image_screen.dart';
 import 'package:scraphive/utils/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:typed_data';
@@ -188,7 +189,13 @@ class _AddPostScreenState extends State<AddPostScreen> {
                     child: Transform.translate(
                       offset: Offset(-50, -100),
                       child: GestureDetector(
-                        onTap: () => _selectImage(context),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ScrapbookScreen()),
+                          );
+                        },
                         child: HexagonIcon(
                           icon: EvaIcons.options2Outline,
                           iconColor: primaryColor,
