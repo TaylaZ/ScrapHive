@@ -69,9 +69,9 @@ class _DefaultScreenState extends State<DefaultScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              (_page == 1) ? EvaIcons.personAdd : EvaIcons.personAddOutline,
+              (_page == 1) ? EvaIcons.heart : EvaIcons.heartOutline,
             ),
-            label: 'Follow',
+            label: 'Liked',
           ),
           BottomNavigationBarItem(
             icon: Transform.translate(

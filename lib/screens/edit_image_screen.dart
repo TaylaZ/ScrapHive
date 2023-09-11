@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:scraphive/screens/add_post_screen.dart';
+
 import 'package:scraphive/utils/colors.dart';
 import 'package:scraphive/widgets/edit_image_viewmodel.dart';
 import 'package:screenshot/screenshot.dart';
@@ -96,7 +96,7 @@ class _EditImageScreenState extends EditImageViewModel {
         tooltip: 'Tap to add text',
         child: const Icon(
           EvaIcons.text,
-          color: Colors.amber,
+          color: amberColor,
         ),
       );
 
@@ -114,7 +114,7 @@ class _EditImageScreenState extends EditImageViewModel {
                 tooltip: 'Back',
                 icon: const Icon(
                   EvaIcons.arrowIosBack,
-                  color: Colors.amber,
+                  color: amberColor,
                 ),
               ),
               IconButton(
@@ -122,7 +122,7 @@ class _EditImageScreenState extends EditImageViewModel {
                 tooltip: 'Save Image',
                 icon: const Icon(
                   EvaIcons.download,
-                  color: Colors.amber,
+                  color: amberColor,
                 ),
               ),
               IconButton(
@@ -130,7 +130,7 @@ class _EditImageScreenState extends EditImageViewModel {
                 tooltip: 'Increase Font Size',
                 icon: const Icon(
                   Icons.add_circle,
-                  color: Colors.amber,
+                  color: amberColor,
                 ),
               ),
               IconButton(
@@ -138,7 +138,7 @@ class _EditImageScreenState extends EditImageViewModel {
                 tooltip: 'Decrease Font Size',
                 icon: const Icon(
                   Icons.remove_circle,
-                  color: Colors.amber,
+                  color: amberColor,
                 ),
               ),
               IconButton(
@@ -146,7 +146,7 @@ class _EditImageScreenState extends EditImageViewModel {
                 tooltip: 'Align Left',
                 icon: const Icon(
                   Icons.format_align_left,
-                  color: Colors.amber,
+                  color: amberColor,
                 ),
               ),
               IconButton(
@@ -154,7 +154,7 @@ class _EditImageScreenState extends EditImageViewModel {
                 tooltip: 'Align Center',
                 icon: const Icon(
                   Icons.format_align_center,
-                  color: Colors.amber,
+                  color: amberColor,
                 ),
               ),
               IconButton(
@@ -162,7 +162,7 @@ class _EditImageScreenState extends EditImageViewModel {
                 tooltip: 'Align Right',
                 icon: const Icon(
                   Icons.format_align_right,
-                  color: Colors.amber,
+                  color: amberColor,
                 ),
               ),
               IconButton(
@@ -170,7 +170,7 @@ class _EditImageScreenState extends EditImageViewModel {
                 tooltip: 'Bold',
                 icon: const Icon(
                   Icons.format_bold,
-                  color: Colors.amber,
+                  color: amberColor,
                 ),
               ),
               IconButton(
@@ -178,7 +178,7 @@ class _EditImageScreenState extends EditImageViewModel {
                 tooltip: 'Italic',
                 icon: const Icon(
                   Icons.format_italic,
-                  color: Colors.amber,
+                  color: amberColor,
                 ),
               ),
               IconButton(
@@ -186,7 +186,7 @@ class _EditImageScreenState extends EditImageViewModel {
                 tooltip: 'Add New Line',
                 icon: const Icon(
                   Icons.post_add_sharp,
-                  color: Colors.amber,
+                  color: amberColor,
                 ),
               ),
               const SizedBox(
@@ -206,7 +206,7 @@ class _EditImageScreenState extends EditImageViewModel {
                     child: Icon(
                       Icons.color_lens,
                       size: 20.0,
-                      color: Colors.amber,
+                      color: amberColor,
                     ),
                   ),
                 ),

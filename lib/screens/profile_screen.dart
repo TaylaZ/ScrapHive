@@ -79,7 +79,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               automaticallyImplyLeading: false,
               elevation: 0,
               backgroundColor: primaryColor,
-              titleSpacing: 0, // To remove default title spacing
+              titleSpacing: 0,
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -87,18 +87,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       Padding(
                         padding:
-                            const EdgeInsets.only(left: 16), // Adjust as needed
+                            const EdgeInsets.only(left: 16), 
                         child: SvgPicture.asset(
                           'assets/ScrapHive_Logo.svg',
                           height: 32,
                         ),
                       ),
-                      SizedBox(width: 10), // Space between logo and username
+                      SizedBox(width: 10), 
                     ],
                   ),
                   Padding(
                     padding:
-                        const EdgeInsets.only(right: 16), // Adjust as needed
+                        const EdgeInsets.only(right: 16),
                     child: Text(
                       "${userData['username']}'s Profile",
                       style: TextStyle(
@@ -168,8 +168,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       : isFollowing
                                           ? FollowButton(
                                               text: 'Unfollow',
-                                              backgroundColor: Colors.white,
-                                              textColor: Colors.black,
+                                              backgroundColor: primaryColor,
+                                              textColor: greyColor,
                                               function: () async {
                                                 await FireStoreMethods()
                                                     .followUser(
@@ -186,8 +186,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                             )
                                           : FollowButton(
                                               text: 'Follow',
-                                              backgroundColor: Colors.blue,
-                                              textColor: Colors.white,
+                                              backgroundColor: amberColor,
+                                              textColor: primaryColor,
                                               function: () async {
                                                 await FireStoreMethods()
                                                     .followUser(

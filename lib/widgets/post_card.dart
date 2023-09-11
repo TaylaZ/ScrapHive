@@ -119,28 +119,29 @@ class _PostCardState extends State<PostCard> {
                       builder: (context) {
                         return Dialog(
                           child: ListView(
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              shrinkWrap: true,
-                              children: [
-                                'Delete',
-                              ]
-                                  .map(
-                                    (e) => InkWell(
-                                      child: Container(
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 12, horizontal: 16),
-                                        child: Text(e),
-                                      ),
-                                      onTap: () {
-                                        deletePost(
-                                          widget.snap['postId'].toString(),
-                                        );
-                                        // remove the dialog box
-                                        Navigator.of(context).pop();
-                                      },
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            shrinkWrap: true,
+                            children: [
+                              'Delete',
+                            ]
+                                .map(
+                                  (e) => InkWell(
+                                    child: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 12, horizontal: 16),
+                                      child: Text(e),
                                     ),
-                                  )
-                                  .toList()),
+                                    onTap: () {
+                                      deletePost(
+                                        widget.snap['postId'].toString(),
+                                      );
+                                      // remove the dialog box
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                )
+                                .toList(),
+                          ),
                         );
                       },
                     );
@@ -264,19 +265,15 @@ class _PostCardState extends State<PostCard> {
                   fontSize: 14,
                 ),
               ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomRight,
-                  child: IconButton(
-                    icon: const Icon(
-                      EvaIcons.shareOutline,
-                      color: peachColor,
-                    ),
-                    onPressed: () {
-                      Share.share('Check this out! ${widget.snap['postUrl']}');
-                    },
-                  ),
+              Spacer(),
+              IconButton(
+                icon: const Icon(
+                  EvaIcons.shareOutline,
+                  color: peachColor,
                 ),
+                onPressed: () {
+                  Share.share('Check this out! ${widget.snap['postUrl']}');
+                },
               ),
             ],
           ),

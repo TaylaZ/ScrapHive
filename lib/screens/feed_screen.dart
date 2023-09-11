@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:scraphive/screens/creative_ideas.dart';
 import 'package:scraphive/screens/search_screen.dart';
-import 'package:scraphive/screens/start_scrapbooking.dart';
 import 'package:scraphive/widgets/scraphive_loader.dart';
 import '../utils/colors.dart';
 import '../utils/global_variables.dart';
@@ -99,18 +98,18 @@ class _FeedScreenState extends State<FeedScreen> {
             ),
             ListTile(
               leading: Icon(
-                EvaIcons.bookOpenOutline,
+                EvaIcons.personAddOutline,
                 color: greenColor,
                 size: 32,
               ),
               title: Text(
-                'Start Scrapbooking',
+                'Find Your Friend',
                 style: TextStyle(fontSize: 18, color: greenColor),
               ),
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => StartScrapbooking(),
+                    builder: (context) => SearchScreen(),
                   ),
                 );
               },
