@@ -6,7 +6,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 import 'package:scraphive/models/text_info.dart';
-import 'package:scraphive/screens/edit_image_screen.dart';
+import 'package:scraphive/screens/add_text_screen.dart';
 import 'package:scraphive/widgets/custom_buttons.dart';
 import 'package:screenshot/screenshot.dart';
 import '../utils/utils.dart';
@@ -52,11 +52,7 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
   saveToGallery(BuildContext context) {
     screenshotController.capture().then((Uint8List? image) {
       saveImage(image!);
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Image saved'),
-        ),
-      );
+      showSnackBar(context, 'Image Saved!');
     }).catchError((err) => print(err));
   }
 
@@ -74,16 +70,7 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
     setState(() {
       texts.removeAt(currentIndex);
     });
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text(
-          'Text Deleted',
-          style: TextStyle(
-            fontSize: 16.0,
-          ),
-        ),
-      ),
-    );
+    showSnackBar(context, 'Text Deleted');
   }
 
   setCurrentIndex(BuildContext context, index) {
@@ -91,16 +78,7 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
       currentIndex = index;
       color = texts[currentIndex].color;
     });
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text(
-          'Selected For Styling',
-          style: TextStyle(
-            fontSize: 16.0,
-          ),
-        ),
-      ),
-    );
+    showSnackBar(context, 'Selected for Styling');
   }
 
   changeTextColor(Color color) {
@@ -140,6 +118,17 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
       }
     });
   }
+
+  underlineText() {
+  setState(() {
+    if (texts[currentIndex].textDecoration == TextDecoration.underline) {
+      texts[currentIndex].textDecoration = TextDecoration.none;
+    } else {
+      texts[currentIndex].textDecoration = TextDecoration.underline;
+    }
+  });
+}
+
 
   addNewText(BuildContext context) {
     setState(() {

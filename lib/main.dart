@@ -12,7 +12,6 @@ import 'package:scraphive/screens/login_screen.dart';
 import 'package:scraphive/screens/signup_screen.dart';
 import 'package:scraphive/utils/colors.dart';
 import 'package:scraphive/widgets/scraphive_loader.dart';
-import './screens/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

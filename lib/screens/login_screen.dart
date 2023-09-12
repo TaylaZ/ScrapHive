@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:scraphive/resources/auth_methods.dart';
 import 'package:scraphive/screens/default_screen.dart';
-import 'package:scraphive/screens/home_screen.dart';
 import 'package:scraphive/utils/colors.dart';
 import 'package:scraphive/utils/utils.dart';
 import 'package:scraphive/widgets/scraphive_loader.dart';

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scraphive/providers/user_provider.dart';
 import 'package:scraphive/resources/firestore_methods.dart';
-import 'package:scraphive/screens/edit_image_screen.dart';
+import 'package:scraphive/screens/add_text_screen.dart';
 import 'package:scraphive/utils/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:typed_data';
@@ -166,17 +166,26 @@ class _MaterialScreenState extends State<MaterialScreen> {
             TextEditingController(text: currentDescription);
 
         return AlertDialog(
-          title: Text('Edit Description'),
+          title: Text(
+            'Edit Description',
+            style: TextStyle(color: brownColor),
+          ),
           content: TextField(
             controller: controller,
             decoration: InputDecoration(
               hintText: 'Enter the new description',
             ),
+            maxLength: 30,
           ),
           actions: <Widget>[
             TextButton(
               onPressed: () => Navigator.of(context).pop(), // Cancel editing
-              child: Text('Cancel'),
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                  color: greyColor,
+                ),
+              ),
             ),
             TextButton(
               onPressed: () {
@@ -185,7 +194,10 @@ class _MaterialScreenState extends State<MaterialScreen> {
                 _updateMaterialDescription(materialId, newDescription);
                 Navigator.of(context).pop(newDescription);
               },
-              child: Text('Save'),
+              child: Text(
+                'Save',
+                style: TextStyle(color: amberColor),
+              ),
             ),
           ],
         );
@@ -228,48 +240,51 @@ class _MaterialScreenState extends State<MaterialScreen> {
                 ),
               ],
             ),
-            body: RefreshIndicator(
-              onRefresh: _refreshData,
-              backgroundColor: amberColor,
-              color: yellowColor,
-              displacement: 0,
-              child: StreamBuilder(
-                stream: _stream,
-                builder: (context,
-                    AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
-                        snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return ScrapHiveLoader();
-                  }
+            body: Container(
+              color: primaryColor,
+              child: RefreshIndicator(
+                onRefresh: _refreshData,
+                backgroundColor: amberColor,
+                color: yellowColor,
+                displacement: 0,
+                child: StreamBuilder(
+                  stream: _stream,
+                  builder: (context,
+                      AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                          snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return ScrapHiveLoader();
+                    }
 
-                  if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
-                    return ListView.builder(
-                      itemCount: snapshot.data!.docs.length,
-                      itemBuilder: (ctx, index) => MaterialCard(
-                        snap: snapshot.data!.docs[index].data(),
-                        percentage:
-                            snapshot.data!.docs[index]['percentage'] ?? 0.0,
-                        onEdit: () => _editMaterialDescription(
-                          snapshot.data!.docs[index].id,
-                          snapshot.data!.docs[index]['description'],
-                        ),
-                        onpercentageChanged: (newValue) {
-                          _updatepercentageInDatabase(
+                    if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+                      return ListView.builder(
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (ctx, index) => MaterialCard(
+                          snap: snapshot.data!.docs[index].data(),
+                          percentage:
+                              snapshot.data!.docs[index]['percentage'] ?? 0.0,
+                          onEdit: () => _editMaterialDescription(
                             snapshot.data!.docs[index].id,
-                            newValue,
-                          );
-                        },
-                      ),
-                    );
-                  } else {
-                    return Center(
-                      child: Text(
-                        'Tap the top right "plus" button to add a new material',
-                        style: TextStyle(color: greyColor),
-                      ),
-                    );
-                  }
-                },
+                            snapshot.data!.docs[index]['description'],
+                          ),
+                          onpercentageChanged: (newValue) {
+                            _updatepercentageInDatabase(
+                              snapshot.data!.docs[index].id,
+                              newValue,
+                            );
+                          },
+                        ),
+                      );
+                    } else {
+                      return Center(
+                        child: Text(
+                          'Tap the top right "plus" button to add a new material',
+                          style: TextStyle(color: greyColor),
+                        ),
+                      );
+                    }
+                  },
+                ),
               ),
             ),
           )

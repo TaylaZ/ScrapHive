@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:scraphive/screens/home_screen.dart';
+import 'package:scraphive/screens/default_screen.dart';
 import 'package:scraphive/screens/login_screen.dart';
 import 'package:scraphive/utils/colors.dart';
 import 'package:scraphive/utils/utils.dart';
@@ -54,8 +54,8 @@ class _SignupScreenState extends State<SignupScreen> {
     if (res == "success") {
       setState(() {
         _isLoading = false;
-        Navigator.of(context)
-            .pushReplacement(MaterialPageRoute(builder: (context) => const HomeScreen()));
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => const DefaultScreen()));
       });
     } else {
       setState(() {
@@ -66,7 +66,8 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   void navigateToLogin() {
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoginScreen()));
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const LoginScreen()));
   }
 
   @override
@@ -100,7 +101,8 @@ class _SignupScreenState extends State<SignupScreen> {
                               )
                             : CircleAvatar(
                                 radius: 64,
-                                backgroundImage: AssetImage('assets/ScrapHive_Profile.jpg'),
+                                backgroundImage:
+                                    AssetImage('assets/ScrapHive_Profile.jpg'),
                               ),
                         Positioned(
                           bottom: 0,

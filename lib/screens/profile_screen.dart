@@ -4,8 +4,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:scraphive/screens/add_post_screen.dart';
+import 'package:scraphive/screens/creative_ideas.dart';
 import 'package:scraphive/screens/image_view_screen.dart';
+import 'package:scraphive/screens/search_screen.dart';
 import 'package:scraphive/widgets/hexagon_avatar.dart';
+import 'package:scraphive/widgets/hexagon_button.dart';
 import 'package:scraphive/widgets/scraphive_loader.dart';
 import '../resources/auth_methods.dart';
 import '../resources/firestore_methods.dart';
@@ -29,6 +33,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   int following = 0;
   bool isFollowing = false;
   bool isLoading = false;
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -75,140 +81,266 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return isLoading
         ? ScrapHiveLoader()
         : Scaffold(
+            key: _scaffoldKey,
             appBar: AppBar(
+              elevation: 0.0,
               automaticallyImplyLeading: false,
-              elevation: 0,
               backgroundColor: primaryColor,
-              titleSpacing: 0,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              centerTitle: false,
+              title: SvgPicture.asset(
+                'assets/ScrapHive_Logo.svg',
+                height: 32,
+              ),
+              actions: [
+                IconButton(
+                  icon: const Icon(
+                    EvaIcons.menu,
+                    color: amberColor,
+                  ),
+                  onPressed: () {
+                    _scaffoldKey.currentState!.openEndDrawer();
+                  },
+                ),
+              ],
+            ),
+            endDrawer: Drawer(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Row(
-                    children: [
-                      Padding(
-                        padding:
-                            const EdgeInsets.only(left: 16), 
-                        child: SvgPicture.asset(
-                          'assets/ScrapHive_Logo.svg',
-                          height: 32,
+                  ListTile(
+                    leading: Icon(
+                      EvaIcons.bulbOutline,
+                      color: amberColor,
+                      size: 32,
+                    ),
+                    title: Text(
+                      'Creative Ideas',
+                      style: TextStyle(fontSize: 18, color: amberColor),
+                    ),
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => ScrapbookingIdeasScreen(),
                         ),
-                      ),
-                      SizedBox(width: 10), 
-                    ],
+                      );
+                    },
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      EvaIcons.personAddOutline,
+                      color: greenColor,
+                      size: 32,
+                    ),
+                    title: Text(
+                      'Find Your Friend',
+                      style: TextStyle(fontSize: 18, color: greenColor),
+                    ),
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => SearchScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  ListTile(
+                    leading: Icon(
+                      EvaIcons.infoOutline,
+                      color: peachColor,
+                      size: 32,
+                    ),
+                    title: Text(
+                      'About ScrapHive',
+                      style: TextStyle(fontSize: 18, color: peachColor),
+                    ),
+                    onTap: () {},
+                  ),
+                  SizedBox(
+                    height: 20,
                   ),
                   Padding(
-                    padding:
-                        const EdgeInsets.only(right: 16),
-                    child: Text(
-                      "${userData['username']}'s Profile",
-                      style: TextStyle(
-                        color: brownColor,
-                        fontSize: 16,
+                    padding: const EdgeInsets.only(right: 16.0),
+                    child: TextButton(
+                      onPressed: () async {
+                        await AuthMethods().signOut();
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (context) => const LoginScreen(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'Sign Out',
+                        style: TextStyle(
+                          color: greyColor,
+                          decoration: TextDecoration.underline,
+                        ),
                       ),
                     ),
                   ),
                 ],
               ),
-              centerTitle: false,
             ),
             body: Container(
               color: primaryColor,
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    HexagonAvatar(
+                      image: NetworkImage(
+                        userData['photoUrl'],
+                      ),
+                      radius: 40,
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "${userData['username']}",
+                          style: TextStyle(
+                            color: amberColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                        ),
+                        FirebaseAuth.instance.currentUser!.uid == widget.uid
+                            ? SizedBox(
+                                height: 0,
+                                width: 0,
+                              )
+                            : isFollowing
+                                ? IconButton(
+                                    onPressed: () async {
+                                      await FireStoreMethods().followUser(
+                                        FirebaseAuth.instance.currentUser!.uid,
+                                        userData['uid'],
+                                      );
+
+                                      setState(() {
+                                        isFollowing = false;
+                                        followers--;
+                                      });
+                                    },
+                                    icon: Icon(
+                                      EvaIcons.personRemove,
+                                      color: greyColor,
+                                    ),
+                                  )
+                                : IconButton(
+                                    onPressed: () async {
+                                      await FireStoreMethods().followUser(
+                                        FirebaseAuth.instance.currentUser!.uid,
+                                        userData['uid'],
+                                      );
+
+                                      setState(() {
+                                        isFollowing = true;
+                                        followers++;
+                                      });
+                                    },
+                                    icon: Icon(
+                                      EvaIcons.personAdd,
+                                      color: greenColor,
+                                    ),
+                                  )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            HexagonAvatar(
-                              image: NetworkImage(
-                                userData['photoUrl'],
+                            Text(
+                              postLen.toString(),
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: amberColor,
                               ),
-                              radius: 40,
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(top: 4),
+                              child: Text(
+                                "no. posts",
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w400,
+                                  color: greyColor,
+                                ),
+                              ),
                             ),
                           ],
                         ),
-                        Expanded(
-                          flex: 1,
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  buildStatColumn(postLen, "posts"),
-                                  buildStatColumn(followers, "followers"),
-                                  buildStatColumn(following, "following"),
-                                ],
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              followers.toString(),
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: greenColor,
                               ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  FirebaseAuth.instance.currentUser!.uid ==
-                                          widget.uid
-                                      ? FollowButton(
-                                          text: 'Sign Out',
-                                          backgroundColor: greyColor,
-                                          textColor: primaryColor,
-                                          function: () async {
-                                            await AuthMethods().signOut();
-                                            Navigator.of(context)
-                                                .pushReplacement(
-                                              MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const LoginScreen(),
-                                              ),
-                                            );
-                                          },
-                                        )
-                                      : isFollowing
-                                          ? FollowButton(
-                                              text: 'Unfollow',
-                                              backgroundColor: primaryColor,
-                                              textColor: greyColor,
-                                              function: () async {
-                                                await FireStoreMethods()
-                                                    .followUser(
-                                                  FirebaseAuth.instance
-                                                      .currentUser!.uid,
-                                                  userData['uid'],
-                                                );
-
-                                                setState(() {
-                                                  isFollowing = false;
-                                                  followers--;
-                                                });
-                                              },
-                                            )
-                                          : FollowButton(
-                                              text: 'Follow',
-                                              backgroundColor: amberColor,
-                                              textColor: primaryColor,
-                                              function: () async {
-                                                await FireStoreMethods()
-                                                    .followUser(
-                                                  FirebaseAuth.instance
-                                                      .currentUser!.uid,
-                                                  userData['uid'],
-                                                );
-
-                                                setState(() {
-                                                  isFollowing = true;
-                                                  followers++;
-                                                });
-                                              },
-                                            )
-                                ],
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(top: 4),
+                              child: Text(
+                                "followers",
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w400,
+                                  color: greyColor,
+                                ),
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              following.toString(),
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: peachColor,
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(top: 4),
+                              child: Text(
+                                "following",
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w400,
+                                  color: greyColor,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
+          
                     const Divider(),
                     Expanded(
                       child: FutureBuilder(
@@ -220,6 +352,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             return ScrapHiveLoader();
+                          }
+
+                          if ((snapshot.data! as dynamic).docs.isEmpty) {
+                            return Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    "You have not posted anything yet",
+                                    style: TextStyle(
+                                      color: greyColor,
+                                    ),
+                                  ),
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => AddPostScreen(),
+                                        ),
+                                      );
+                                    },
+                                    child: Text(
+                                      "Post Something Now",
+                                      style: TextStyle(
+                                        color: amberColor,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            );
                           }
 
                           return GridView.builder(
@@ -240,7 +403,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) => ImageViewScreen(
-                                          imageUrl: snap['postUrl']),
+                                        imageUrl: snap['postUrl'],
+                                      ),
                                     ),
                                   );
                                 },
@@ -256,7 +420,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           );
                         },
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),
@@ -264,31 +428,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
           );
   }
 
-  Column buildStatColumn(int num, String label) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          num.toString(),
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: amberColor,
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.only(top: 4),
-          child: Text(
-            label,
-            style: const TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w400,
-              color: greyColor,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
+
 }

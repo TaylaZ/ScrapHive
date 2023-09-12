@@ -48,23 +48,30 @@ class _LikedPostsScreenState extends State<LikedPostsScreen> {
           height: 32,
         ),
       ),
-      body: StreamBuilder(
-        stream: _stream,
-        builder: (context,
-            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return ScrapHiveLoader();
-          }
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(child: Text('No Liked posts yet~'));
-          }
-          return ListView.builder(
-            itemCount: snapshot.data!.docs.length,
-            itemBuilder: (ctx, index) => PostCard(
-              snap: snapshot.data!.docs[index].data(),
-            ),
-          );
-        },
+      body: Container(
+        color: primaryColor,
+        child: StreamBuilder(
+          stream: _stream,
+          builder: (context,
+              AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return ScrapHiveLoader();
+            }
+            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+              return Center(
+                  child: Text(
+                'No Liked posts yet~',
+                style: TextStyle(color: greyColor),
+              ));
+            }
+            return ListView.builder(
+              itemCount: snapshot.data!.docs.length,
+              itemBuilder: (ctx, index) => PostCard(
+                snap: snapshot.data!.docs[index].data(),
+              ),
+            );
+          },
+        ),
       ),
     );
   }

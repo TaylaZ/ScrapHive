@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:scraphive/providers/user_provider.dart';
 import 'package:provider/provider.dart';
@@ -77,9 +78,11 @@ class _DefaultScreenState extends State<DefaultScreen> {
             icon: Transform.translate(
               offset: Offset(0, 5),
               child: HexagonIcon(
-                icon: EvaIcons.plus,
+                icon: (_page == 2)
+                    ? FluentIcons.hexagon_three_24_filled
+                    : FluentIcons.hexagon_three_24_regular,
                 iconSize: 32,
-                iconColor: yellowColor,
+                iconColor: primaryColor,
                 fillColor: (_page == 2) ? amberColor : greenColor,
               ),
             ),

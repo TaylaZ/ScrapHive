@@ -31,12 +31,11 @@ showSnackBar(BuildContext context, String text) {
         text,
         textAlign: TextAlign.center,
         style: TextStyle(
-          color: primaryColor,
+          color: yellowColor,
         ),
       ),
       backgroundColor: greenColor,
-      // behavior: SnackBarBehavior.floating,
-      // width: 200,
+
     ),
   );
 }

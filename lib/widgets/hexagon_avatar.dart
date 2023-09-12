@@ -50,6 +50,7 @@ class HexagonAvatar extends StatelessWidget {
           image: DecorationImage(
             fit: BoxFit.cover,
             image: image,
+            
           ),
         ),
       ),

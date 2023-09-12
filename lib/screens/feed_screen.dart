@@ -19,7 +19,6 @@ class FeedScreen extends StatefulWidget {
 
 class _FeedScreenState extends State<FeedScreen> {
   late Stream<QuerySnapshot<Map<String, dynamic>>> _stream;
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -50,7 +49,6 @@ class _FeedScreenState extends State<FeedScreen> {
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      key: _scaffoldKey,
       appBar: AppBar(
         elevation: 0.0,
         automaticallyImplyLeading: false,
@@ -62,15 +60,6 @@ class _FeedScreenState extends State<FeedScreen> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(
-              EvaIcons.menu,
-              color: amberColor,
-            ),
-            onPressed: () {
-              _scaffoldKey.currentState!.openEndDrawer();
-            },
-          ),
-          IconButton(
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
@@ -79,74 +68,10 @@ class _FeedScreenState extends State<FeedScreen> {
                 );
               },
               icon: Icon(
-                Icons.add,
+                EvaIcons.plus,
                 color: amberColor,
-              ))
+              ),)
         ],
-      ),
-      endDrawer: Drawer(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            ListTile(
-              leading: Icon(
-                EvaIcons.bulbOutline,
-                color: amberColor,
-                size: 32,
-              ),
-              title: Text(
-                'Creative Ideas',
-                style: TextStyle(fontSize: 18, color: amberColor),
-              ),
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => ScrapbookingIdeasScreen(),
-                  ),
-                );
-              },
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            ListTile(
-              leading: Icon(
-                EvaIcons.personAddOutline,
-                color: greenColor,
-                size: 32,
-              ),
-              title: Text(
-                'Find Your Friend',
-                style: TextStyle(fontSize: 18, color: greenColor),
-              ),
-              onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => SearchScreen(),
-                  ),
-                );
-              },
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            ListTile(
-              leading: Icon(
-                EvaIcons.infoOutline,
-                color: peachColor,
-                size: 32,
-              ),
-              title: Text(
-                'About ScrapHive',
-                style: TextStyle(fontSize: 18, color: peachColor),
-              ),
-              onTap: () {},
-            ),
-            SizedBox(
-              height: 20,
-            ),
-          ],
-        ),
       ),
       body: RefreshIndicator(
         onRefresh: _refreshData,
