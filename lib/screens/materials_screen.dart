@@ -230,15 +230,7 @@ class _MaterialScreenState extends State<MaterialScreen> {
                 'assets/ScrapHive_Logo.svg',
                 height: 32,
               ),
-              actions: [
-                IconButton(
-                  icon: const Icon(
-                    EvaIcons.plus,
-                    color: amberColor,
-                  ),
-                  onPressed: () => _selectImage(context),
-                ),
-              ],
+              actions: [],
             ),
             body: Container(
               color: primaryColor,
@@ -278,13 +270,25 @@ class _MaterialScreenState extends State<MaterialScreen> {
                     } else {
                       return Center(
                         child: Text(
-                          'Tap the top right "plus" button to add a new material',
+                          'Tap the plus button to add a new material',
                           style: TextStyle(color: greyColor),
                         ),
                       );
                     }
                   },
                 ),
+              ),
+            ),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () => _selectImage(context),
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              highlightElevation: 0,
+              child: HexagonIcon(
+                icon: EvaIcons.plus,
+                fillColor: amberColor,
+                iconColor: primaryColor,
+                iconSize: 20,
               ),
             ),
           )

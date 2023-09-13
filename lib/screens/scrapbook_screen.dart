@@ -191,7 +191,6 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
                                         child: IconButton(
                                           onPressed: () {
                                             rotateImage(index, 15);
-                                            Navigator.pop(context);
                                           },
                                           icon: Icon(Icons.rotate_right,
                                               color: amberColor),
@@ -202,7 +201,6 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
                                         child: IconButton(
                                           onPressed: () {
                                             rotateImage(index, -15);
-                                            Navigator.pop(context);
                                           },
                                           icon: Icon(Icons.rotate_left,
                                               color: greenColor),
@@ -219,7 +217,6 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
                                           onPressed: () {
                                             adjustSize(index, image.width * 1.2,
                                                 image.height * 1.2);
-                                            Navigator.pop(context);
                                           },
                                           icon: Icon(Icons.zoom_in,
                                               color: amberColor),
@@ -231,7 +228,6 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
                                           onPressed: () {
                                             adjustSize(index, image.width * 0.8,
                                                 image.height * 0.8);
-                                            Navigator.pop(context);
                                           },
                                           icon: Icon(Icons.zoom_out,
                                               color: greenColor),
@@ -247,7 +243,6 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
                                         child: IconButton(
                                           onPressed: () {
                                             bringToFront(index);
-                                            Navigator.pop(context);
                                           },
                                           icon: Icon(Icons.arrow_upward,
                                               color: amberColor),
@@ -258,7 +253,6 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
                                         child: IconButton(
                                           onPressed: () {
                                             bringToBack(index);
-                                            Navigator.pop(context);
                                           },
                                           icon: Icon(Icons.arrow_downward,
                                               color: greenColor),
@@ -268,74 +262,46 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
                                   ),
                                   Tooltip(
                                     message: 'Change Transparency',
-                                    child: IconButton(
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title:
-                                                  Text('Adjust transparency'),
-                                              content: Column(
-                                                mainAxisSize: MainAxisSize.min,
-                                                children: <Widget>[
-                                                  StatefulBuilder(
-                                                    builder: (context, state) {
-                                                      return SliderTheme(
-                                                        data: SliderThemeData(
-                                                          overlayColor: Colors
-                                                              .transparent,
-                                                          activeTrackColor:
-                                                              amberColor
-                                                                  .withOpacity(
-                                                                      0.7),
-                                                          inactiveTrackColor:
-                                                              yellowColor,
-                                                          thumbColor:
-                                                              amberColor,
-                                                          thumbShape:
-                                                              HexagonSliderThumbShape(),
-                                                          activeTickMarkColor:
-                                                              Colors
-                                                                  .transparent,
-                                                          inactiveTickMarkColor:
-                                                              Colors
-                                                                  .transparent,
-                                                        ),
-                                                        child: Slider(
-                                                          value: image
-                                                              .transparency,
-                                                          onChanged:
-                                                              (newtransparency) {
-                                                            changetransparency(
-                                                                index,
-                                                                newtransparency);
-                                                            state(() {});
-                                                          },
-                                                          min: 0.0,
-                                                          max: 1.0,
-                                                          divisions: 10,
-                                                          label:
-                                                              'Transparency: ${(image.transparency * 100).toStringAsFixed(0)}%',
-                                                        ),
-                                                      );
-                                                    },
-                                                  ),
-                                                  ElevatedButton(
-                                                    onPressed: () {
-                                                      // Close the dialog
-                                                      Navigator.pop(context);
-                                                    },
-                                                    child: Text('Done'),
-                                                  ),
-                                                ],
+                                    child: Column(
+                                      children: [
+                                        Icon(
+                                          Icons.opacity,
+                                          color: peachColor,
+                                        ),
+                                        StatefulBuilder(
+                                          builder: (context, state) {
+                                            return SliderTheme(
+                                              data: SliderThemeData(
+                                                overlayColor:
+                                                    Colors.transparent,
+                                                activeTrackColor:
+                                                    amberColor.withOpacity(0.7),
+                                                inactiveTrackColor: yellowColor,
+                                                thumbColor: amberColor,
+                                                thumbShape:
+                                                    HexagonSliderThumbShape(),
+                                                activeTickMarkColor:
+                                                    Colors.transparent,
+                                                inactiveTickMarkColor:
+                                                    Colors.transparent,
+                                              ),
+                                              child: Slider(
+                                                value: image.transparency,
+                                                onChanged: (newtransparency) {
+                                                  changetransparency(
+                                                      index, newtransparency);
+                                                  state(() {});
+                                                },
+                                                min: 0.0,
+                                                max: 1.0,
+                                                divisions: 10,
+                                                label:
+                                                    'Transparency: ${(image.transparency * 100).toStringAsFixed(0)}%',
                                               ),
                                             );
                                           },
-                                        );
-                                      },
-                                      icon: Icon(Icons.opacity,
-                                          color: peachColor),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                 ],
@@ -408,7 +374,7 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
               icon: EvaIcons.text,
               fillColor: peachColor,
               iconColor: primaryColor,
-              iconSize: 20,
+              iconSize: 18,
             ),
           ),
         ],

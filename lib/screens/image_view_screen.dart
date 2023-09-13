@@ -13,30 +13,6 @@ class ImageViewScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.black,
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-              icon: Icon(
-                EvaIcons.arrowIosBack,
-                color: amberColor,
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            );
-          },
-        ),
-        title: const Text(
-          'Image View',
-          style: TextStyle(
-            color: amberColor,
-          ),
-        ),
-        centerTitle: false,
-      ),
       body: Center(
         child: PhotoView(
           imageProvider: NetworkImage(imageUrl),

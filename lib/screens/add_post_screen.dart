@@ -196,11 +196,14 @@ class _AddPostScreenState extends State<AddPostScreen> {
               centerTitle: true,
               actions: [
                 TextButton(
-                  onPressed: () => postImage(
-                    userProvider.getUser.uid,
-                    userProvider.getUser.username,
-                    userProvider.getUser.photoUrl,
-                  ),
+                  onPressed: () {
+                    postImage(
+                      userProvider.getUser.uid,
+                      userProvider.getUser.username,
+                      userProvider.getUser.photoUrl,
+                    );
+                    Navigator.pop(context);
+                  },
                   child: const Text(
                     'Add Post',
                     style: TextStyle(

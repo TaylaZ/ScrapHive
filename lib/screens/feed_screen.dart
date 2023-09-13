@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:scraphive/screens/add_post_screen.dart';
 import 'package:scraphive/screens/creative_ideas.dart';
 import 'package:scraphive/screens/search_screen.dart';
+import 'package:scraphive/widgets/hexagon_button.dart';
 import 'package:scraphive/widgets/scraphive_loader.dart';
 import '../utils/colors.dart';
 import '../utils/global_variables.dart';
@@ -60,17 +61,18 @@ class _FeedScreenState extends State<FeedScreen> {
         ),
         actions: [
           IconButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => AddPostScreen(),
-                  ),
-                );
-              },
-              icon: Icon(
-                EvaIcons.plus,
-                color: amberColor,
-              ),)
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => SearchScreen(),
+                ),
+              );
+            },
+            icon: Icon(
+              EvaIcons.search,
+              color: amberColor,
+            ),
+          )
         ],
       ),
       body: RefreshIndicator(
@@ -92,6 +94,24 @@ class _FeedScreenState extends State<FeedScreen> {
               ),
             );
           },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => AddPostScreen(),
+            ),
+          );
+        },
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        highlightElevation: 0,
+        child: HexagonIcon(
+          icon: EvaIcons.plus,
+          fillColor: amberColor,
+          iconColor: primaryColor,
+          iconSize: 20,
         ),
       ),
     );

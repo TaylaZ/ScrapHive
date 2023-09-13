@@ -9,7 +9,6 @@ import 'package:scraphive/widgets/edit_text.dart';
 import 'package:scraphive/widgets/hexagon_avatar.dart';
 import 'package:scraphive/widgets/hexagon_button.dart';
 import 'package:screenshot/screenshot.dart';
-import '../widgets/image_text.dart';
 
 class EditImageScreen extends StatefulWidget {
   const EditImageScreen({Key? key, required this.selectedImage})
@@ -180,7 +179,7 @@ class _EditImageScreenState extends EditImageViewModel {
 
   void rotateTextCounterClockwise() {
     setState(() {
-      final double radians = -30 * (3.14 / 180);
+      final double radians = -15 * (3.14 / 180);
       texts[currentIndex].rotation += radians;
     });
   }

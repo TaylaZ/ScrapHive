@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 
 import 'package:scraphive/models/text_info.dart';
 import 'package:scraphive/screens/add_text_screen.dart';
+import 'package:scraphive/utils/colors.dart';
 import 'package:scraphive/widgets/custom_buttons.dart';
 import 'package:screenshot/screenshot.dart';
 import '../utils/utils.dart';
@@ -120,15 +122,14 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
   }
 
   underlineText() {
-  setState(() {
-    if (texts[currentIndex].textDecoration == TextDecoration.underline) {
-      texts[currentIndex].textDecoration = TextDecoration.none;
-    } else {
-      texts[currentIndex].textDecoration = TextDecoration.underline;
-    }
-  });
-}
-
+    setState(() {
+      if (texts[currentIndex].textDecoration == TextDecoration.underline) {
+        texts[currentIndex].textDecoration = TextDecoration.none;
+      } else {
+        texts[currentIndex].textDecoration = TextDecoration.underline;
+      }
+    });
+  }
 
   addNewText(BuildContext context) {
     setState(() {
@@ -158,23 +159,31 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
           maxLength: 100,
           decoration: const InputDecoration(
             suffixIcon: Icon(
-              Icons.edit,
+              EvaIcons.edit2,
             ),
             filled: true,
             hintText: 'Your Text Here',
           ),
         ),
         actions: [
-          DefaultButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Back'),
-              bgColor: Colors.white,
-              textColor: Colors.amber),
-          DefaultButton(
-              onPressed: () => addNewText(context),
-              child: const Text('Add Text'),
-              bgColor: Colors.amber,
-              textColor: Colors.black),
+          TextButton(
+            child: Text(
+              'Cancel',
+              style: TextStyle(color: greyColor),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          TextButton(
+            child: Text(
+              'Add Text',
+              style: TextStyle(color: amberColor),
+            ),
+            onPressed: () {
+              addNewText(context);
+            },
+          ),
         ],
       ),
     );
