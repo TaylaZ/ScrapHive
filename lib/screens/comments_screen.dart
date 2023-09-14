@@ -53,11 +53,11 @@ class _CommentsScreenState extends State<CommentsScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: primaryColor,
+        backgroundColor: whiteColor,
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(
-              icon: Icon(
+              icon:  const Icon(
                 EvaIcons.arrowIosBack,
                 color: amberColor,
               ),
@@ -116,7 +116,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
                   padding: const EdgeInsets.only(left: 16, right: 8),
                   child: TextField(
                     controller: commentEditingController,
-                    decoration: InputDecoration(
+                    decoration: const  InputDecoration(
                       hintText: 'Share your thoughts...',
                       border: InputBorder.none,
                     ),

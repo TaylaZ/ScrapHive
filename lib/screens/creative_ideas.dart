@@ -1,18 +1,19 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:scraphive/utils/colors.dart';
 
 class ScrapbookingIdeasScreen extends StatelessWidget {
+  const ScrapbookingIdeasScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
         automaticallyImplyLeading: false,
-        backgroundColor: primaryColor,
+        backgroundColor: whiteColor,
         centerTitle: false,
-        title: Text(
+        title: const Text(
           'Creative Ideas',
           style: TextStyle(
             color: amberColor,
@@ -22,7 +23,7 @@ class ScrapbookingIdeasScreen extends StatelessWidget {
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(
-              icon: Icon(
+              icon: const Icon(
                 EvaIcons.arrowIosBack,
                 color: amberColor,
               ),
@@ -89,21 +90,21 @@ class ScrapbookingIdeasScreen extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,
                     color: brownColor,
                   ),
                 ),
-                SizedBox(height: 8.0),
+                const SizedBox(height: 8.0),
                 Text(
                   description,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 16,
                     color: brownColor,
                   ),
                 ),
-                Divider(),
+                const Divider(),
               ],
             ),
           ),

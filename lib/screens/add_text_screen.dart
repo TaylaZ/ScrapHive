@@ -1,13 +1,10 @@
 import 'dart:io';
-
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:scraphive/models/text_info.dart';
-
 import 'package:scraphive/utils/colors.dart';
 import 'package:scraphive/widgets/edit_text.dart';
-import 'package:scraphive/widgets/hexagon_avatar.dart';
-import 'package:scraphive/widgets/hexagon_button.dart';
+import 'package:scraphive/widgets/hexagon_icon.dart';
 import 'package:screenshot/screenshot.dart';
 
 class EditImageScreen extends StatefulWidget {
@@ -27,7 +24,7 @@ class _EditImageScreenState extends EditImageViewModel {
       body: Screenshot(
         controller: screenshotController,
         child: Container(
-          color: primaryColor,
+          color: whiteColor,
           child: SizedBox(
             height: MediaQuery.of(context).size.height,
             child: Stack(
@@ -85,14 +82,14 @@ class _EditImageScreenState extends EditImageViewModel {
             backgroundColor: Colors.transparent,
             elevation: 0,
             highlightElevation: 0,
-            child: HexagonIcon(
+            child: const  HexagonIcon(
               icon: EvaIcons.plus,
               fillColor: amberColor,
-              iconColor: primaryColor,
+              iconColor: whiteColor,
               iconSize: 20,
             ),
           ),
-          SizedBox(
+          const  SizedBox(
             height: 16,
           ),
           FloatingActionButton(
@@ -100,14 +97,14 @@ class _EditImageScreenState extends EditImageViewModel {
             backgroundColor: Colors.transparent,
             elevation: 0,
             highlightElevation: 0,
-            child: HexagonIcon(
+            child: const  HexagonIcon(
               icon: EvaIcons.save,
               fillColor: greenColor,
-              iconColor: primaryColor,
+              iconColor: whiteColor,
               iconSize: 20,
             ),
           ),
-          SizedBox(
+         const   SizedBox(
             height: 20,
           ),
         ],
@@ -130,13 +127,13 @@ class _EditImageScreenState extends EditImageViewModel {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(
+          title:  const Text(
             'Remove Text?',
             style: TextStyle(color: brownColor),
           ),
           content: SingleChildScrollView(
             child: ListBody(
-              children: <Widget>[
+              children: const  <Widget>[
                 Text(
                   'Are you sure you want to remove this text?',
                   style: TextStyle(color: brownColor),
@@ -146,7 +143,7 @@ class _EditImageScreenState extends EditImageViewModel {
           ),
           actions: <Widget>[
             TextButton(
-              child: Text(
+              child:  const Text(
                 'Cancel',
                 style: TextStyle(color: greyColor),
               ),
@@ -155,7 +152,7 @@ class _EditImageScreenState extends EditImageViewModel {
               },
             ),
             TextButton(
-              child: Text(
+              child:  const Text(
                 'Remove',
                 style: TextStyle(color: amberColor),
               ),
@@ -172,14 +169,14 @@ class _EditImageScreenState extends EditImageViewModel {
 
   void rotateTextClockwise() {
     setState(() {
-      final double radians = 15 * (3.14 / 180);
+      const double radians = 15 * (3.14 / 180);
       texts[currentIndex].rotation += radians;
     });
   }
 
   void rotateTextCounterClockwise() {
     setState(() {
-      final double radians = -15 * (3.14 / 180);
+      const double radians = -15 * (3.14 / 180);
       texts[currentIndex].rotation += radians;
     });
   }

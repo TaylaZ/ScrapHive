@@ -9,7 +9,6 @@ import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:scraphive/models/text_info.dart';
 import 'package:scraphive/screens/add_text_screen.dart';
 import 'package:scraphive/utils/colors.dart';
-import 'package:scraphive/widgets/custom_buttons.dart';
 import 'package:screenshot/screenshot.dart';
 import '../utils/utils.dart';
 
@@ -167,7 +166,7 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
         ),
         actions: [
           TextButton(
-            child: Text(
+            child: const Text(
               'Cancel',
               style: TextStyle(color: greyColor),
             ),
@@ -176,7 +175,7 @@ abstract class EditImageViewModel extends State<EditImageScreen> {
             },
           ),
           TextButton(
-            child: Text(
+            child: const Text(
               'Add Text',
               style: TextStyle(color: amberColor),
             ),

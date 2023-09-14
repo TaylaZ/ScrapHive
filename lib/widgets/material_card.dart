@@ -38,12 +38,12 @@ class _MaterialCardState extends State<MaterialCard> {
 
     return Dismissible(
       direction: DismissDirection.endToStart,
-      key: Key(widget.snap['materialsId']), // Use a unique key for each item.
+      key: Key(widget.snap['materialsId']), 
       background: Container(
         color: greenColor,
         alignment: Alignment.centerRight,
-        padding: EdgeInsets.only(right: 20.0),
-        child: Icon(
+        padding: const EdgeInsets.only(right: 20.0),
+        child: const Icon(
           Icons.delete,
           color: yellowColor,
         ),
@@ -53,14 +53,14 @@ class _MaterialCardState extends State<MaterialCard> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text("Delete Material"),
-              content: Text("Are you sure you want to delete this material?"),
+              title: const Text("Delete Material"),
+              content: const Text("Are you sure you want to delete this material?"),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop(false);
                   },
-                  child: Text(
+                  child: const Text(
                     "Cancel",
                     style: TextStyle(color: greyColor),
                   ),
@@ -70,7 +70,7 @@ class _MaterialCardState extends State<MaterialCard> {
                     // User confirmed the delete operation.
                     Navigator.of(context).pop(true);
                   },
-                  child: Text(
+                  child: const Text(
                     "Delete",
                     style: TextStyle(color: amberColor),
                   ),
@@ -80,11 +80,9 @@ class _MaterialCardState extends State<MaterialCard> {
           },
         );
 
-        // Return true to confirm the delete, false to cancel.
         return confirmDelete == true;
       },
       onDismissed: (direction) {
-        // Delete the material from Firestore when it's swiped left and confirmed.
         FirebaseFirestore.instance
             .collection('materials')
             .doc(widget.snap['materialsId'])
@@ -96,9 +94,9 @@ class _MaterialCardState extends State<MaterialCard> {
       },
       child: Card(
         elevation: 0,
-        margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         child: Padding(
-          padding: EdgeInsets.only(top: 16, left: 16),
+          padding: const EdgeInsets.only(top: 16, left: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -112,19 +110,19 @@ class _MaterialCardState extends State<MaterialCard> {
                   SizedBox(width: 12.0),
                   Text(
                     '${description} ',
-                    style: TextStyle(fontSize: 16, color: brownColor),
+                    style: const  TextStyle(fontSize: 16, color: brownColor),
                   ),
                   Text(
                     '${sliderValue.toStringAsFixed(0)}%',
-                    style: TextStyle(
+                    style:  const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: amberColor),
                   ),
-                  Spacer(),
+                  const  Spacer(),
                   IconButton(
                     onPressed: widget.onEdit,
-                    icon: Icon(
+                    icon:  const Icon(
                       EvaIcons.edit2Outline,
                       color: peachColor,
                     ),

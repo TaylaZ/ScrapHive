@@ -6,7 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:scraphive/screens/profile_screen.dart';
 import 'package:scraphive/utils/colors.dart';
 import 'package:scraphive/widgets/hexagon_avatar.dart';
-import 'package:scraphive/widgets/hexagon_button.dart';
+import 'package:scraphive/widgets/hexagon_icon.dart';
 import 'package:scraphive/widgets/scraphive_loader.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -32,7 +32,7 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: primaryColor,
+        backgroundColor: whiteColor,
         leading: Builder(
           builder: (BuildContext context) {
             return IconButton(
@@ -79,7 +79,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           child: Container(
                             margin: EdgeInsets.only(top: 50),
                             decoration: BoxDecoration(
-                              color: primaryColor,
+                              color: whiteColor,
                               boxShadow: [
                                 BoxShadow(
                                   color: amberColor.withOpacity(0.1),
@@ -151,7 +151,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                         borderSide: BorderSide.none,
                                       ),
                                       filled: true,
-                                      fillColor: primaryColor,
+                                      fillColor: whiteColor,
                                     ),
                                     onFieldSubmitted: (String _) {
                                       setState(

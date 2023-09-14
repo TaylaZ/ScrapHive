@@ -3,15 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scraphive/providers/user_provider.dart';
 import 'package:scraphive/resources/firestore_methods.dart';
-import 'package:scraphive/screens/add_text_screen.dart';
-import 'package:scraphive/screens/feed_screen.dart';
-import 'package:scraphive/screens/scrapbook_screen.dart';
 import 'package:scraphive/utils/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:typed_data';
 import 'package:image_picker/image_picker.dart';
 import 'package:scraphive/utils/utils.dart';
-import 'package:scraphive/widgets/hexagon_button.dart';
+import 'package:scraphive/widgets/hexagon_icon.dart';
 import 'package:scraphive/widgets/scraphive_loader.dart';
 
 class AddPostScreen extends StatefulWidget {
@@ -122,7 +119,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
               leading: Builder(
                 builder: (BuildContext context) {
                   return IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       EvaIcons.arrowIosBack,
                       color: amberColor,
                     ),
@@ -133,7 +130,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 },
               ),
               foregroundColor: amberColor,
-              backgroundColor: primaryColor,
+              backgroundColor: whiteColor,
               centerTitle: true,
               title: SvgPicture.asset(
                 'assets/ScrapHive_Logo.svg',
@@ -141,30 +138,30 @@ class _AddPostScreenState extends State<AddPostScreen> {
               ),
             ),
             body: Transform.translate(
-              offset: Offset(0, -40),
+              offset: const Offset(0, -40),
               child: Container(
-                color: primaryColor,
+                color: whiteColor,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
+                    const Text(
                       'Upload Image',
                       style: TextStyle(
                           color: amberColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 22),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 42,
                     ),
                     Transform.scale(
                       scale: 0.3,
                       child: GestureDetector(
                         onTap: () => _selectImage(context),
-                        child: HexagonIcon(
+                        child: const HexagonIcon(
                           icon: EvaIcons.upload,
                           fillColor: greenColor,
-                          iconColor: primaryColor,
+                          iconColor: whiteColor,
                           iconSize: 100,
                         ),
                       ),
@@ -180,7 +177,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
               bottomOpacity: 0.0,
               elevation: 0.0,
               leading: IconButton(
-                icon: Icon(EvaIcons.arrowBack),
+                icon: const Icon(EvaIcons.arrowBack),
                 color: amberColor,
                 onPressed: clearImage,
               ),
@@ -219,8 +216,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
               child: Column(
                 children: [
                   _isLoading
-                      ? ScrapHiveLoader()
-                      : Padding(
+                      ? const ScrapHiveLoader()
+                      : const Padding(
                           padding: EdgeInsets.only(
                             top: 0,
                           ),

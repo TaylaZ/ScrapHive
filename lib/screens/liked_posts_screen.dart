@@ -1,4 +1,3 @@
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -24,7 +23,6 @@ class _LikedPostsScreenState extends State<LikedPostsScreen> {
     final model.User user =
         Provider.of<UserProvider>(context, listen: false).getUser;
 
-    // Fetch posts that the user has liked
     _stream = FirebaseFirestore.instance
         .collection('posts')
         .where('likes', arrayContains: user.uid)
@@ -41,7 +39,7 @@ class _LikedPostsScreenState extends State<LikedPostsScreen> {
       appBar: AppBar(
         elevation: 0.0,
         automaticallyImplyLeading: false,
-        backgroundColor: primaryColor,
+        backgroundColor: whiteColor,
         centerTitle: false,
         title: SvgPicture.asset(
           'assets/ScrapHive_Logo.svg',
@@ -49,16 +47,16 @@ class _LikedPostsScreenState extends State<LikedPostsScreen> {
         ),
       ),
       body: Container(
-        color: primaryColor,
+        color: whiteColor,
         child: StreamBuilder(
           stream: _stream,
           builder: (context,
               AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return ScrapHiveLoader();
+              return  const ScrapHiveLoader();
             }
             if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              return Center(
+              return const  Center(
                   child: Text(
                 'No Liked posts yet~',
                 style: TextStyle(color: greyColor),

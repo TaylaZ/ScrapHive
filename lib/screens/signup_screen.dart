@@ -7,6 +7,7 @@ import 'package:scraphive/screens/default_screen.dart';
 import 'package:scraphive/screens/login_screen.dart';
 import 'package:scraphive/utils/colors.dart';
 import 'package:scraphive/utils/utils.dart';
+import 'package:scraphive/widgets/hexagon_avatar.dart';
 import 'package:scraphive/widgets/scraphive_loader.dart';
 import 'package:scraphive/widgets/text_field_input.dart';
 import '../resources/auth_methods.dart';
@@ -75,9 +76,9 @@ class _SignupScreenState extends State<SignupScreen> {
     return Scaffold(
       body: SafeArea(
         child: _isLoading
-            ? ScrapHiveLoader()
+            ? const ScrapHiveLoader()
             : Container(
-                padding: EdgeInsets.symmetric(horizontal: 32),
+                padding: const EdgeInsets.symmetric(horizontal: 32),
                 width: double.infinity,
                 child: Column(
                   children: [
@@ -95,14 +96,14 @@ class _SignupScreenState extends State<SignupScreen> {
                     Stack(
                       children: [
                         _image != null
-                            ? CircleAvatar(
+                            ? HexagonAvatar(
                                 radius: 64,
-                                backgroundImage: MemoryImage(_image!),
+                                image: MemoryImage(_image!),
                               )
-                            : CircleAvatar(
+                            : HexagonAvatar(
                                 radius: 64,
-                                backgroundImage:
-                                    AssetImage('assets/ScrapHive_Profile.jpg'),
+                                image: const AssetImage(
+                                    'assets/ScrapHive_Profile.jpg'),
                               ),
                         Positioned(
                           bottom: 0,
@@ -115,7 +116,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                 color: greenColor,
                               ),
                             ),
-                            backgroundColor: Colors.white,
+                            backgroundColor: Colors.transparent,
                           ),
                         )
                       ],
@@ -177,7 +178,10 @@ class _SignupScreenState extends State<SignupScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          child: Text("Already Have an Account? "),
+                          child: const Text(
+                            "Already Have an Account? ",
+                            style: TextStyle(color: greyColor),
+                          ),
                           padding: const EdgeInsets.symmetric(
                             vertical: 8,
                           ),
@@ -185,11 +189,11 @@ class _SignupScreenState extends State<SignupScreen> {
                         GestureDetector(
                           onTap: navigateToLogin,
                           child: Container(
-                            child: Text(
+                            child: const Text(
                               "Login",
                               style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
+                                  fontWeight: FontWeight.bold,
+                                  color: brownColor),
                             ),
                             padding: const EdgeInsets.symmetric(
                               vertical: 8,

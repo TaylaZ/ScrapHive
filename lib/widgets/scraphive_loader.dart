@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ScrapHiveLoader extends StatelessWidget {
+  const ScrapHiveLoader({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Center(

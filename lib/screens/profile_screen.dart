@@ -1,22 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:scraphive/screens/about_scraphive.dart';
 import 'package:scraphive/screens/add_post_screen.dart';
 import 'package:scraphive/screens/creative_ideas.dart';
 import 'package:scraphive/screens/image_view_screen.dart';
-import 'package:scraphive/screens/search_screen.dart';
 import 'package:scraphive/widgets/hexagon_avatar.dart';
-import 'package:scraphive/widgets/hexagon_button.dart';
 import 'package:scraphive/widgets/scraphive_loader.dart';
 import '../resources/auth_methods.dart';
 import '../resources/firestore_methods.dart';
 import '../screens/login_screen.dart';
 import '../utils/colors.dart';
 import '../utils/utils.dart';
-import '../widgets/follow_button.dart';
 
 class ProfileScreen extends StatefulWidget {
   final String uid;
@@ -79,28 +77,39 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return isLoading
-        ? ScrapHiveLoader()
+        ? const ScrapHiveLoader()
         : Scaffold(
             key: _scaffoldKey,
             appBar: AppBar(
               elevation: 0.0,
               automaticallyImplyLeading: false,
-              backgroundColor: primaryColor,
-              centerTitle: false,
-              title: SvgPicture.asset(
-                'assets/ScrapHive_Logo.svg',
-                height: 32,
-              ),
+              backgroundColor: whiteColor,
+              centerTitle: FirebaseAuth.instance.currentUser!.uid == widget.uid
+                  ? false
+                  : true,
+              title: FirebaseAuth.instance.currentUser!.uid == widget.uid
+                  ? SvgPicture.asset(
+                      'assets/ScrapHive_Logo.svg',
+                      height: 32,
+                    )
+                  : Text(
+                      '${userData['username']}\'s Profile',
+                      style: const TextStyle(
+                        color: amberColor,
+                      ),
+                    ),
               actions: [
-                IconButton(
-                  icon: const Icon(
-                    EvaIcons.menu,
-                    color: amberColor,
-                  ),
-                  onPressed: () {
-                    _scaffoldKey.currentState!.openEndDrawer();
-                  },
-                ),
+                FirebaseAuth.instance.currentUser!.uid == widget.uid
+                    ? IconButton(
+                        icon: const Icon(
+                          EvaIcons.menu,
+                          color: amberColor,
+                        ),
+                        onPressed: () {
+                          _scaffoldKey.currentState!.openEndDrawer();
+                        },
+                      )
+                    : SizedBox(),
               ],
             ),
             endDrawer: Drawer(
@@ -109,87 +118,74 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   ListTile(
-                    leading: Icon(
-                      EvaIcons.bulbOutline,
+                    leading: const Icon(
+                      FluentIcons.design_ideas_24_regular,
                       color: amberColor,
                       size: 32,
                     ),
-                    title: Text(
+                    title: const Text(
                       'Creative Ideas',
                       style: TextStyle(fontSize: 18, color: amberColor),
                     ),
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => ScrapbookingIdeasScreen(),
+                          builder: (context) => const ScrapbookingIdeasScreen(),
                         ),
                       );
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   ListTile(
-                    leading: Icon(
-                      EvaIcons.personAddOutline,
+                    leading: const Icon(
+                      FluentIcons.info_24_regular,
                       color: greenColor,
                       size: 32,
                     ),
-                    title: Text(
-                      'Find Your Friend',
+                    title: const Text(
+                      'About ScrapHive',
                       style: TextStyle(fontSize: 18, color: greenColor),
                     ),
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => SearchScreen(),
+                          builder: (context) => ScrapHiveScreen(),
                         ),
                       );
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   ListTile(
-                    leading: Icon(
-                      EvaIcons.infoOutline,
+                    leading: const Icon(
+                      FluentIcons.sign_out_24_regular,
                       color: peachColor,
                       size: 32,
                     ),
-                    title: Text(
-                      'About ScrapHive',
+                    title: const Text(
+                      'Sign Out',
                       style: TextStyle(fontSize: 18, color: peachColor),
                     ),
-                    onTap: () {},
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 16.0),
-                    child: TextButton(
-                      onPressed: () async {
-                        await AuthMethods().signOut();
-                        Navigator.of(context).pushReplacement(
-                          MaterialPageRoute(
-                            builder: (context) => const LoginScreen(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        'Sign Out',
-                        style: TextStyle(
-                          color: greyColor,
-                          decoration: TextDecoration.underline,
+                    onTap: () async {
+                      await AuthMethods().signOut();
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => const LoginScreen(),
                         ),
-                      ),
-                    ),
+                      );
+                    },
+                  ),
+                  const SizedBox(
+                    height: 20,
                   ),
                 ],
               ),
             ),
             body: Container(
-              color: primaryColor,
+              color: whiteColor,
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
@@ -201,7 +197,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       radius: 40,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     Row(
@@ -209,14 +205,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         Text(
                           "${userData['username']}",
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: amberColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
                           ),
                         ),
                         FirebaseAuth.instance.currentUser!.uid == widget.uid
-                            ? SizedBox(
+                            ? const SizedBox(
                                 height: 0,
                                 width: 0,
                               )
@@ -233,7 +229,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         followers--;
                                       });
                                     },
-                                    icon: Icon(
+                                    icon: const Icon(
                                       EvaIcons.personRemove,
                                       color: greyColor,
                                     ),
@@ -250,17 +246,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         followers++;
                                       });
                                     },
-                                    icon: Icon(
+                                    icon: const Icon(
                                       EvaIcons.personAdd,
                                       color: greenColor,
                                     ),
                                   )
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
@@ -277,9 +272,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             Container(
                               margin: const EdgeInsets.only(top: 4),
-                              child: Text(
+                              child: const Text(
                                 "no. posts",
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w400,
                                   color: greyColor,
@@ -302,9 +297,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             Container(
                               margin: const EdgeInsets.only(top: 4),
-                              child: Text(
+                              child: const Text(
                                 "followers",
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w400,
                                   color: greyColor,
@@ -327,9 +322,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             Container(
                               margin: const EdgeInsets.only(top: 4),
-                              child: Text(
+                              child: const Text(
                                 "following",
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w400,
                                   color: greyColor,
@@ -340,7 +335,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ],
                     ),
-          
                     const Divider(),
                     Expanded(
                       child: FutureBuilder(
@@ -351,7 +345,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return ScrapHiveLoader();
+                            return const ScrapHiveLoader();
                           }
 
                           if ((snapshot.data! as dynamic).docs.isEmpty) {
@@ -359,7 +353,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               padding: const EdgeInsets.all(16.0),
                               child: Column(
                                 children: [
-                                  Text(
+                                  const Text(
                                     "You have not posted anything yet",
                                     style: TextStyle(
                                       color: greyColor,
@@ -373,7 +367,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         ),
                                       );
                                     },
-                                    child: Text(
+                                    child: const Text(
                                       "Post Something Now",
                                       style: TextStyle(
                                         color: amberColor,
@@ -427,6 +421,4 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           );
   }
-
-
 }

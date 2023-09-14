@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:scraphive/providers/user_provider.dart';
 import 'package:scraphive/resources/firestore_methods.dart';
 import 'package:scraphive/screens/comments_screen.dart';
@@ -67,7 +66,7 @@ class _PostCardState extends State<PostCard> {
     final model.User user = Provider.of<UserProvider>(context).getUser;
 
     return Container(
-      color: primaryColor,
+      color: whiteColor,
       padding: const EdgeInsets.symmetric(
         vertical: 10,
       ),
@@ -95,7 +94,7 @@ class _PostCardState extends State<PostCard> {
                     ),
                     child: Text(
                       widget.snap['username'],
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         color: brownColor,
                         fontSize: 16,
@@ -106,7 +105,7 @@ class _PostCardState extends State<PostCard> {
                 Text(
                   DateFormat.yMMMd()
                       .format(widget.snap['datePublished'].toDate()),
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 12,
                     color: greyColor,
                   ),
@@ -146,7 +145,7 @@ class _PostCardState extends State<PostCard> {
                       },
                     );
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     EvaIcons.moreVerticalOutline,
                     color: peachColor,
                   ),
@@ -193,7 +192,7 @@ class _PostCardState extends State<PostCard> {
                   child: LikeAnimation(
                     child: const Icon(
                       EvaIcons.heart,
-                      color: primaryColor,
+                      color: whiteColor,
                       size: 120,
                     ),
                     isAnimating: isLikeAnimating,
@@ -229,7 +228,7 @@ class _PostCardState extends State<PostCard> {
                             EvaIcons.heart,
                             color: amberColor,
                           )
-                        : Icon(
+                        : const Icon(
                             EvaIcons.heartOutline,
                             color: peachColor,
                           )),
@@ -238,7 +237,7 @@ class _PostCardState extends State<PostCard> {
                 widget.snap['likes'].length == 1
                     ? '${widget.snap['likes'].length} Like'
                     : '${widget.snap['likes'].length} Likes',
-                style: TextStyle(
+                style: const TextStyle(
                   color: greyColor,
                   fontSize: 14,
                 ),
@@ -251,7 +250,7 @@ class _PostCardState extends State<PostCard> {
                     ),
                   ),
                 ),
-                icon: Icon(
+                icon: const Icon(
                   EvaIcons.messageCircleOutline,
                   color: peachColor,
                 ),
@@ -260,7 +259,7 @@ class _PostCardState extends State<PostCard> {
                 commentLen == 1
                     ? '$commentLen Comment'
                     : '$commentLen Comments',
-                style: TextStyle(
+                style: const TextStyle(
                   color: greyColor,
                   fontSize: 14,
                 ),
@@ -289,7 +288,7 @@ class _PostCardState extends State<PostCard> {
               ),
               child: Text(
                 '${widget.snap['description']}',
-                style: TextStyle(
+                style: const TextStyle(
                   color: brownColor,
                   fontSize: 14,
                 ),

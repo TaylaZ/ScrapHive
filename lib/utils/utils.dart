@@ -30,7 +30,7 @@ showSnackBar(BuildContext context, String text) {
       content: Text(
         text,
         textAlign: TextAlign.center,
-        style: TextStyle(
+        style:  const TextStyle(
           color: yellowColor,
         ),
       ),

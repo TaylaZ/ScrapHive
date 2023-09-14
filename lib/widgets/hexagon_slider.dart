@@ -38,7 +38,7 @@ class HexagonSlider extends StatelessWidget {
 class HexagonSliderThumbShape extends SliderComponentShape {
   @override
   Size getPreferredSize(bool isEnabled, bool isDiscrete) {
-    return Size.fromRadius(12); // Adjust the size of the hexagon thumb
+    return const Size.fromRadius(12); 
   }
 
   @override
@@ -58,7 +58,7 @@ class HexagonSliderThumbShape extends SliderComponentShape {
   }) {
     final Canvas canvas = context.canvas;
 
-    final double radius = 12;
+    const double radius = 12;
     final double sideLength = radius * sqrt(3);
     final double centerX = center.dx;
     final double centerY = center.dy;

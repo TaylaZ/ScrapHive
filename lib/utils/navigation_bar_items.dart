@@ -6,12 +6,11 @@ import 'package:scraphive/screens/materials_screen.dart';
 import 'package:scraphive/screens/profile_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-
 List<Widget> homeScreenItems = [
-  FeedScreen(),
+  const FeedScreen(),
   LikedPostsScreen(),
-  ScrapbookScreen(),
-  MaterialScreen(),
+  const ScrapbookScreen(),
+  const MaterialScreen(),
   ProfileScreen(
     uid: FirebaseAuth.instance.currentUser!.uid,
   )

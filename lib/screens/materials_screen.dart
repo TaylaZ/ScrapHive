@@ -5,13 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scraphive/providers/user_provider.dart';
 import 'package:scraphive/resources/firestore_methods.dart';
-import 'package:scraphive/screens/add_text_screen.dart';
 import 'package:scraphive/utils/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:typed_data';
 import 'package:image_picker/image_picker.dart';
 import 'package:scraphive/utils/utils.dart';
-import 'package:scraphive/widgets/hexagon_button.dart';
+import 'package:scraphive/widgets/hexagon_icon.dart';
 import 'package:scraphive/widgets/material_card.dart';
 import 'package:scraphive/widgets/scraphive_loader.dart';
 
@@ -150,7 +149,6 @@ class _MaterialScreenState extends State<MaterialScreen> {
           .collection('materials')
           .doc(materialId)
           .update({'percentage': newValue});
-      // Optionally, you can update the UI here if needed.
     } catch (e) {
       showSnackBar(context, 'Failed to update percentage: $e');
     }
@@ -158,7 +156,6 @@ class _MaterialScreenState extends State<MaterialScreen> {
 
   void _editMaterialDescription(
       String materialId, String currentDescription) async {
-    // Show a dialog or navigate to an edit screen where the user can update the description.
     final newDescription = await showDialog<String>(
       context: context,
       builder: (BuildContext context) {
@@ -179,7 +176,7 @@ class _MaterialScreenState extends State<MaterialScreen> {
           ),
           actions: <Widget>[
             TextButton(
-              onPressed: () => Navigator.of(context).pop(), // Cancel editing
+              onPressed: () => Navigator.of(context).pop(),
               child: Text(
                 'Cancel',
                 style: TextStyle(
@@ -189,7 +186,6 @@ class _MaterialScreenState extends State<MaterialScreen> {
             ),
             TextButton(
               onPressed: () {
-                // Save the new description to Firestore.
                 final newDescription = controller.text;
                 _updateMaterialDescription(materialId, newDescription);
                 Navigator.of(context).pop(newDescription);
@@ -204,9 +200,7 @@ class _MaterialScreenState extends State<MaterialScreen> {
       },
     );
 
-    if (newDescription != null) {
-      // Update the UI with the new description if needed.
-    }
+    if (newDescription != null) {}
   }
 
   @override
@@ -224,7 +218,7 @@ class _MaterialScreenState extends State<MaterialScreen> {
             appBar: AppBar(
               elevation: 0.0,
               automaticallyImplyLeading: false,
-              backgroundColor: primaryColor,
+              backgroundColor: whiteColor,
               centerTitle: false,
               title: SvgPicture.asset(
                 'assets/ScrapHive_Logo.svg',
@@ -233,7 +227,7 @@ class _MaterialScreenState extends State<MaterialScreen> {
               actions: [],
             ),
             body: Container(
-              color: primaryColor,
+              color: whiteColor,
               child: RefreshIndicator(
                 onRefresh: _refreshData,
                 backgroundColor: amberColor,
@@ -245,7 +239,7 @@ class _MaterialScreenState extends State<MaterialScreen> {
                       AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
                           snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return ScrapHiveLoader();
+                      return const ScrapHiveLoader();
                     }
 
                     if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
@@ -268,7 +262,7 @@ class _MaterialScreenState extends State<MaterialScreen> {
                         ),
                       );
                     } else {
-                      return Center(
+                      return const Center(
                         child: Text(
                           'Tap the plus button to add a new material',
                           style: TextStyle(color: greyColor),
@@ -284,10 +278,10 @@ class _MaterialScreenState extends State<MaterialScreen> {
               backgroundColor: Colors.transparent,
               elevation: 0,
               highlightElevation: 0,
-              child: HexagonIcon(
+              child: const HexagonIcon(
                 icon: EvaIcons.plus,
                 fillColor: amberColor,
-                iconColor: primaryColor,
+                iconColor: whiteColor,
                 iconSize: 20,
               ),
             ),
@@ -298,7 +292,7 @@ class _MaterialScreenState extends State<MaterialScreen> {
               bottomOpacity: 0.0,
               elevation: 0.0,
               leading: IconButton(
-                icon: Icon(EvaIcons.arrowBack),
+                icon: const Icon(EvaIcons.arrowBack),
                 color: amberColor,
                 onPressed: clearImage,
               ),
@@ -334,8 +328,8 @@ class _MaterialScreenState extends State<MaterialScreen> {
               child: Column(
                 children: [
                   _isLoading
-                      ? ScrapHiveLoader()
-                      : Padding(
+                      ? const ScrapHiveLoader()
+                      : const Padding(
                           padding: EdgeInsets.only(
                             top: 0,
                           ),

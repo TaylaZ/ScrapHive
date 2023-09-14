@@ -7,7 +7,7 @@ import 'package:scraphive/models/image_info.dart';
 import 'package:scraphive/screens/add_text_screen.dart';
 import 'package:scraphive/utils/colors.dart';
 import 'package:scraphive/utils/utils.dart';
-import 'package:scraphive/widgets/hexagon_button.dart';
+import 'package:scraphive/widgets/hexagon_icon.dart';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:screenshot/screenshot.dart';
@@ -16,6 +16,8 @@ import 'dart:math';
 ScreenshotController screenshotController = ScreenshotController();
 
 class ScrapbookScreen extends StatefulWidget {
+  const ScrapbookScreen({Key? key}) : super(key: key);
+
   @override
   _ScrapbookScreenState createState() => _ScrapbookScreenState();
 }
@@ -32,7 +34,6 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
       final decodedImage =
           await decodeImageFromList(imageFile.readAsBytesSync());
 
-      // Calculate the width and height based on screen height
       final screenHeight = MediaQuery.of(context).size.height;
       final scaleFactor = screenHeight / decodedImage.height;
 
@@ -107,7 +108,6 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
 
   void bringToBack(int index) {
     setState(() {
-      // Move the selected image to the front of the list
       final selectedImage = images.removeAt(index);
       images.insert(0, selectedImage);
     });
@@ -119,11 +119,11 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
       body: Screenshot(
         controller: screenshotController,
         child: Container(
-          color: primaryColor,
+          color: whiteColor,
           child: Stack(
             children: [
               if (images.isEmpty)
-                Center(
+                const Center(
                   child: Text(
                     'Tap add button to start scrapbooking',
                     style: TextStyle(color: greyColor),
@@ -144,14 +144,14 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: Text('Remove Image?'),
-                              content: Text(
+                              title: const Text('Remove Image?'),
+                              content: const Text(
                                 'Do you want to remove this image?',
                                 style: TextStyle(color: brownColor),
                               ),
                               actions: <Widget>[
                                 TextButton(
-                                  child: Text(
+                                  child: const Text(
                                     'Cancel',
                                     style: TextStyle(color: greyColor),
                                   ),
@@ -160,7 +160,7 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
                                   },
                                 ),
                                 TextButton(
-                                  child: Text(
+                                  child: const Text(
                                     'Remove',
                                     style: TextStyle(color: amberColor),
                                   ),
@@ -179,7 +179,7 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: Center(child: Text('Adjust Image')),
+                              title: const Center(child: Text('Adjust Image')),
                               content: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
@@ -192,7 +192,7 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
                                           onPressed: () {
                                             rotateImage(index, 15);
                                           },
-                                          icon: Icon(Icons.rotate_right,
+                                          icon: const Icon(Icons.rotate_right,
                                               color: amberColor),
                                         ),
                                       ),
@@ -202,7 +202,7 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
                                           onPressed: () {
                                             rotateImage(index, -15);
                                           },
-                                          icon: Icon(Icons.rotate_left,
+                                          icon: const Icon(Icons.rotate_left,
                                               color: greenColor),
                                         ),
                                       ),
@@ -218,7 +218,7 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
                                             adjustSize(index, image.width * 1.2,
                                                 image.height * 1.2);
                                           },
-                                          icon: Icon(Icons.zoom_in,
+                                          icon: const Icon(Icons.zoom_in,
                                               color: amberColor),
                                         ),
                                       ),
@@ -229,7 +229,7 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
                                             adjustSize(index, image.width * 0.8,
                                                 image.height * 0.8);
                                           },
-                                          icon: Icon(Icons.zoom_out,
+                                          icon: const Icon(Icons.zoom_out,
                                               color: greenColor),
                                         ),
                                       ),
@@ -244,7 +244,7 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
                                           onPressed: () {
                                             bringToFront(index);
                                           },
-                                          icon: Icon(Icons.arrow_upward,
+                                          icon: const Icon(Icons.arrow_upward,
                                               color: amberColor),
                                         ),
                                       ),
@@ -254,7 +254,7 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
                                           onPressed: () {
                                             bringToBack(index);
                                           },
-                                          icon: Icon(Icons.arrow_downward,
+                                          icon: const Icon(Icons.arrow_downward,
                                               color: greenColor),
                                         ),
                                       ),
@@ -264,7 +264,7 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
                                     message: 'Change Transparency',
                                     child: Column(
                                       children: [
-                                        Icon(
+                                        const Icon(
                                           Icons.opacity,
                                           color: peachColor,
                                         ),
@@ -331,27 +331,27 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
             elevation: 0,
             highlightElevation: 0,
             onPressed: _pickImage,
-            child: HexagonIcon(
+            child: const HexagonIcon(
               icon: EvaIcons.plus,
               fillColor: amberColor,
-              iconColor: primaryColor,
+              iconColor: whiteColor,
               iconSize: 20,
             ),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           FloatingActionButton(
             onPressed: () => saveToGallery(context),
             backgroundColor: Colors.transparent,
             elevation: 0,
             highlightElevation: 0,
-            child: HexagonIcon(
+            child: const HexagonIcon(
               icon: EvaIcons.save,
               fillColor: greenColor,
-              iconColor: primaryColor,
+              iconColor: whiteColor,
               iconSize: 20,
             ),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           FloatingActionButton(
             onPressed: () async {
               XFile? file = await ImagePicker().pickImage(
@@ -370,10 +370,10 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
             backgroundColor: Colors.transparent,
             elevation: 0,
             highlightElevation: 0,
-            child: HexagonIcon(
+            child: const HexagonIcon(
               icon: EvaIcons.text,
               fillColor: peachColor,
-              iconColor: primaryColor,
+              iconColor: whiteColor,
               iconSize: 18,
             ),
           ),
@@ -422,7 +422,7 @@ class ImageClassWidget extends StatelessWidget {
 class HexagonSliderThumbShape extends SliderComponentShape {
   @override
   Size getPreferredSize(bool isEnabled, bool isDiscrete) {
-    return Size.fromRadius(12); // Adjust the size of the hexagon thumb
+    return const Size.fromRadius(12);
   }
 
   @override
@@ -442,7 +442,7 @@ class HexagonSliderThumbShape extends SliderComponentShape {
   }) {
     final Canvas canvas = context.canvas;
 
-    final double radius = 12;
+    const double radius = 12;
     final double sideLength = radius * sqrt(3);
     final double centerX = center.dx;
     final double centerY = center.dy;

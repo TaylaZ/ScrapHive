@@ -1,8 +1,6 @@
 import 'dart:typed_data';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:scraphive/models/materials.dart';
-
 import '../models/post.dart';
 import '../resources/storage_methods.dart';
 import 'package:uuid/uuid.dart';
@@ -134,7 +132,7 @@ class FireStoreMethods {
         uid: uid,
         username: username,
         percentage:
-            percentageValue ?? 0.0, // Use the provided likesValue or default to 0.0
+            percentageValue ?? 0.0, 
         materialsId: materialsId,
         datePublished: DateTime.now(),
         materialsUrl: photoUrl,

@@ -1,14 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:scraphive/providers/user_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:scraphive/utils/global_variables.dart';
-import 'package:scraphive/widgets/hexagon_button.dart';
-import '../models/user.dart' as usermodel;
-import 'package:flutter/cupertino.dart';
+import 'package:scraphive/utils/navigation_bar_items.dart';
+import 'package:scraphive/widgets/hexagon_icon.dart';
 import '../utils/colors.dart';
 
 class DefaultScreen extends StatefulWidget {
@@ -76,13 +72,13 @@ class _DefaultScreenState extends State<DefaultScreen> {
           ),
           BottomNavigationBarItem(
             icon: Transform.translate(
-              offset: Offset(0, 5),
+              offset: const  Offset(0, 5),
               child: HexagonIcon(
                 icon: (_page == 2)
                     ? FluentIcons.hexagon_three_24_filled
                     : FluentIcons.hexagon_three_24_regular,
                 iconSize: 32,
-                iconColor: primaryColor,
+                iconColor: whiteColor,
                 fillColor: (_page == 2) ? amberColor : greenColor,
               ),
             ),

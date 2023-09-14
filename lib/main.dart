@@ -7,9 +7,7 @@ import 'package:scraphive/screens/default_screen.dart';
 import 'package:provider/provider.dart';
 import 'dart:async';
 import 'package:flutter_svg/flutter_svg.dart';
-
 import 'package:scraphive/screens/login_screen.dart';
-import 'package:scraphive/screens/signup_screen.dart';
 import 'package:scraphive/utils/colors.dart';
 import 'package:scraphive/widgets/scraphive_loader.dart';
 
@@ -46,10 +44,10 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'ScrapHive',
         theme: ThemeData(
-          primaryColor: primaryColor,
+          primaryColor: whiteColor,
           accentColor: amberColor,
         ),
-        home: SplashScreen(),
+        home: const SplashScreen(),
       ),
     );
   }
@@ -68,7 +66,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
 
     Timer(
-      Duration(seconds: 2),
+      const Duration(milliseconds: 180),
       () {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(
@@ -86,9 +84,8 @@ class _SplashScreenState extends State<SplashScreen> {
                     }
                   }
 
-                  // If connection to future hasn't been made yet
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return ScrapHiveLoader();
+                    return const ScrapHiveLoader();
                   }
 
                   return const LoginScreen();

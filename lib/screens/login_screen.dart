@@ -31,11 +31,12 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isLoading = true;
     });
-    String res = await AuthMethods()
-        .loginUser(email: _emailController.text, password: _passwordController.text);
+    String res = await AuthMethods().loginUser(
+        email: _emailController.text, password: _passwordController.text);
 
     if (res == "success") {
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const DefaultScreen()));
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => const DefaultScreen()));
     } else {
       showSnackBar(context, res);
     }
@@ -45,8 +46,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void navigateToSignUp() {
-    Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: (context) => const SignupScreen()));
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (context) => const SignupScreen()));
   }
 
   @override
@@ -117,7 +118,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          child: Text("Don't Have Account? "),
+                          child: const Text(
+                            "Don't Have Account? ",
+                            style: TextStyle(color: greyColor),
+                          ),
                           padding: const EdgeInsets.symmetric(
                             vertical: 8,
                           ),
@@ -125,11 +129,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         GestureDetector(
                           onTap: navigateToSignUp,
                           child: Container(
-                            child: Text(
+                            child:const Text(
                               "Signup",
                               style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
+                                  fontWeight: FontWeight.bold,
+                                  color: brownColor),
                             ),
                             padding: const EdgeInsets.symmetric(
                               vertical: 8,

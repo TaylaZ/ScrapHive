@@ -11,7 +11,7 @@ class HexagonIcon extends StatelessWidget {
   const HexagonIcon({
     required this.icon,
     this.iconSize = 15,
-    this.fillColor = primaryColor,
+    this.fillColor = whiteColor,
     this.iconColor = amberColor,
   });
 
