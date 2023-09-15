@@ -47,12 +47,12 @@ dependencies:
   uuid: ^3.0.6
   eva_icons_flutter: ^3.0.1
   carousel_slider: ^4.2.1
-  dio: ^5.0.0
+  dio: ^4.0.6
   path_provider: ^2.0.4
   photo_view: ^0.14.0
-  share_plus: ^4.1.0
-  image_cropper: ^1.5.0
   fluentui_system_icons: ^1.1.214
+  share: ^2.0.1
+
 
 
 
@@ -89,6 +89,13 @@ flutter:
     - assets/study.jpg
     - assets/travel.jpg
     - assets/TV.png
+    - assets/ScrapHive_Homepage.png
+    - assets/ScrapHive_Likedpage.png
+    - assets/ScrapHive_Scrapbookpage.png
+    - assets/ScrapHive_ScrapbookEditpage.png
+    - assets/ScrapHive_Textpage.png
+    - assets/ScrapHive_Materialspage.png
+    - assets/ScrapHive_Profilepage.png
 
   #   - images/a_dot_ham.jpeg
   # An image asset can refer to one or more resolution-specific "variants", see

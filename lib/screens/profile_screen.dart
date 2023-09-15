@@ -370,7 +370,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     child: const Text(
                                       "Post Something Now",
                                       style: TextStyle(
-                                        color: amberColor,
+                                        color: greenColor,
                                       ),
                                     ),
                                   )
