@@ -288,7 +288,7 @@ class _MaterialScreenState extends State<MaterialScreen> {
           )
         : Scaffold(
             appBar: AppBar(
-              backgroundColor: Colors.transparent,
+              backgroundColor: whiteColor,
               bottomOpacity: 0.0,
               elevation: 0.0,
               leading: IconButton(

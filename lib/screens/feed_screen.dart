@@ -45,7 +45,6 @@ class _FeedScreenState extends State<FeedScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
@@ -61,11 +60,11 @@ class _FeedScreenState extends State<FeedScreen> {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) =>  const SearchScreen(),
+                  builder: (context) => const SearchScreen(),
                 ),
               );
             },
-            icon: const  Icon(
+            icon: const Icon(
               EvaIcons.search,
               color: amberColor,
             ),
@@ -82,7 +81,7 @@ class _FeedScreenState extends State<FeedScreen> {
           builder: (context,
               AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return  const ScrapHiveLoader();
+              return const ScrapHiveLoader();
             }
             return ListView.builder(
               itemCount: snapshot.data!.docs.length,
@@ -97,14 +96,14 @@ class _FeedScreenState extends State<FeedScreen> {
         onPressed: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) =>  const AddPostScreen(),
+              builder: (context) => const AddPostScreen(),
             ),
           );
         },
         backgroundColor: Colors.transparent,
         elevation: 0,
         highlightElevation: 0,
-        child:  const HexagonIcon(
+        child: const HexagonIcon(
           icon: EvaIcons.plus,
           fillColor: amberColor,
           iconColor: whiteColor,

@@ -1,4 +1,5 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
@@ -113,6 +114,52 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
     });
   }
 
+  void randomizeImagePositions() {
+    final random = Random();
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    for (int index = 0; index < images.length; index++) {
+      final newLeft = random.nextDouble() * (screenWidth - images[index].width);
+      final newTop =
+          random.nextDouble() * (screenHeight - images[index].height);
+
+      onDragEnd(index, newTop, newLeft);
+    }
+  }
+
+  void randomizeImageScale() {
+    final random = Random();
+
+    for (int index = 0; index < images.length; index++) {
+      final image = images[index];
+      final initialWidth = image.width;
+      final initialHeight = image.height;
+
+      double newScale;
+
+      if (initialWidth > 300 || initialHeight > 300) {
+        newScale = 0.5 + random.nextDouble() * 0.5;
+      } else if (initialWidth < 20 || initialHeight < 20) {
+        newScale = 1 + random.nextDouble() * 1.5;
+      } else {
+        newScale = 0.5 + random.nextDouble() * 1.5;
+      }
+
+      adjustSize(index, initialWidth * newScale, initialHeight * newScale);
+    }
+  }
+
+  void randomizeImageRotation() {
+    final random = Random();
+
+    for (int index = 0; index < images.length; index++) {
+      final newRotation = (random.nextDouble() * 360) - 180;
+
+      rotateImage(index, newRotation);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -218,7 +265,9 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
                                             adjustSize(index, image.width * 1.2,
                                                 image.height * 1.2);
                                           },
-                                          icon: const Icon(Icons.zoom_in,
+                                          icon: const Icon(
+                                              FluentIcons
+                                                  .arrow_maximize_24_regular,
                                               color: amberColor),
                                         ),
                                       ),
@@ -229,7 +278,9 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
                                             adjustSize(index, image.width * 0.8,
                                                 image.height * 0.8);
                                           },
-                                          icon: const Icon(Icons.zoom_out,
+                                          icon: const Icon(
+                                              FluentIcons
+                                                  .arrow_minimize_24_regular,
                                               color: greenColor),
                                         ),
                                       ),
@@ -326,16 +377,32 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
       floatingActionButton: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          FloatingActionButton(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            highlightElevation: 0,
-            onPressed: _pickImage,
-            child: const HexagonIcon(
-              icon: EvaIcons.plus,
-              fillColor: amberColor,
-              iconColor: whiteColor,
-              iconSize: 20,
+          GestureDetector(
+            onLongPress: () async {
+              XFile? file = await ImagePicker().pickImage(
+                source: ImageSource.gallery,
+              );
+              if (file != null) {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => EditImageScreen(
+                      selectedImage: file.path,
+                    ),
+                  ),
+                );
+              }
+            },
+            child: FloatingActionButton(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              highlightElevation: 0,
+              onPressed: _pickImage,
+              child: const HexagonIcon(
+                icon: EvaIcons.plus,
+                fillColor: amberColor,
+                iconColor: whiteColor,
+                iconSize: 20,
+              ),
             ),
           ),
           const SizedBox(height: 16),
@@ -352,29 +419,67 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
             ),
           ),
           const SizedBox(height: 16),
-          FloatingActionButton(
-            onPressed: () async {
-              XFile? file = await ImagePicker().pickImage(
-                source: ImageSource.gallery,
-              );
-              if (file != null) {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => EditImageScreen(
-                      selectedImage: file.path,
+          GestureDetector(
+            onLongPress: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Center(
+                        child: Text(
+                      'Randomize!',
+                      style: TextStyle(color: brownColor),
+                    )),
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            TextButton(
+                              child: const Text(
+                                'Position',
+                                style: TextStyle(color: amberColor),
+                              ),
+                              onPressed: randomizeImagePositions,
+                            ),
+                            TextButton(
+                              child: const Text(
+                                'Scale',
+                                style: TextStyle(color: greenColor),
+                              ),
+                              onPressed: randomizeImageScale,
+                            ),
+                            TextButton(
+                              child: const Text(
+                                'Rotation',
+                                style: TextStyle(color: peachColor),
+                              ),
+                              onPressed: randomizeImageRotation,
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                  ),
-                );
-              }
+                  );
+                },
+              );
             },
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            highlightElevation: 0,
-            child: const HexagonIcon(
-              icon: EvaIcons.text,
-              fillColor: peachColor,
-              iconColor: whiteColor,
-              iconSize: 18,
+            child: FloatingActionButton(
+              onPressed: () {
+                randomizeImagePositions();
+                randomizeImageRotation();
+                randomizeImageScale();
+              },
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              highlightElevation: 0,
+              child: const HexagonIcon(
+                icon: FluentIcons.bubble_multiple_20_filled,
+                fillColor: peachColor,
+                iconColor: whiteColor,
+                iconSize: 20,
+              ),
             ),
           ),
         ],
@@ -399,9 +504,8 @@ class ImageClassWidget extends StatelessWidget {
         angle: image.rotation ?? 0,
         child: ColorFiltered(
           colorFilter: ColorFilter.mode(
-            Colors.transparent.withOpacity(
-                1.0 - image.transparency), // Adjust transparency here
-            BlendMode.dstIn, // Use dstIn blend mode to make image transparent
+            Colors.transparent.withOpacity(1.0 - image.transparency),
+            BlendMode.dstIn,
           ),
           child: Container(
             width: image.width,

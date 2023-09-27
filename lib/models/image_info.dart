@@ -8,6 +8,7 @@ class ImageClass {
   double height;
   double? rotation;
   double transparency;
+   bool isFixed = false; 
 
   ImageClass({
     required this.imageFile,
@@ -17,5 +18,6 @@ class ImageClass {
     this.height = 100,
     this.rotation = 0,
     this.transparency = 0,
+    this.isFixed = false,
   });
 }
