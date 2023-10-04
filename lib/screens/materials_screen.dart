@@ -13,6 +13,7 @@ import 'package:scraphive/utils/utils.dart';
 import 'package:scraphive/widgets/hexagon_icon.dart';
 import 'package:scraphive/widgets/material_card.dart';
 import 'package:scraphive/widgets/scraphive_loader.dart';
+import '../screens/material_search_screen.dart';
 
 class MaterialScreen extends StatefulWidget {
   const MaterialScreen({Key? key}) : super(key: key);
@@ -224,7 +225,21 @@ class _MaterialScreenState extends State<MaterialScreen> {
                 'assets/ScrapHive_Logo.svg',
                 height: 32,
               ),
-              actions: [],
+              actions: [
+                IconButton(
+                  icon: Icon(
+                    EvaIcons.search,
+                    color: amberColor,
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const MaterialSearchScreen(),
+                      ),
+                    );
+                  },
+                ),
+              ],
             ),
             body: Container(
               color: whiteColor,

@@ -38,7 +38,7 @@ class _MaterialCardState extends State<MaterialCard> {
 
     return Dismissible(
       direction: DismissDirection.endToStart,
-      key: Key(widget.snap['materialsId']), 
+      key: Key(widget.snap['materialsId']),
       background: Container(
         color: greenColor,
         alignment: Alignment.centerRight,
@@ -54,7 +54,8 @@ class _MaterialCardState extends State<MaterialCard> {
           builder: (BuildContext context) {
             return AlertDialog(
               title: const Text("Delete Material"),
-              content: const Text("Are you sure you want to delete this material?"),
+              content:
+                  const Text("Are you sure you want to delete this material?"),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
@@ -67,7 +68,6 @@ class _MaterialCardState extends State<MaterialCard> {
                 ),
                 TextButton(
                   onPressed: () {
-                    // User confirmed the delete operation.
                     Navigator.of(context).pop(true);
                   },
                   child: const Text(
@@ -110,19 +110,19 @@ class _MaterialCardState extends State<MaterialCard> {
                   SizedBox(width: 12.0),
                   Text(
                     '${description} ',
-                    style: const  TextStyle(fontSize: 16, color: brownColor),
+                    style: const TextStyle(fontSize: 16, color: brownColor),
                   ),
                   Text(
                     '${sliderValue.toStringAsFixed(0)}%',
-                    style:  const TextStyle(
+                    style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: amberColor),
                   ),
-                  const  Spacer(),
+                  const Spacer(),
                   IconButton(
                     onPressed: widget.onEdit,
-                    icon:  const Icon(
+                    icon: const Icon(
                       EvaIcons.edit2Outline,
                       color: peachColor,
                     ),

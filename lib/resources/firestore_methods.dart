@@ -131,8 +131,7 @@ class FireStoreMethods {
         description: description,
         uid: uid,
         username: username,
-        percentage:
-            percentageValue ?? 0.0, 
+        percentage: percentageValue ?? 0.0,
         materialsId: materialsId,
         datePublished: DateTime.now(),
         materialsUrl: photoUrl,
@@ -148,7 +147,4 @@ class FireStoreMethods {
     }
     return res;
   }
-
-  
-
 }
