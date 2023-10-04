@@ -1,6 +1,7 @@
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -25,6 +26,7 @@ class ScrapbookScreen extends StatefulWidget {
 
 class _ScrapbookScreenState extends State<ScrapbookScreen> {
   List<ImageClass> images = [];
+  Color bgColor = whiteColor;
 
   Future<void> _pickImage() async {
     final pickedFile =
@@ -160,217 +162,258 @@ class _ScrapbookScreenState extends State<ScrapbookScreen> {
     }
   }
 
+  Widget buildColorPicker() => ColorPicker(
+      pickerColor: bgColor,
+      onColorChanged: (color) => setState(() {
+            this.bgColor = color;
+          }));
+
+  void pickColor(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Pick Your Color'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            buildColorPicker(),
+            TextButton(
+              child: const Text(
+                'SELECT',
+                style: TextStyle(fontSize: 20),
+              ),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Screenshot(
         controller: screenshotController,
-        child: Container(
-          color: whiteColor,
-          child: Stack(
-            children: [
-              if (images.isEmpty)
-                const Center(
-                  child: Text(
-                    'Tap add button to start scrapbooking',
-                    style: TextStyle(color: greyColor),
+        child: GestureDetector(
+          onLongPress: () => pickColor(context),
+          child: Container(
+            color: bgColor,
+            child: Stack(
+              children: [
+                if (images.isEmpty)
+                  const Center(
+                    child: Text(
+                      'Tap add button to start scrapbooking',
+                      style: TextStyle(color: greyColor),
+                    ),
                   ),
-                ),
-              ...images.asMap().entries.map((entry) {
-                final index = entry.key;
-                final image = entry.value;
+                ...images.asMap().entries.map((entry) {
+                  final index = entry.key;
+                  final image = entry.value;
 
-                return Positioned(
-                  top: image.top,
-                  left: image.left,
-                  child: Draggable(
-                    feedback: ImageClassWidget(image),
-                    child: GestureDetector(
-                      onLongPress: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text('Remove Image?'),
-                              content: const Text(
-                                'Do you want to remove this image?',
-                                style: TextStyle(color: brownColor),
-                              ),
-                              actions: <Widget>[
-                                TextButton(
-                                  child: const Text(
-                                    'Cancel',
-                                    style: TextStyle(color: greyColor),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
+                  return Positioned(
+                    top: image.top,
+                    left: image.left,
+                    child: Draggable(
+                      feedback: ImageClassWidget(image),
+                      child: GestureDetector(
+                        onLongPress: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('Remove Image?'),
+                                content: const Text(
+                                  'Do you want to remove this image?',
+                                  style: TextStyle(color: brownColor),
                                 ),
-                                TextButton(
-                                  child: const Text(
-                                    'Remove',
-                                    style: TextStyle(color: amberColor),
+                                actions: <Widget>[
+                                  TextButton(
+                                    child: const Text(
+                                      'Cancel',
+                                      style: TextStyle(color: greyColor),
+                                    ),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
                                   ),
-                                  onPressed: () {
-                                    removeImage(index);
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      },
-                      onTap: () {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Center(child: Text('Adjust Image')),
-                              content: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Tooltip(
-                                        message: 'Rotate 15° Clockwise',
-                                        child: IconButton(
-                                          onPressed: () {
-                                            rotateImage(index, 15);
-                                          },
-                                          icon: const Icon(Icons.rotate_right,
-                                              color: amberColor),
-                                        ),
-                                      ),
-                                      Tooltip(
-                                        message: 'Rotate 15° Anticlockwise',
-                                        child: IconButton(
-                                          onPressed: () {
-                                            rotateImage(index, -15);
-                                          },
-                                          icon: const Icon(Icons.rotate_left,
-                                              color: greenColor),
-                                        ),
-                                      ),
-                                    ],
+                                  TextButton(
+                                    child: const Text(
+                                      'Remove',
+                                      style: TextStyle(color: amberColor),
+                                    ),
+                                    onPressed: () {
+                                      removeImage(index);
+                                      Navigator.of(context).pop();
+                                    },
                                   ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Tooltip(
-                                        message: 'Increase Size',
-                                        child: IconButton(
-                                          onPressed: () {
-                                            adjustSize(index, image.width * 1.2,
-                                                image.height * 1.2);
-                                          },
-                                          icon: const Icon(
-                                              FluentIcons
-                                                  .arrow_maximize_24_regular,
-                                              color: amberColor),
-                                        ),
-                                      ),
-                                      Tooltip(
-                                        message: 'Decrease Size',
-                                        child: IconButton(
-                                          onPressed: () {
-                                            adjustSize(index, image.width * 0.8,
-                                                image.height * 0.8);
-                                          },
-                                          icon: const Icon(
-                                              FluentIcons
-                                                  .arrow_minimize_24_regular,
-                                              color: greenColor),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Tooltip(
-                                        message: 'To the Front',
-                                        child: IconButton(
-                                          onPressed: () {
-                                            bringToFront(index);
-                                          },
-                                          icon: const Icon(Icons.arrow_upward,
-                                              color: amberColor),
-                                        ),
-                                      ),
-                                      Tooltip(
-                                        message: 'To the Back',
-                                        child: IconButton(
-                                          onPressed: () {
-                                            bringToBack(index);
-                                          },
-                                          icon: const Icon(Icons.arrow_downward,
-                                              color: greenColor),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Tooltip(
-                                    message: 'Change Transparency',
-                                    child: Column(
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title:
+                                    const Center(child: Text('Adjust Image')),
+                                content: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
-                                        const Icon(
-                                          Icons.opacity,
-                                          color: peachColor,
+                                        Tooltip(
+                                          message: 'Rotate 15° Clockwise',
+                                          child: IconButton(
+                                            onPressed: () {
+                                              rotateImage(index, 15);
+                                            },
+                                            icon: const Icon(Icons.rotate_right,
+                                                color: amberColor),
+                                          ),
                                         ),
-                                        StatefulBuilder(
-                                          builder: (context, state) {
-                                            return SliderTheme(
-                                              data: SliderThemeData(
-                                                overlayColor:
-                                                    Colors.transparent,
-                                                activeTrackColor:
-                                                    amberColor.withOpacity(0.7),
-                                                inactiveTrackColor: yellowColor,
-                                                thumbColor: amberColor,
-                                                thumbShape:
-                                                    HexagonSliderThumbShape(),
-                                                activeTickMarkColor:
-                                                    Colors.transparent,
-                                                inactiveTickMarkColor:
-                                                    Colors.transparent,
-                                              ),
-                                              child: Slider(
-                                                value: image.transparency,
-                                                onChanged: (newtransparency) {
-                                                  changetransparency(
-                                                      index, newtransparency);
-                                                  state(() {});
-                                                },
-                                                min: 0.0,
-                                                max: 1.0,
-                                                divisions: 10,
-                                                label:
-                                                    'Transparency: ${(image.transparency * 100).toStringAsFixed(0)}%',
-                                              ),
-                                            );
-                                          },
+                                        Tooltip(
+                                          message: 'Rotate 15° Anticlockwise',
+                                          child: IconButton(
+                                            onPressed: () {
+                                              rotateImage(index, -15);
+                                            },
+                                            icon: const Icon(Icons.rotate_left,
+                                                color: greenColor),
+                                          ),
                                         ),
                                       ],
                                     ),
-                                  ),
-                                ],
-                              ),
-                            );
-                          },
-                        );
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Tooltip(
+                                          message: 'Increase Size',
+                                          child: IconButton(
+                                            onPressed: () {
+                                              adjustSize(
+                                                  index,
+                                                  image.width * 1.2,
+                                                  image.height * 1.2);
+                                            },
+                                            icon: const Icon(
+                                                FluentIcons
+                                                    .arrow_maximize_24_regular,
+                                                color: amberColor),
+                                          ),
+                                        ),
+                                        Tooltip(
+                                          message: 'Decrease Size',
+                                          child: IconButton(
+                                            onPressed: () {
+                                              adjustSize(
+                                                  index,
+                                                  image.width * 0.8,
+                                                  image.height * 0.8);
+                                            },
+                                            icon: const Icon(
+                                                FluentIcons
+                                                    .arrow_minimize_24_regular,
+                                                color: greenColor),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Tooltip(
+                                          message: 'To the Front',
+                                          child: IconButton(
+                                            onPressed: () {
+                                              bringToFront(index);
+                                            },
+                                            icon: const Icon(Icons.arrow_upward,
+                                                color: amberColor),
+                                          ),
+                                        ),
+                                        Tooltip(
+                                          message: 'To the Back',
+                                          child: IconButton(
+                                            onPressed: () {
+                                              bringToBack(index);
+                                            },
+                                            icon: const Icon(
+                                                Icons.arrow_downward,
+                                                color: greenColor),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Tooltip(
+                                      message: 'Change Transparency',
+                                      child: Column(
+                                        children: [
+                                          const Icon(
+                                            Icons.opacity,
+                                            color: peachColor,
+                                          ),
+                                          StatefulBuilder(
+                                            builder: (context, state) {
+                                              return SliderTheme(
+                                                data: SliderThemeData(
+                                                  overlayColor:
+                                                      Colors.transparent,
+                                                  activeTrackColor: amberColor
+                                                      .withOpacity(0.7),
+                                                  inactiveTrackColor:
+                                                      yellowColor,
+                                                  thumbColor: amberColor,
+                                                  thumbShape:
+                                                      HexagonSliderThumbShape(),
+                                                  activeTickMarkColor:
+                                                      Colors.transparent,
+                                                  inactiveTickMarkColor:
+                                                      Colors.transparent,
+                                                ),
+                                                child: Slider(
+                                                  value: image.transparency,
+                                                  onChanged: (newtransparency) {
+                                                    changetransparency(
+                                                        index, newtransparency);
+                                                    state(() {});
+                                                  },
+                                                  min: 0.0,
+                                                  max: 1.0,
+                                                  divisions: 10,
+                                                  label:
+                                                      'Transparency: ${(image.transparency * 100).toStringAsFixed(0)}%',
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          );
+                        },
+                        child: ImageClassWidget(image),
+                      ),
+                      onDragEnd: (details) {
+                        onDragEnd(index, details.offset.dy, details.offset.dx);
                       },
-                      child: ImageClassWidget(image),
+                      childWhenDragging: Container(),
                     ),
-                    onDragEnd: (details) {
-                      onDragEnd(index, details.offset.dy, details.offset.dx);
-                    },
-                    childWhenDragging: Container(),
-                  ),
-                );
-              }).toList(),
-            ],
+                  );
+                }).toList(),
+              ],
+            ),
           ),
         ),
       ),

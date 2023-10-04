@@ -289,7 +289,7 @@ class _EditImageScreenState extends EditImageViewModel {
               child: Ink(
                 decoration: BoxDecoration(
                   border: Border.all(color: color, width: 3.0),
-                  color: Colors.white,
+                  color: whiteColor,
                   shape: BoxShape.circle,
                 ),
                 child: InkWell(
