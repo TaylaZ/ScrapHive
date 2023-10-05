@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:scraphive/models/materials.dart';
+import 'package:scraphive/models/shopping_item.dart';
 import '../models/post.dart';
 import '../resources/storage_methods.dart';
 import 'package:uuid/uuid.dart';
@@ -141,6 +142,29 @@ class FireStoreMethods {
           .collection('materials')
           .doc(materialsId)
           .set(materials.toJson());
+      res = "success";
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
+
+  Future<String> uploadShoppingItem(
+      String description, String uid, double? priceValue) async {
+    String res = "Some error occurred";
+    try {
+      String shoppingItemId = const Uuid().v1();
+      ShoppingItem shoppingItem = ShoppingItem(
+        description: description,
+        uid: uid,
+        price: priceValue ?? 0.0,
+        shoppingItemId: shoppingItemId,
+        datePublished: DateTime.now(),
+      );
+      _firestore
+          .collection('shoppingItems')
+          .doc(shoppingItemId)
+          .set(shoppingItem.toJson());
       res = "success";
     } catch (err) {
       res = err.toString();

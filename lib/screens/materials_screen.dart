@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:scraphive/providers/user_provider.dart';
 import 'package:scraphive/resources/firestore_methods.dart';
+import 'package:scraphive/screens/shopping_list_screen.dart';
 import 'package:scraphive/utils/colors.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:typed_data';
@@ -28,7 +29,6 @@ class _MaterialScreenState extends State<MaterialScreen> {
   double? _percentageValue;
   final TextEditingController _descriptionController = TextEditingController();
   late Stream<QuerySnapshot<Map<String, dynamic>>> _stream;
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   void initState() {
@@ -288,17 +288,44 @@ class _MaterialScreenState extends State<MaterialScreen> {
                 ),
               ),
             ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () => _selectImage(context),
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              highlightElevation: 0,
-              child: const HexagonIcon(
-                icon: EvaIcons.plus,
-                fillColor: amberColor,
-                iconColor: whiteColor,
-                iconSize: 20,
-              ),
+            floatingActionButton: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                FloatingActionButton(
+                  onPressed: () => _selectImage(context),
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                  highlightElevation: 0,
+                  child: const HexagonIcon(
+                    icon: EvaIcons.plus,
+                    fillColor: amberColor,
+                    iconColor: whiteColor,
+                    iconSize: 20,
+                  ),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                FloatingActionButton(
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ShoppingItemListScreen()),
+                  ),
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                  highlightElevation: 0,
+                  child: const HexagonIcon(
+                    icon: EvaIcons.shoppingCart,
+                    fillColor: greenColor,
+                    iconColor: whiteColor,
+                    iconSize: 20,
+                  ),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+              ],
             ),
           )
         : Scaffold(
