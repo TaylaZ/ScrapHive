@@ -184,7 +184,10 @@ class _ShoppingItemListScreenState extends State<ShoppingItemListScreen> {
 
                   if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                     return Center(
-                      child: Text('No shopping items available.'),
+                      child: Text(
+                        'No shopping items available.',
+                        style: TextStyle(color: greyColor),
+                      ),
                     );
                   }
 
